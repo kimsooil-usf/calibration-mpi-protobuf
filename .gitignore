@@ -1,0 +1,9 @@
+**/staticInst
+staticInst
+__pycache__
+*.ipynb
+*.o
+*.d
+output-*/
+outputs-*/
+.DS_Store

@@ -1,0 +1,36 @@
+from header import *
+
+def datamodel_Gap(model,data):
+    rmse=0
+    for i in range(len(model)):
+        rmse+=(model[i]-data[i])*(model[i]-data[i])
+    return np.sqrt(rmse)/len(model)
+
+def rmse_save_posterior(parameters, piece_directory, nsd):
+    nParams = len(parameters)
+    RMSE_df=pd.DataFrame({"index":[0.0]*nParams,"RMSE":[0.0]*nParams,"p_value":[0.0]*nParams})
+    RMSE_df=RMSE_df[:]*0.0
+    csv_path=os.path.join(piece_directory,"casesfile_"+str(nsd)+".csv")
+    data_temp=pd.read_csv(csv_path,parse_dates=['date']) ### fix....
+    #dataCols = data_temp[['total Cases']]
+    #data = dataCols['total Cases'].to_list()
+    dataCols = data_temp[['total cases']]
+    data = dataCols['total cases'].to_list()
+
+    # print("i am in rmse\n")
+    nSimPerDay = 4 #number of simulations per-day
+
+    for i in range(len(parameters)):
+        output_directory = piece_directory +str(int(i))+"/"
+        if(os.path.exists(os.path.join(output_directory,"num_infected.csv"))):
+            modeldata = pd.read_csv(os.path.join(output_directory,"num_infected.csv"))
+            modeldata = modeldata['num_infected']
+            modeldata = modeldata.iloc[0::nSimPerDay].to_list()
+
+            RMSE_df['RMSE'][i]=datamodel_Gap(modeldata,data)
+
+            RMSE_df['p_value'][i] = 1000
+            RMSE_df['index'][i] = i
+
+    RMSE_df.to_csv(os.path.join(piece_directory, "rmse_priors_"+str(nsd)+".csv"),index=False)
+    # print("i am done with rmse\n")
