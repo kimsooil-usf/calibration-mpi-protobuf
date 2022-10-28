@@ -53,6 +53,7 @@ def priors_history(nParams, nsd):
     if len(posterior_index)==0: # make sure... posterior is not empty
         posterior_index=list(rmse_table.index.values)
 
+    # Fix this: RMSE condition need to be relaxed to get enough parameter sets from prior
     # MIN_NUM_index=20
     # RMSE_THRESHOLD=1000
 
