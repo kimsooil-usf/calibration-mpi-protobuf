@@ -78,7 +78,7 @@ vector<house> init_homes(){
 }
 
 vector<mask> init_mask(){//---Mask wearing function introduced by shakir
-  auto maskJSON = readJSONFile(GLOBAL.input_base + "maskwearing_October_26_2022.json");
+  auto maskJSON = readJSONFile(GLOBAL.input_base + "maskwearing_July2022.json");
   auto size = maskJSON.GetArray().Size();
   vector<mask> mask(size);
 //   GLOBAL.num_homes = size;
@@ -251,11 +251,6 @@ vector<intervention_params> init_intervention_params(){
 		if(elem.HasMember("home_quarantine")){
 		  temp.home_quarantine = elem["home_quarantine"]["active"].GetBool();
 		}
-		if(elem.HasMember("locked_community_leakage")){
-		  temp.locked_community_leakage = elem["locked_community_leakage"].GetDouble();
-		} else {
-		  temp.locked_community_leakage = GLOBAL.LOCKED_COMMUNITY_LEAKAGE; //Keeps last state if not specified explicitly.
-		}
 		if(elem.HasMember("lockdown")){
 		  //TODO: collect all these statements in a function.
 		  temp.lockdown = elem["lockdown"]["active"].GetBool();
@@ -367,7 +362,7 @@ vector<intervention_params> init_intervention_params(){
 	  }
 	}
   }
-//   std::cout<<std::endl<<"Intervention params size = "<<intv_params.size();
+  std::cout<<std::endl<<"Intervention params size = "<<intv_params.size();
   return intv_params;
 }
 
@@ -623,7 +618,7 @@ vector<testing_probability> init_testing_protocol(){
 	  }
 	}
   }
-//   std::cout<<std::endl<<"Intervention params size = "<<testing_protocol.size();
+  std::cout<<std::endl<<"Intervention params size = "<<testing_protocol.size();
   return testing_protocol;
 }
 
@@ -698,9 +693,8 @@ void set_node_initial_infection(agent& node,
 }
 
 vector<agent> init_nodes(){
-//	printf("i am in init nodes");
   auto indivJSON = readJSONFile(GLOBAL.input_base + "individual_diversity.json");//"individuals.json");
-  auto variantJSON = readJSONFile(GLOBAL.input_base + "cases_variant_prop_Oct_26.json");//reading variant proportions...Shakir Jun 14 2022.
+  auto variantJSON = readJSONFile(GLOBAL.input_base + "cases_variant_prop.json");//reading variant proportions...Shakir Jun 14 2022.
 
   auto size = indivJSON.GetArray().Size();
   GLOBAL.num_people = size;
@@ -710,33 +704,34 @@ vector<agent> init_nodes(){
 //-----------Reading and printing proportion of variants on the START_DAY---//Shakir -put on Jun 14 2022.
 double p0,p1,p2,p3,p4,p5,p6,vaccNum,totvacc1=0;
 int tstep,yes=0,vac1,vac2,wan,boost;
-	for (auto &elem: variantJSON.GetArray()){
-	tstep=elem["time_step"].GetInt();
-	if(tstep==GLOBAL.START_DAY)
-		{
- 	 	p0= elem["p0"].GetDouble();
-		p1= elem["p1"].GetDouble();
-		p2= elem["p2"].GetDouble();
-		p3= elem["p3"].GetDouble();
-		// p4= elem["p4"].GetDouble();--enable according to new variants
-		// p5= elem["p5"].GetDouble();
-		// p6= elem["p6"].GetDouble();
-		// p7= elem["p6"].GetDouble();									
-		vaccNum=elem["VaccPopProp"].GetDouble();
-		yes+=1;
-		break;
-		}
-}
-if(yes==0){
-	p0=0;
-	p1=0;
-	p2=0;
-	p3=0.9;
-	vaccNum=84;
-}
+
+// 	for (auto &elem: variantJSON.GetArray()){
+// 	tstep=elem["time_step"].GetInt();
+// 	if(tstep==GLOBAL.START_DAY)
+// 		{
+//  	 	p0= elem["p0"].GetDouble();
+// 		p1= elem["p1"].GetDouble();
+// 		p2= elem["p2"].GetDouble();
+// 		p3= elem["p3"].GetDouble();
+// 		// p4= elem["p4"].GetDouble();--enable according to new variants
+// 		// p5= elem["p5"].GetDouble();
+// 		// p6= elem["p6"].GetDouble();
+// 		// p7= elem["p6"].GetDouble();									
+// 		vaccNum=elem["VaccPopProp"].GetDouble();
+// 		yes+=1;
+// 		break;
+// 		}
+// }
+// if(yes==0){
+// 	p0=0;
+// 	p1=0;
+// 	p2=0;
+// 	p3=0.9;
+// 	vaccNum=84;
+// }
 
 //-------------Reading variant proportion over---------------------------//
-//printf("variant proportions are: %lf %lf %lf %lf %lf\n",p0,p1,p2,p3,vaccNum);
+printf("variant proportions are: %lf %lf %lf %lf %lf\n",p0,p1,p2,p3,vaccNum);
 
   count_type i = 0;
   vector<count_type> seed_candidates;
@@ -755,11 +750,11 @@ if(yes==0){
 	nodes[i].age_index = get_age_index(age);
 
 //--------Comorbidity for each individual----------//
-	nodes[i].comorbidity=0;
+	nodes[i].comorbidity=0;//0,1,2,3,4,5,6,7,8,9
 //------------------------------------------------//
 
 	nodes[i].zeta_a = zeta(age);
-
+	
 	nodes[i].infectiousness = gamma(GLOBAL.INFECTIOUSNESS_SHAPE,GLOBAL.INFECTIOUSNESS_SCALE);
 
 	nodes[i].new_strain=0;
@@ -767,188 +762,192 @@ if(yes==0){
 	nodes[i].infectiousness_original=nodes[i].infectiousness;									
 	nodes[i].severity = bernoulli(GLOBAL.SEVERITY_RATE)?1:0;
 
+	if(GLOBAL.START_DAY<306){
+
 	//----Vaccinated property set to false
 	nodes[i].vaccinated1=false;
 	nodes[i].vaccinated2=false;
 	nodes[i].waning=false;
 	nodes[i].boosted=false;
+  }
 
-	//-----Selecting strain to start with and its relative infectiousness, depending-------//
-		if (GLOBAL.START_DAY<780)
-	{
 
-			if(bernoulli(p1))
-			{
-			nodes[i].new_strain=1;//0,1,2,3,4
+// 	//-----Selecting strain to start with and its relative infectiousness, depending-------//
+// 		if (GLOBAL.START_DAY<780)
+// 	{
 
-		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_ALPHA;
-			}
-			if(bernoulli(p2))
-			{
-			nodes[i].new_strain=2;//0,1,2,3,4
+// 			if(bernoulli(p1))
+// 			{
+// 			nodes[i].new_strain=1;//0,1,2,3,4
 
-		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_DELTA;
-			}
-			if(bernoulli(p3))
-			{
-			nodes[i].new_strain=3;//0,1,2,3,4
+// 		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_ALPHA;
+// 			}
+// 			if(bernoulli(p2))
+// 			{
+// 			nodes[i].new_strain=2;//0,1,2,3,4
 
-		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON;
-			}
-			if(bernoulli(p4))
-			{
-			nodes[i].new_strain=4;//0,1,2,3,4
+// 		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_DELTA;
+// 			}
+// 			if(bernoulli(p3))
+// 			{
+// 			nodes[i].new_strain=3;//0,1,2,3,4
+// 			printf("variant is %lf and prop is %lf\n",nodes[i].new_strain*1.0,p3);
+// 		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON;
+// 			}
+// 			if(bernoulli(p4))
+// 			{
+// 			nodes[i].new_strain=4;//0,1,2,3,4
 
-		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_NEW;
-			}
-			if(bernoulli(p5))
-			{
-			nodes[i].new_strain=5;//0,1,2,3,4
+// 		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_NEW;
+// 			}
+// 			if(bernoulli(p5))
+// 			{
+// 			nodes[i].new_strain=5;//0,1,2,3,4
 
-		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA4;
-			}
-			if(bernoulli(p6))
-			{
-			nodes[i].new_strain=6;//0,1,2,3,4
+// 		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA4;
+// 			}
+// 			if(bernoulli(p6))
+// 			{
+// 			nodes[i].new_strain=6;//0,1,2,3,4
 
-		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA5;
-			}									
-//---initiating vaccinations----//
-	 if(GLOBAL.START_DAY >321)
-		{
-			vac1=bernoulli(1-vaccNum/100);
+// 		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA5;
+// 			}									
+// //---initiating vaccinations----//
+// 	 if(GLOBAL.START_DAY >321)
+// 		{
+// 			vac1=bernoulli(1-vaccNum/100);
 		
-			if(vac1 && nodes[i].age_index>=1)
-			{
-				//if(bernoulli(0.8))//blocked to keep vaccination at 80 percent to begin with
-				{
-			nodes[i].vaccinated1=true;
-			nodes[i].infection_status = Progression::recovered;
-            nodes[i].state_before_recovery = Progression::vaccinated1;
-			nodes[i].time_at_vaccine1=(321+gamma(3,40))*GLOBAL.SIM_STEPS_PER_DAY;
+// 			if(vac1 && nodes[i].age_index>=1)
+// 			{
+// 				//if(bernoulli(0.8))//blocked to keep vaccination at 80 percent to begin with
+// 				{
+// 			nodes[i].vaccinated1=true;
+// 			nodes[i].infection_status = Progression::recovered;
+//             nodes[i].state_before_recovery = Progression::vaccinated1;
+// 			nodes[i].time_at_vaccine1=(321+gamma(3,40))*GLOBAL.SIM_STEPS_PER_DAY;
 			
-					vac2=bernoulli(1-vaccNum/100);
-					if(vac2){
-					nodes[i].vaccinated2=true;
-					nodes[i].infection_status = Progression::recovered;
-					nodes[i].state_before_recovery = Progression::vaccinated2;
-					nodes[i].time_at_vaccine2=(321+21+gamma(3,40))*GLOBAL.SIM_STEPS_PER_DAY;
+// 					vac2=bernoulli(1-vaccNum/100);
+// 					if(vac2){
+// 					nodes[i].vaccinated2=true;
+// 					nodes[i].infection_status = Progression::recovered;
+// 					nodes[i].state_before_recovery = Progression::vaccinated2;
+// 					nodes[i].time_at_vaccine2=(321+21+gamma(3,40))*GLOBAL.SIM_STEPS_PER_DAY;
 
 						
-						wan=bernoulli(1-0.8);
-						if(wan){
-						nodes[i].waning=true;
-						nodes[i].infection_status = Progression::recovered;
-						nodes[i].state_before_recovery = Progression::waning;
+// 						wan=bernoulli(1-0.8);
+// 						if(wan){
+// 						nodes[i].waning=true;
+// 						nodes[i].infection_status = Progression::recovered;
+// 						nodes[i].state_before_recovery = Progression::waning;
 
-								}
+// 								}
 
-								boost=bernoulli(1-vaccNum/100);
-								if(boost){
-								nodes[i].waning=true;
-								nodes[i].infection_status = Progression::recovered;
-								nodes[i].state_before_recovery = Progression::boosted;
-								nodes[i].time_at_boosted=(321+21+150+gamma(3,40))*GLOBAL.SIM_STEPS_PER_DAY;
+// 								boost=bernoulli(1-vaccNum/100);
+// 								if(boost){
+// 								nodes[i].waning=true;
+// 								nodes[i].infection_status = Progression::recovered;
+// 								nodes[i].state_before_recovery = Progression::boosted;
+// 								nodes[i].time_at_boosted=(321+21+150+gamma(3,40))*GLOBAL.SIM_STEPS_PER_DAY;
 
-										}
-							}
-				}
-			}
+// 										}
+// 							}
+// 				}
+// 			}
 
 		
-		}//vacination initiation over						
-	}
-	if (GLOBAL.START_DAY>780)
-	{
+// 		}//vacination initiation over						
+// 	}
+// 	if (GLOBAL.START_DAY>780)
+// 	{
 
-		p4=p3-0.2;
-		  if(bernoulli(p1))
-			{
-			nodes[i].new_strain=1;//0,1,2,3,4,5,6
+// 		p4=p3-0.2;
+// 		  if(bernoulli(p1))
+// 			{
+// 			nodes[i].new_strain=1;//0,1,2,3,4,5,6
 
-		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_ALPHA;
-			}
-			if(bernoulli(p2))
-			{
-			nodes[i].new_strain=2;//0,1,2,3,4,5,6
+// 		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_ALPHA;
+// 			}
+// 			if(bernoulli(p2))
+// 			{
+// 			nodes[i].new_strain=2;//0,1,2,3,4,5,6
 
-		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_DELTA;
-			}
-			if(bernoulli(p3))
-			{
-			nodes[i].new_strain=3;//0,1,2,3,4,5,6
+// 		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_DELTA;
+// 			}
+// 			if(bernoulli(p3))
+// 			{
+// 			nodes[i].new_strain=3;//0,1,2,3,4,5,6
 
-		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON;
-			}
-			if(!bernoulli(p4))
-			{
-			nodes[i].new_strain=4;//0,1,2,3,4,5,6
+// 		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON;
+// 			}
+// 			if(!bernoulli(p4))
+// 			{
+// 			nodes[i].new_strain=4;//0,1,2,3,4,5,6
 
-		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_NEW;
-			}
-			if(!bernoulli(p5))
-			{
-			nodes[i].new_strain=5;//0,1,2,3,4,5,6
+// 		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_NEW;
+// 			}
+// 			if(!bernoulli(p5))
+// 			{
+// 			nodes[i].new_strain=5;//0,1,2,3,4,5,6
 
-		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA4;
-			}
-			if(!bernoulli(p6))
-			{
-			nodes[i].new_strain=6;//0,1,2,3,4,5,6
+// 		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA4;
+// 			}
+// 			if(!bernoulli(p6))
+// 			{
+// 			nodes[i].new_strain=6;//0,1,2,3,4,5,6
 
-		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA5;
-			}			
-	//---initiating vaccinations----//
-	 if(GLOBAL.START_DAY >321)
-		{
-			vac1=bernoulli((vaccNum+10)/100);
+// 		    nodes[i].infectiousness = nodes[i].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA5;
+// 			}			
+// 	//---initiating vaccinations----//
+// 	 if(GLOBAL.START_DAY >321)
+// 		{
+// 			vac1=bernoulli((vaccNum+10)/100);
 		
-			if(vac1 && nodes[i].age_index>=1)
-			{
-				//if(bernoulli(0.8))//blocked to keep vaccination at 80 percent to begin with
-				{
-			nodes[i].vaccinated1=true;
-			nodes[i].infection_status = Progression::recovered;
-            nodes[i].state_before_recovery = Progression::vaccinated1;
-			nodes[i].time_at_vaccine1=(321+gamma(3,40))*GLOBAL.SIM_STEPS_PER_DAY;
+// 			if(vac1 && nodes[i].age_index>=1)
+// 			{
+// 				//if(bernoulli(0.8))//blocked to keep vaccination at 80 percent to begin with
+// 				{
+// 			nodes[i].vaccinated1=true;
+// 			nodes[i].infection_status = Progression::recovered;
+//             nodes[i].state_before_recovery = Progression::vaccinated1;
+// 			nodes[i].time_at_vaccine1=(321+gamma(3,40))*GLOBAL.SIM_STEPS_PER_DAY;
 			
-			totvacc1+=1;
-					vac2=bernoulli(vaccNum/100);
-					if(vac2){
-					nodes[i].vaccinated2=true;
-					nodes[i].infection_status = Progression::recovered;
-					nodes[i].state_before_recovery = Progression::vaccinated2;
-					nodes[i].time_at_vaccine2=(321+21+gamma(3,40))*GLOBAL.SIM_STEPS_PER_DAY;
+// 			totvacc1+=1;
+// 					vac2=bernoulli(vaccNum/100);
+// 					if(vac2){
+// 					nodes[i].vaccinated2=true;
+// 					nodes[i].infection_status = Progression::recovered;
+// 					nodes[i].state_before_recovery = Progression::vaccinated2;
+// 					nodes[i].time_at_vaccine2=(321+21+gamma(3,40))*GLOBAL.SIM_STEPS_PER_DAY;
 
 						
-						wan=bernoulli(0.8);
-						if(wan){
-						nodes[i].waning=true;
-						nodes[i].infection_status = Progression::recovered;
-						nodes[i].state_before_recovery = Progression::waning;
+// 						wan=bernoulli(0.8);
+// 						if(wan){
+// 						nodes[i].waning=true;
+// 						nodes[i].infection_status = Progression::recovered;
+// 						nodes[i].state_before_recovery = Progression::waning;
 
 
-								boost=bernoulli(vaccNum/100);
-								if(boost){
-								nodes[i].boosted=true;
-								nodes[i].infection_status = Progression::recovered;
-								nodes[i].state_before_recovery = Progression::boosted;
-								nodes[i].time_at_boosted=(321+21+150+gamma(3,40))*GLOBAL.SIM_STEPS_PER_DAY;
+// 								boost=bernoulli(vaccNum/100);
+// 								if(boost){
+// 								nodes[i].boosted=true;
+// 								nodes[i].infection_status = Progression::recovered;
+// 								nodes[i].state_before_recovery = Progression::boosted;
+// 								nodes[i].time_at_boosted=(321+21+150+gamma(3,40))*GLOBAL.SIM_STEPS_PER_DAY;
 
-										}
+// 										}
 
-								}
+// 								}
 
 
-							}
-				}
-			}
+// 							}
+// 				}
+// 			}
 
 		
-		}//vacination initiation over		
-	}	
+// 		}//vacination initiation over		
+// 	}	
 
-	//--------------Selecting strains to start the simulation on START_DAY--------//Shakir
+// 	//--------------Selecting strains to start the simulation on START_DAY--------//Shakir
 
 
 
@@ -993,7 +992,7 @@ if(yes==0){
 	assert(elem["household"].IsInt());
 #endif
 	nodes[i].home = elem["household"].GetInt();
-	nodes[i].home_ward = elem["wardIndex"].GetInt();
+
 	nodes[i].workplace = WORKPLACE_HOME; //null workplace, by default
 	nodes[i].workplace_type = WorkplaceType::home; //home, by default
 	nodes[i].workplace_subnetwork = 0;
@@ -1021,19 +1020,6 @@ if(yes==0){
 		break;
 	  }
 	}
-	else{ // sk ////////////////////////////////////
-		nodes[i].work_ward = -1;
-	}
-
-	//Initialize cohorts - other definitions are in cohorts.cc
-	if (GLOBAL.ENABLE_COHORTS && !elem["startStation"].IsNull() && !elem["endStation"].IsNull()){
-		nodes[i].my_cohort.takes_train = true;
-		nodes[i].my_cohort.source_station =  (int)(elem["startStation"].GetDouble());
-		nodes[i].my_cohort.destination_station = (int)(elem["endStation"].GetDouble());
-		nodes[i].my_cohort.edge_weight = 1.0;
-		nodes[i].my_cohort.one_off_traveler = (uniform_real(0.0, 1.0) < GLOBAL.ONE_OFF_TRAVELERS_RATIO);
-	}
-	///////////////////////////////////////////////////
 #ifdef DEBUG
 	assert(elem["wardNo"].IsInt());
 #endif
@@ -1105,8 +1091,7 @@ if(yes==0){
   }
   assert(i == GLOBAL.num_people);
 
-// printf("total vaccinated1 = %lf %lf\n",totvacc1,totvacc1/GLOBAL.num_people);
-  
+printf("total vaccinated1 = %lf %lf\n",totvacc1,totvacc1/GLOBAL.num_people);
   // If seeding a fixed number, go through the list of seed candidates
   // and seed a randomly chosen fixed number of them
   if(GLOBAL.SEED_FIXED_NUMBER){
@@ -1192,7 +1177,6 @@ matrix<double> compute_community_distances(const vector<community>& communities)
   auto wardDistJSON = readJSONFile(GLOBAL.input_base + "wardCentreDistance.json");
   const rapidjson::Value& mat = wardDistJSON.GetArray();
   auto size = mat.Size();
-  GLOBAL.num_wards = size;
   matrix<double> dist_matrix(size, vector<double>(size));
   for(count_type i = 0; i < size; ++i){
 	dist_matrix[i][i] = 0;
@@ -1316,7 +1300,6 @@ void assign_household_random_community(vector<house>& homes, const vector<commun
 	  count_type current_household = communities[i].households[j];
 	  count_type degree = uniform_count_type_network(GLOBAL.MIN_RANDOM_COMMUNITY_SIZE/2,
 													 GLOBAL.MAX_RANDOM_COMMUNITY_SIZE/2);
-	  degree = (degree > NUM_HOUSEHOLDS-1)?NUM_HOUSEHOLDS-1:degree; // sk
 	  count_type candidate;
 	  while(homes[current_household].random_households.households.size() < degree){
 		do{
@@ -1467,14 +1450,6 @@ void initialize_office_attendance(){
   ATTENDANCE.probabilities.reserve(ATTENDANCE.number_of_entries);
   count_type index = 0;
   for(auto& elem: attendanceJSON.GetArray()){
-	count_type num_days = 1;
-	if(elem.HasMember("num_days")){
-		num_days = elem["num_days"].GetInt();
-		ATTENDANCE.attendance_new_file_type = true;
-	}
-	
-	for (count_type day = 0; day < num_days; ++day){
-		
     ATTENDANCE.probabilities.push_back(vector<double>(GLOBAL.NUMBER_OF_OFFICE_TYPES));
     count_type val;
     std::string val_s;
@@ -1505,7 +1480,5 @@ void initialize_office_attendance(){
       
     ++index;
   }
-}
-  ATTENDANCE.number_of_entries = index;
-  //assert(index == ATTENDANCE.number_of_entries);
+  assert(index == ATTENDANCE.number_of_entries);
 }
