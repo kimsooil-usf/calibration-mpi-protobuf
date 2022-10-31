@@ -694,7 +694,7 @@ void set_node_initial_infection(agent& node,
 
 vector<agent> init_nodes(){
   auto indivJSON = readJSONFile(GLOBAL.input_base + "individual_diversity.json");//"individuals.json");
-  auto variantJSON = readJSONFile(GLOBAL.input_base + "cases_variant_prop.json");//reading variant proportions...Shakir Jun 14 2022.
+//  auto variantJSON = readJSONFile(GLOBAL.input_base + "cases_variant_prop.json");//reading variant proportions...Shakir Jun 14 2022.
 
   auto size = indivJSON.GetArray().Size();
   GLOBAL.num_people = size;
