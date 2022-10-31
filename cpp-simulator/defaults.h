@@ -21,8 +21,8 @@ struct defaults{
   std::string F_KERNEL_B = "5.384";
   std::string MEASURES ="1";
   std::string REDUCTION_FACTOR="0.25";//Reduce or increase the betas by this factor to implement social measures
-  std::string BETA_H = "1.227";//---->Comment by 1.227
-  std::string BETA_W = "0.919";
+  std::string BETA_H = "0.6";//---->Comment by 1.227
+  std::string BETA_W = "0.0.5";
   std::string BETA_C = "0.233";
   std::string BETA_S = "1.820";
   std::string BETA_TRAVEL = "0.0";
