@@ -167,10 +167,10 @@ maxValues['BETA_TRAVEL']=1
 
 #---------------Other Parameters----------------------------------------------#
 minValues['CALIBRATION_DELAY']=1
-maxValues['CALIBRATION_DELAY']=30
+maxValues['CALIBRATION_DELAY']=13
 
 minValues['DAYS_BEFORE_LOCKDOWN']=1
-maxValues['DAYS_BEFORE_LOCKDOWN']=30
+maxValues['DAYS_BEFORE_LOCKDOWN']=13
 #-----------------------------------------------------------------------------#
 
 #----------------Time of new variants-----------------------------------------#
