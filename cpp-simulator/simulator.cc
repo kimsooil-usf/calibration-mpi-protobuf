@@ -1090,23 +1090,23 @@ int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
 	//----------Selecting individuals to be vaccinated based on number of doseses delivered, This is is given by the variables 'vaccFn',"vaccFn2","vaccFn3","vaccFn4"----------------------------//
 
 
-	    //    if ((time_step >= Time_VaccStart && new_day==0)){
+	       if ((time_step >= Time_VaccStart && new_day==0)){
 
-		// 		vaccinate_firstdose(nodes, new_vaccinated1_candidates_LE20, vaccFn*0.2, time_step);
-		// 		vaccinate_firstdose(nodes, new_vaccinated1_candidates_30_to_60, vaccFn*0.3, time_step);
-		// 		vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*0.5, time_step);
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_LE20, vaccFn*0.2, time_step);
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_30_to_60, vaccFn*0.3, time_step);
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*0.5, time_step);
 
-		// 		vaccinate_second_dose(nodes, new_vaccinated2_candidates_LE20, vaccFn2*0.2, time_step);
-		// 		vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.3, time_step);
-		// 		vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.5, time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_LE20, vaccFn2*0.2, time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.3, time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.5, time_step);
 
-		// 		vaccinate_waning_candidates(nodes, new_waning2_candidates_LE20, vaccFn2*0.2, time_step);
+				vaccinate_waning_candidates(nodes, new_waning2_candidates_LE20, vaccFn2*0.2, time_step);
 
-		// 		vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3, time_step);
-		// 		vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3, time_step);
-		// 		vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.5, time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3, time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3, time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.5, time_step);
 
-		//    }
+		   }
 	
 	
 
