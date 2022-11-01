@@ -29,10 +29,10 @@ def priors(nParams):
         VarParamsLHS[ld] = minValues[ld]+rangeParam[ld]*paraLHS[:,i]
         i+=1
 
-    # VarParamsLHS['PROVIDE_INITIAL_SEED_GRAPH']=random.sample(range(1, nParams+1), nParams) # Change
-    # VarParamsLHS['PROVIDE_INITIAL_SEED']=random.sample(range(1, nParams+1), nParams) # Change
-    VarParamsLHS['PROVIDE_INITIAL_SEED_GRAPH']=1
-    VarParamsLHS['PROVIDE_INITIAL_SEED']=1
+    VarParamsLHS['PROVIDE_INITIAL_SEED_GRAPH']=random.sample(range(1, nParams+1), nParams) # Change
+    VarParamsLHS['PROVIDE_INITIAL_SEED']=random.sample(range(1, nParams+1), nParams) # Change
+    # VarParamsLHS['PROVIDE_INITIAL_SEED_GRAPH']=1
+    # VarParamsLHS['PROVIDE_INITIAL_SEED']=1
     return VarParamsLHS
 
 def priors_history(nParams, nsd):
@@ -112,10 +112,10 @@ def priors_history(nParams, nsd):
         VarParamsLHS[ld]=minValues[ld]+rangeParam[ld]*paraLHS[:,i]
         i=i+1
 
-    # VarParamsLHS['PROVIDE_INITIAL_SEED_GRAPH']=random.sample(range(1, nParams+1), nParams) # Change
-    # VarParamsLHS['PROVIDE_INITIAL_SEED']=random.sample(range(1, nParams+1), nParams) # Change
-    VarParamsLHS['PROVIDE_INITIAL_SEED_GRAPH']=1
-    VarParamsLHS['PROVIDE_INITIAL_SEED']=1
+    VarParamsLHS['PROVIDE_INITIAL_SEED_GRAPH']=random.sample(range(1, nParams+1), nParams) # Change
+    VarParamsLHS['PROVIDE_INITIAL_SEED']=random.sample(range(1, nParams+1), nParams) # Change
+    # VarParamsLHS['PROVIDE_INITIAL_SEED_GRAPH']=1
+    # VarParamsLHS['PROVIDE_INITIAL_SEED']=1
     return VarParamsLHS
 
 def main():
