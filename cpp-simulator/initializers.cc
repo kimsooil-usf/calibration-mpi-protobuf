@@ -174,8 +174,12 @@ vector<community> init_community() {
 }
 
 matrix<nbr_cell> init_nbr_cells() {
-
+//std::cout<<"I am in init neighbors"<<std::endl;
   matrix<nbr_cell> nbr_cells;
+//----Testing neighbors shakir---delete later
+  GLOBAL.ENABLE_NBR_CELLS=true;//-----Forced enable neighbor cells
+  //std::cout<<"Enabled neighbors?"<<"\t"<<GLOBAL.ENABLE_NBR_CELLS<<std::endl;
+//-----------------------------------------//
 
   if(GLOBAL.ENABLE_NBR_CELLS){
 	location loc_temp;
@@ -197,6 +201,8 @@ matrix<nbr_cell> init_nbr_cells() {
 		}
 	} 
   }  
+//  std::cout<<"I am in init neighbors exiting"<<std::endl;
+
   return nbr_cells;
 }
 
@@ -736,7 +742,7 @@ printf("variant proportions are: %lf %lf %lf %lf %lf\n",p0,p1,p2,p3,vaccNum);
   count_type i = 0;
   vector<count_type> seed_candidates;
   seed_candidates.reserve(size);
-  
+ // count_type travellers=0;//---delete shakir after verifying travellers
   for (auto &elem: indivJSON.GetArray()){
  	nodes[i].loc = location{elem["lat"].GetDouble(),
 							elem["lon"].GetDouble()};
@@ -1013,6 +1019,10 @@ printf("variant proportions are: %lf %lf %lf %lf %lf\n",p0,p1,p2,p3,vaccNum);
 		  nodes[i].workplace = int(elem["school"].GetDouble());
 		  //Travel
 		  nodes[i].has_to_travel = bernoulli(GLOBAL.P_TRAIN);
+		//   if(nodes[i].has_to_travel){
+		// 	travellers+=1;
+		// 	std::cout<<"Has to travel"<<"\t"<<travellers<<std::endl;//----Shakir checked there are finite travellers
+		//   }
 		  nodes[i].workplace_subnetwork = age;
 		}
 		break;

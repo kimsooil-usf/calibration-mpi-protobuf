@@ -15,18 +15,18 @@ struct defaults{
   std::string SYMPTOMATIC_FRACTION = "0.67";
   std::string MEAN_HOSPITAL_REGULAR_PERIOD = "8";
   std::string MEAN_HOSPITAL_CRITICAL_PERIOD = "8";
-  std::string MEAN_RECOVERED_TO_SUSCEPTIBLE_PERIOD="365";//--Loss of immunity Shakir
+  std::string MEAN_RECOVERED_TO_SUSCEPTIBLE_PERIOD="2*365";//--Loss of immunity Shakir
   std::string COMPLIANCE_PROBABILITY = "1";
   std::string F_KERNEL_A = "10.751";
   std::string F_KERNEL_B = "5.384";
   std::string MEASURES ="1";
   std::string REDUCTION_FACTOR="0.25";//Reduce or increase the betas by this factor to implement social measures
-  std::string BETA_H = "0.3";//---->Comment by 1.227
-  std::string BETA_W = "0.6";
-  std::string BETA_C = "0.5";
-  std::string BETA_S = "0.6";
+  std::string BETA_H = "0.1";//---->Comment by 1.227
+  std::string BETA_W = "0.2";
+  std::string BETA_C = "0.1";
+  std::string BETA_S = "0.3";
   std::string BETA_TRAVEL = "0.5";
-  std::string HD_AREA_FACTOR = "2.0";
+  std::string HD_AREA_FACTOR = "1.5";
   std::string HD_AREA_EXPONENT = "0";
   std::string INTERVENTION = "0";
   std::string CYCLIC_POLICY_TYPE = "0";
@@ -37,8 +37,8 @@ struct defaults{
   std::string SEED_ONLY_NON_COMMUTER = "false";
   std::string SEED_FIXED_NUMBER = "false";
   std::string IGNORE_ATTENDANCE_FILE = "true";
-  std::string CALIBRATION_DELAY = "13";
-  std::string DAYS_BEFORE_LOCKDOWN = "11";
+  std::string CALIBRATION_DELAY = "0";
+  std::string DAYS_BEFORE_LOCKDOWN = "0";
   std::string FIRST_PERIOD = "30";
   std::string SECOND_PERIOD = "30";
   std::string THIRD_PERIOD = "90";
@@ -65,13 +65,26 @@ struct defaults{
   std::string WARD_CONTAINMENT_THRESHOLD  = "0";
   std::string intervention_params_filename = "intervention_params.json";
   std::string BETA_PROJECT = ".1";
-  std::string BETA_CLASS = "0.3";
+  std::string BETA_CLASS = "0.1";
   std::string BETA_RANDOM_COMMUNITY = ".1";
-  std::string BETA_NBR_CELLS = "0.2";
+  std::string BETA_NBR_CELLS = "0.1";
   std::string ENABLE_TESTING = "false";
   std::string TESTING_PROTOCOL = "0";
   std::string testing_protocol_filename = "testing_protocol.json";
-  
+  // sk ///////////////////////////////////
+  std::string BETA_COHORT = "0";
+  std::string ENABLE_COHORTS = "false";
+  std::string COHORT_SIZE = "15";
+  std::string FRACTION_IN_TRAINS = "1.0";
+  std::string CROWDING_FACTOR = "1.0";
+  std::string ISOLATE_COHORTS = "false";
+  std::string COHORT_SEVERITY_FRACTION = "0";
+  std::string COHORT_STRATEGY = "1";
+  std::string STORE_STATE_TIME_STEP = "0";
+  std::string LOAD_STATE_TIME_STEP = "0"; // sk: allow load agents state day=0
+  std::string ONE_OFF_TRAVELERS_RATIO = "0";
+  std::string agent_load_file = "agentStore.pbstore";
+  ////////////////////////////////
   std::string VACCINATION_EFFECTIVENESS1 = "0.75";
   std::string VACCINATION_EFFECTIVENESS2 = "0.95";
   std::string VACCINATION_EFFECTIVENESS_WANING = "0.9";

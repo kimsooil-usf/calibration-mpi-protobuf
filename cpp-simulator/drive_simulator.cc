@@ -451,7 +451,7 @@ int main(int argc, char** argv){
 
   GLOBAL.MASK_START_DATE = GLOBAL.CALIBRATION_DELAY + optvals["MASK_START_DELAY"].as<double>(); //masks starts from April 9
 
-  //initialise city bounding box co-ordinates with Bangalore values. Will read from file later.
+  //initialise city bounding box co-ordinates with Hillsborough values. Will read from file later.
   GLOBAL.city_SW.lat = optvals["CITY_SW_LAT"].as<double>();
   GLOBAL.city_SW.lon = optvals["CITY_SW_LON"].as<double>();
   GLOBAL.city_NE.lat = optvals["CITY_NE_LAT"].as<double>();
@@ -459,6 +459,9 @@ int main(int argc, char** argv){
   GLOBAL.NBR_CELL_SIZE = optvals["NBR_CELL_SIZE"].as<double>();
   GLOBAL.ENABLE_CONTAINMENT = optvals["ENABLE_CONTAINMENT"].count();
   GLOBAL.ENABLE_NBR_CELLS = optvals["ENABLE_NBR_CELLS"].count();
+
+//  std::cout<<"neghbors enabled or not in default drivesimul?"<<"\t"<<GLOBAL.ENABLE_NBR_CELLS<<std::endl;//----Shakir-Cheking neighbors.
+
   if(GLOBAL.ENABLE_NBR_CELLS){
 	GLOBAL.ENABLE_NEIGHBORHOOD_SOFT_CONTAINMENT = optvals["ENABLE_NEIGHBORHOOD_SOFT_CONTAINMENT"].count();
   } else {

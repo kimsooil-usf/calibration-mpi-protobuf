@@ -25,6 +25,13 @@ struct node_update_status{
 
 void update_scales_Intv(std::vector<house>& homes, std::vector<workplace>& workplaces,std::vector<community>& communities,std::vector<house>& houses, matrix<nbr_cell>& nbr_cells);
 
+void vaccinate_firstdose(std::vector<agent>& nodes, std::vector<count_type> new_vaccinated1_candidates, count_type vaccFn, count_type time_step);
+void vaccinate_second_dose(std::vector<agent>& nodes, std::vector<count_type> new_vaccinated1_candidates, count_type vaccFn, count_type time_step);
+void vaccinate_waning_candidates(std::vector<agent>& nodes, std::vector<count_type> new_vaccinated1_candidates, count_type vaccFn, count_type time_step);
+void vaccinate_booster_dose(std::vector<agent>& nodes, std::vector<count_type> new_vaccinated1_candidates, count_type vaccFn, count_type time_step);
+void vaccinate_booster2_dose(std::vector<agent>& nodes, std::vector<count_type> new_vaccinated1_candidates, count_type vaccFn, count_type time_step);
+void vaccinate_waning2_candidates(std::vector<agent>& nodes, std::vector<count_type> new_vaccinated1_candidates, count_type vaccFn, count_type time_step);
+
 //void update_vaccination_step(std::vector<house>& homes, std::vector<workplace>& workplaces,std::vector<community>& communities,std::vector<house>& houses, matrix<nbr_cell>& nbr_cells);
 
 //Returns whether the node was infected or turned symptomatic in this time step
@@ -39,9 +46,9 @@ void updated_lambda_h_age_independent(const std::vector<agent>& nodes, house& ho
 double updated_travel_fraction(const std::vector<agent>& nodes, int cur_time);
 
 
-double* updated_travel_fraction_higher(const std::vector<agent>& nodes, int cur_time);
+std::vector<double> updated_travel_fraction_higher(const std::vector<agent>& nodes, int cur_time);
 
-void update_lambdas(agent&node, const std::vector<house>& homes, const std::vector<workplace>& workplaces, const std::vector<community>& communities, const std::vector<std::vector<nbr_cell>>& nbr_cells, double travel_fraction, const double* travel_fraction_higher, int cur_time);
+void update_lambdas(agent&node, const std::vector<house>& homes, const std::vector<workplace>& workplaces, const std::vector<community>& communities, const std::vector<std::vector<nbr_cell>>& nbr_cells, double travel_fraction, std::vector<double> travel_fraction_higher, int cur_time);
 
 void updated_lambda_c_local(const std::vector<agent>& nodes, community& community);
 void updated_lambda_c_local_random_community(const std::vector<agent>& nodes, const std::vector<community>& communities, std::vector<house>& houses);
