@@ -26,7 +26,7 @@ def main():
     nprocs = comm.Get_size()
     rank = comm.Get_rank()
 
-    comm.Barrier() ##############################################################
+    #comm.Barrier() ##############################################################
 
     print("Rank: ", rank, "\t-\t", time.ctime(time.time()))
 
