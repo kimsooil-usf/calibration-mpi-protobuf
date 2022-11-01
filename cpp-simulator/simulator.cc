@@ -45,9 +45,10 @@ plot_data_struct run_simulation(){
 //   cerr << "simulator: starting JSON read\n";
   auto start_time = std::chrono::high_resolution_clock::now();
 #endif
-  
+//std::cout<<"Enabled neighbors? before intiating"<<"\t"<<GLOBAL.ENABLE_NBR_CELLS<<std::endl;//---delete shakir
+ 
   auto homes = init_homes();
-  auto mask = init_mask();
+  //auto mask = init_mask();//---disabled temporariliy --shakir
   
   auto workplaces = init_workplaces();
   auto communities = init_community();
@@ -55,7 +56,9 @@ plot_data_struct run_simulation(){
   auto nbr_cells = init_nbr_cells();
   auto intv_params = init_intervention_params();
   auto testing_protocol_file_read = init_testing_protocol();
+//std::cout<<"\n"<<"comunity size"<<"\t"<<communities.size()<<std::endl;
 
+//std::cout<<"\n"<<"neighbors size after initiating"<<"\t"<<nbr_cells.size()<<std::endl;
 	// sk /////////////////////////////
 	auto train_loader = init_TrainLoader();
 	auto cohorts = make_cohorts(nodes, GLOBAL.COHORT_SIZE, train_loader);
@@ -109,8 +112,16 @@ plot_data_struct run_simulation(){
 
 
   double travel_fraction = 0;
-  double *travel_fraction_higher=0;
+  std::vector<double> travel_fraction_higher;
+	travel_fraction_higher.push_back(0);
+	travel_fraction_higher.push_back(0);
+	travel_fraction_higher.push_back(0);
+	travel_fraction_higher.push_back(0);
+	travel_fraction_higher.push_back(0);
+	travel_fraction_higher.push_back(0);
+	travel_fraction_higher.push_back(0);
 
+  //double *travel_fraction_higher=(double*) malloc(sizeof(double)*7);
 	// sk /////////////////////////////////////// this block exists only in latest version
 	//This needs to be done after the initilization.
 
@@ -480,10 +491,11 @@ plot_data_struct run_simulation(){
 	/////////////////////////////////////////////
 	
   for(count_type time_step = time_step_start; time_step < time_step_end; ++time_step){
-//----Time depdendent mask factor
 
+int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
+//----Time depdendent mask factor
 //GLOBAL.MASK_FACTOR=0.8;
-GLOBAL.MASK_ACTIVE=bernoulli(mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance);//put the time dependent function here indicating mask active or not.
+//GLOBAL.MASK_ACTIVE=bernoulli(mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance);//put the time dependent function here indicating mask active or not.
 
 //GLOBAL.COMPLIANCE_PROBABILITY=0.;//mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance;
 //-------------age group less than 20----------------------------//
@@ -539,7 +551,7 @@ GLOBAL.MASK_ACTIVE=bernoulli(mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskc
 		}
 		#endif
 	//////////////////////////////
-    if (time_step % GLOBAL.SIM_STEPS_PER_DAY == 0){
+    if (new_day==0){
       for(count_type j = 0; j < GLOBAL.num_people; ++j){
         nodes[j].attending =
           bernoulli(std::min(communities[nodes[j].community].w_c,
@@ -547,6 +559,7 @@ GLOBAL.MASK_ACTIVE=bernoulli(mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskc
                     * nodes[j].get_attendance_probability(time_step));
 		nodes[j].forced_to_take_train = GLOBAL.TRAINS_RUNNING
 		  && bernoulli(GLOBAL.FRACTION_FORCED_TO_TAKE_TRAIN);
+		  //std::cout<<"node is forced to take train"<<"\t"<<nodes[j].forced_to_take_train<<std::endl;
       }
     }
 
@@ -640,7 +653,11 @@ GLOBAL.MASK_ACTIVE=bernoulli(mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskc
 
 	for(count_type j = 0; j < NUM_PEOPLE; ++j){
 		int age_index=nodes[j].age_index;
-
+		nodes[j].new_vaccinated1=false;
+		nodes[j].new_vaccinated2=false;
+		nodes[j].new_waning=false;
+		nodes[j].new_boosted=false;
+		nodes[j].new_boosted2=false;
 // int get_age_index(int age){
 //   // Determine age category of individual.
 //   if(age < 10) {
@@ -675,171 +692,188 @@ GLOBAL.MASK_ACTIVE=bernoulli(mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskc
 //             Proportion of vaccine doses= .2
 
 
-		//---Vaccinating according to multiple doses scheme.
-		if (time_step>=Time_VaccStart  && time_step%GLOBAL.SIM_STEPS_PER_DAY==0 && nodes[j].vaccinated1==false)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021.
+			//---Vaccinating according to multiple doses scheme.
+		if (time_step>=Time_VaccStart  && new_day==0)// && nodes[j].vaccinated1==false)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021.
 		{
 
-			if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || nodes[j].infection_status==Progression::recovered )){//----->age between 1 and 10
+         if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery != Progression::vaccinated1) )){//----->age between 1 and 10
 			bool vacc1=false;
-			vacc1=bernoulli(0.2);
+			vacc1=true;
 				if(vacc1)
 				{			
 				new_vaccinated1_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
-				nodes[j].vaccinated1=true;
-				nodes[j].time_at_vaccine1=time_step;
+
 				}
 
 			}
+		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery != Progression::vaccinated1) )){//----->age between 1 and 10
+				bool vacc1=false;
+				//numvac1+=1;
 
-			if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || nodes[j].infection_status==Progression::recovered) ){//----->age between 10 to 20
+				vacc1=true;
+					if(vacc1)
+					{			
+					new_vaccinated1_candidates_30_to_60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+
+					}
+					
+			}
+		    
+		    if(age_index>5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery != Progression::vaccinated1) )){//----->age between 1 and 10
+				bool vacc1=false;
+				//numvac1+=1;
+
+				vacc1=true;
+					if(vacc1)
+					{			
+					new_vaccinated1_candidates_GT60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+
+					}
+			}
+//-------------------New Vaccinated2----------------------------------------------------//
+		if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine1>=84 )){//----->age between 1 and 10
 			bool vacc1=false;
-			vacc1=bernoulli(0.3);
+			vacc1=true;
 				if(vacc1)
-				{				
-				new_vaccinated1_candidates_30_to_60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
-				nodes[j].vaccinated1=true;
-				nodes[j].time_at_vaccine1=time_step;
-				}
-
-			}
-
-			if(age_index>5 && (nodes[j].infection_status==Progression::susceptible || nodes[j].infection_status==Progression::recovered)){//----->age between 10 to 20
-			bool vacc1=false;
-			vacc1=bernoulli(0.5);
-				if(vacc1)
-				{				
-				new_vaccinated1_candidates_GT60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
-				nodes[j].vaccinated1=true;
-				nodes[j].time_at_vaccine1=time_step;
-				}
-			}
-
-		}
-
-
-		if (time_step>=Time_VaccStart+84 && time_step<Time_VaccStart+120 && nodes[j].vaccinated1==true && time_step%GLOBAL.SIM_STEPS_PER_DAY==0)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021. Individuals get second dose after 21 days and within 30 days of the first dose
-		{
-			
-
-			if(age_index<=1 && nodes[j].infection_status==Progression::susceptible || nodes[j].infection_status==Progression::recovered){//----->age between 1 and 10
-			bool vacc2=false;
-			vacc2=bernoulli(0.2);
-				if(vacc2)
-				{		
+				{			
 				new_vaccinated2_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
-				nodes[j].vaccinated2=true;
-				nodes[j].time_at_vaccine2=time_step;
+
 				}
 
 			}
+		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine1>=84)){//----->age between 1 and 10
+				bool vacc1=false;
+				//numvac1+=1;
 
-			if(age_index>=2 && age_index<=5 && nodes[j].infection_status==Progression::susceptible || nodes[j].infection_status==Progression::recovered){//----->age between 10 to 20
-			bool vacc2=false;
-			vacc2=bernoulli(0.3);
-				if(vacc2)
-				{				
-				new_vaccinated2_candidates_30_to_60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
-				nodes[j].vaccinated2=true;
-				nodes[j].time_at_vaccine2=time_step;
-				}
+				vacc1=true;
+					if(vacc1)
+					{			
+					new_vaccinated2_candidates_30_to_60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
 
+					}
+					
+			}
+		    
+		    if(age_index>5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine1>=84)){//----->age between 1 and 10
+				bool vacc1=false;
+				//numvac1+=1;
+
+				vacc1=true;
+					if(vacc1)
+					{			
+					new_vaccinated2_candidates_GT60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+
+					}
+					
+					
 			}
 
-			if(age_index>5 && nodes[j].infection_status==Progression::susceptible || nodes[j].infection_status==Progression::recovered){//----->age between 10 to 20
-			bool vacc2=false;
-			vacc2=bernoulli(0.5);
-				if(vacc2)
-				{				
-				new_vaccinated2_candidates_GT60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
-				nodes[j].vaccinated2=true;
-				nodes[j].time_at_vaccine2=time_step;
-				}
+//-------------------Waning 1---------------------------------------------------//
 
-			}
-
-		}
-		
-		
-		if (time_step>=Time_VaccStart+600 && time_step<Time_VaccStart+630 && nodes[j].vaccinated2==true && time_step%GLOBAL.SIM_STEPS_PER_DAY==0)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021. Individuals are in waning cateogry after 5 months
-		{
-			
-
-			if(age_index<=1){//----->age between 1 and 10
-			bool vacc2=false;
-			vacc2=bernoulli(0.2);
-				if(vacc2)
+		if((nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=5*30.0*GLOBAL.SIM_STEPS_PER_DAY )){//----->age between 1 and 10
+			bool vacc1=false;
+			vacc1=true;
+				if(vacc1)
 				{			
 				new_waning_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
-				nodes[j].waning=true;
 				}
 
 			}
 
-			if(age_index>=2 && age_index<=5){//----->age between 10 to 20
-			bool vacc2=false;
-			vacc2=bernoulli(0.3);
-				if(vacc2)
-				{				
-				new_waning_candidates_30_to_60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
-				nodes[j].waning=true;
-				}
-			}
+//------------------Boosted candidates--------------------------------------------//
 
-			if(age_index>5){//----->age between 10 to 20
-			bool vacc2=false;
-			vacc2=bernoulli(0.5);
-				if(vacc2)
-				{				
-				new_waning_candidates_GT60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
-				nodes[j].waning=true;
-				}
-
-			}
-
-		}		
-
-		if (time_step>=Time_VaccStart+630 && nodes[j].waning==true && time_step%GLOBAL.SIM_STEPS_PER_DAY==0)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021. Booster is given after 6 months
-		{
-			
-
-			if(age_index<=1 && nodes[j].infection_status==Progression::susceptible || nodes[j].infection_status==Progression::recovered){//----->age between 1 and 10
-			bool vacc2=false;
-			vacc2=bernoulli(0.2);
-				if(vacc2)
+		if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY )){//----->age between 1 and 10
+			bool vacc1=false;
+			vacc1=true;
+				if(vacc1)
 				{			
 				new_boosted_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
-				nodes[j].boosted=true;
-				nodes[j].time_at_boosted=time_step;
+
+				}
+
+			}
+		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY)){//----->age between 1 and 10
+				bool vacc1=false;
+				//numvac1+=1;
+
+				vacc1=true;
+					if(vacc1)
+					{			
+					new_boosted_candidates_30_to_60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+
+					}
+					
+			}
+		    
+		    if(age_index>5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY)){//----->age between 1 and 10
+				bool vacc1=false;
+				//numvac1+=1;
+
+				vacc1=true;
+					if(vacc1)
+					{			
+					new_boosted_candidates_GT60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+
+					}
+					
+					
+			}
+//-------------------Waning and boosted 2-------------------------------------//
+
+//-------------------Waning 2---------------------------------------------------//
+
+		if((nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=5*30.0*GLOBAL.SIM_STEPS_PER_DAY )){//----->age between 1 and 10
+			bool vacc1=false;
+			vacc1=true;
+				if(vacc1)
+				{			
+				new_waning2_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
 				}
 
 			}
 
-			if(age_index>=2 && age_index<=5 && nodes[j].infection_status==Progression::susceptible || nodes[j].infection_status==Progression::recovered){//----->age between 10 to 20
-			bool vacc2=false;
-			vacc2=bernoulli(0.3);
-				if(vacc2)
-				{				
-				new_boosted_candidates_30_to_60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
-				nodes[j].boosted=true;
-				nodes[j].time_at_boosted=time_step;
+//------------------Boosted2 candidates--------------------------------------------//
+
+		if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY )){//----->age between 1 and 10
+			bool vacc1=false;
+			vacc1=true;
+				if(vacc1)
+				{			
+				new_boosted_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+
 				}
 
 			}
+		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY)){//----->age between 1 and 10
+				bool vacc1=false;
+				//numvac1+=1;
 
-			if(age_index>5 && nodes[j].infection_status==Progression::susceptible || nodes[j].infection_status==Progression::recovered){//----->age between 10 to 20
-			bool vacc2=false;
-			vacc2=bernoulli(0.5);
-				if(vacc2)
-				{				
-				new_boosted_candidates_GT60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
-				nodes[j].boosted=true;
-				nodes[j].time_at_boosted=time_step;
-				}
+				vacc1=true;
+					if(vacc1)
+					{			
+					new_boosted_candidates_30_to_60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+
+					}
+					
+			}
+		    
+		    if(age_index>5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY)){//----->age between 1 and 10
+				bool vacc1=false;
+				//numvac1+=1;
+
+				vacc1=true;
+					if(vacc1)
+					{			
+					new_boosted_candidates_GT60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+
+					}
+					
+					
 			}
 
 		}
 
-//----vaccine paraemeters need work----
+//----vaccine paraemeters need work: to be updated according to new data and functional forms as and when they become available
 
 
 	  auto node_update_status = update_infection(nodes[j], time_step); 
@@ -1056,43 +1090,6 @@ GLOBAL.MASK_ACTIVE=bernoulli(mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskc
 	  }
 
 
-// 	  if(time_step==1460){
-// 		  if(nodes[j].infection_status==Progression::recovered){
-// 			  bool is_reinfection_candidate=bernoulli(GLOBAL.REINFECTION);
-// 			  if(is_reinfection_candidate){
-// 				  nodes[j].infection_status=Progression::susceptible;
-// 			  }
-// 		  }
-// 	  }
-
-
-
-
-
-//------------------
-//-----New strain further down introduced by Shakir---May30
-
-	//   if(time_step==1396){
-    //            if((nodes[j].infection_status == Progression::exposed)||(nodes[j].infection_status == Progression::infective)||(nodes[j].infection_status == Progression::symptomatic)||(nodes[j].infection_status == Progression::hospitalised)||(nodes[j].infection_status == Progression::critical)){
-    //              bool is_new_strain = bernoulli(GLOBAL.FRACTION_NEW_STRAIN);
-    //                if(is_new_strain){
-    //                 nodes[j].new_strain = true;
-	// 	    nodes[j].infectiousness *= GLOBAL.INFECTIOUSNESS_NEW_STRAIN;
-    //                               }
-    //                           }
-    //                 }
-					
-	//   if(time_step==1396){
-	// 	  if(nodes[j].infection_status==Progression::recovered){
-	// 		  bool is_reinfection_candidate=bernoulli(GLOBAL.REINFECTION);
-	// 		  if(is_reinfection_candidate){
-	// 			  nodes[j].infection_status=Progression::susceptible;
-	// 		  }
-	// 	  }
-	//   }
-//------------Shakir addition third strain
-
-
 	  if(node_update_status.new_infection){
 		++num_new_infections;
 		++num_total_infections;
@@ -1141,308 +1138,32 @@ GLOBAL.MASK_ACTIVE=bernoulli(mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskc
 	  }
 	}
 	
-	//----------Selecting individuals to be vaccinated based on number of doseses delivered, This is is given by the variable 'vaccFn'----------------------------//
-	       if ((time_step >= Time_VaccStart && time_step%GLOBAL.SIM_STEPS_PER_DAY==0)){
-                  count_type new_vaccinated1_candidates_list_size = new_vaccinated1_candidates_GT60.size();
-                  if (new_vaccinated1_candidates_list_size > vaccFn*.5){
-             //Randomly permute the list of candidates
-	     std::shuffle(new_vaccinated1_candidates_GT60.begin(), new_vaccinated1_candidates_GT60.end(), GENERATOR);
-	  
-	   }
-           bool vaccination_works = false;
-          count_type num_of_individuals_to_be_vaccinated = vaccFn*.5;
-	  count_type num = std::min(new_vaccinated1_candidates_list_size, num_of_individuals_to_be_vaccinated);
-       for(count_type a = 0; a < num; ++a){
-	    nodes[new_vaccinated1_candidates_GT60[a]].vaccinated1 = true;
-             vaccination_works = bernoulli(GLOBAL.VACCINATION_EFFECTIVENESS1);
-         if ((vaccination_works)&&(nodes[new_vaccinated1_candidates_GT60[a]].infection_status==Progression::susceptible)){ 
-             nodes[new_vaccinated1_candidates_GT60[a]].infection_status = Progression::recovered;
-             nodes[new_vaccinated1_candidates_GT60[a]].state_before_recovery = Progression::vaccinated1;
-          }
-        }//----need to incorporate effectiveness of other doses of vaccines.
-		
-		
-		
-     }
+	//----------Selecting individuals to be vaccinated based on number of doseses delivered, This is is given by the variables 'vaccFn',"vaccFn2","vaccFn3","vaccFn4"----------------------------//
 
 
-	
-	       if ((time_step > Time_VaccStart && time_step%GLOBAL.SIM_STEPS_PER_DAY==0)){
-                  count_type new_vaccinated1_candidates_list_size_30_to_60 = new_vaccinated1_candidates_30_to_60.size();
-                  if (new_vaccinated1_candidates_list_size_30_to_60 > vaccFn*.3){
-             //Randomly permute the list of candidates
-	     std::shuffle(new_vaccinated1_candidates_30_to_60.begin(), new_vaccinated1_candidates_30_to_60.end(), GENERATOR);
-	  
-	   }
-           bool vaccination_works = false;
-          count_type num_of_individuals_to_be_vaccinated1_30_to_60 = vaccFn*.3;
-	  count_type num_30_to_60 = std::min(new_vaccinated1_candidates_list_size_30_to_60, num_of_individuals_to_be_vaccinated1_30_to_60);
-       for(count_type a = 0; a < num_30_to_60; ++a){
-	    nodes[new_vaccinated1_candidates_30_to_60[a]].vaccinated1 = true;
-             vaccination_works = bernoulli(GLOBAL.VACCINATION_EFFECTIVENESS1);
-         if ((vaccination_works)&&(nodes[new_vaccinated1_candidates_30_to_60[a]].infection_status==Progression::susceptible)){ 
-             nodes[new_vaccinated1_candidates_30_to_60[a]].infection_status = Progression::recovered;
-             nodes[new_vaccinated1_candidates_30_to_60[a]].state_before_recovery = Progression::vaccinated1;
-          }
-        }
-     }
-	
-	 
-	 
-	       if ((time_step > Time_VaccStart && time_step%GLOBAL.SIM_STEPS_PER_DAY==0)){
-                  count_type new_vaccinated1_candidates_list_size_LE20 = new_vaccinated1_candidates_LE20.size();
-                  if (new_vaccinated1_candidates_list_size_LE20 > vaccFn*.2){
-             //Randomly permute the list of candidates
-	     std::shuffle(new_vaccinated1_candidates_LE20.begin(), new_vaccinated1_candidates_LE20.end(), GENERATOR);	  
-	   }
-           bool vaccination_works = false;
-          count_type num_of_individuals_to_be_vaccinated1_LE20 = vaccFn*.2;
-	  count_type num_LE20 = std::min(new_vaccinated1_candidates_list_size_LE20, num_of_individuals_to_be_vaccinated1_LE20);
-       for(count_type a = 0; a < num_LE20; ++a){
-	    nodes[new_vaccinated1_candidates_LE20[a]].vaccinated1 = true;
-             vaccination_works = bernoulli(GLOBAL.VACCINATION_EFFECTIVENESS1);
-         if ((vaccination_works)&&(nodes[new_vaccinated1_candidates_LE20[a]].infection_status==Progression::susceptible)){ 
-             nodes[new_vaccinated1_candidates_LE20[a]].infection_status = Progression::recovered;
-             nodes[new_vaccinated1_candidates_LE20[a]].state_before_recovery = Progression::vaccinated1;
-          }
-        }
-     }
-	 //---------------Selecting Second dose based on VaccnFn2------------------------------//
+	       if ((time_step >= Time_VaccStart && new_day==0)){
 
-		if (time_step>Time_VaccStart+84 && time_step<Time_VaccStart+120 && time_step%GLOBAL.SIM_STEPS_PER_DAY==0)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021. Individuals get second dose after 21 days and within 30 days of the first dose
-		{                  count_type new_vaccinated2_candidates_list_size = new_vaccinated2_candidates_GT60.size();
-                  if (new_vaccinated2_candidates_list_size > vaccFn2*.5){
-             //Randomly permute the list of candidates
-	     std::shuffle(new_vaccinated2_candidates_GT60.begin(), new_vaccinated2_candidates_GT60.end(), GENERATOR);
-	  
-	   }
-           bool vaccination_works = false;
-          count_type num_of_individuals_to_be_vaccinated = vaccFn2*.5;
-	  count_type num = std::min(new_vaccinated2_candidates_list_size, num_of_individuals_to_be_vaccinated);
-       for(count_type a = 0; a < num; ++a){
-	    nodes[new_vaccinated2_candidates_GT60[a]].vaccinated2 = true;
-             vaccination_works = bernoulli(GLOBAL.VACCINATION_EFFECTIVENESS2);
-         if ((vaccination_works)&&(nodes[new_vaccinated2_candidates_GT60[a]].infection_status==Progression::susceptible)){ 
-             nodes[new_vaccinated2_candidates_GT60[a]].infection_status = Progression::recovered;
-             nodes[new_vaccinated2_candidates_GT60[a]].state_before_recovery = Progression::vaccinated2;
-          }
-        }//----need to incorporate effectiveness of other doses of vaccines.
-		
-		
-		
-     }
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_LE20, vaccFn*0.2, time_step);
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_30_to_60, vaccFn*0.3, time_step);
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*0.5, time_step);
 
-		if (time_step>Time_VaccStart+84 && time_step<Time_VaccStart+120 && time_step%GLOBAL.SIM_STEPS_PER_DAY==0)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021. Individuals get second dose after 21 days and within 30 days of the first dose
-        {
-                      count_type new_vaccinated2_candidates_list_size_30_to_60 = new_vaccinated2_candidates_30_to_60.size();
-                  if (new_vaccinated2_candidates_list_size_30_to_60 > vaccFn2*.3){
-             //Randomly permute the list of candidates
-	     std::shuffle(new_vaccinated2_candidates_30_to_60.begin(), new_vaccinated2_candidates_30_to_60.end(), GENERATOR);
-	  
-	   }
-           bool vaccination_works = false;
-          count_type num_of_individuals_to_be_vaccinated2_30_to_60 = vaccFn2*.3;
-	  count_type num_30_to_60 = std::min(new_vaccinated2_candidates_list_size_30_to_60, num_of_individuals_to_be_vaccinated2_30_to_60);
-       for(count_type a = 0; a < num_30_to_60; ++a){
-	    nodes[new_vaccinated2_candidates_30_to_60[a]].vaccinated2 = true;
-             vaccination_works = bernoulli(GLOBAL.VACCINATION_EFFECTIVENESS2);
-         if ((vaccination_works)&&(nodes[new_vaccinated2_candidates_30_to_60[a]].infection_status==Progression::susceptible)){ 
-             nodes[new_vaccinated2_candidates_30_to_60[a]].infection_status = Progression::recovered;
-             nodes[new_vaccinated2_candidates_30_to_60[a]].state_before_recovery = Progression::vaccinated2;
-          }
-        }
-     }
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_LE20, vaccFn2*0.2, time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.3, time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.5, time_step);
 
+				vaccinate_waning_candidates(nodes, new_waning_candidates_LE20, vaccFn2*0.2, time_step);
 
-     		if (time_step>Time_VaccStart+84 && time_step<Time_VaccStart+120 && time_step%GLOBAL.SIM_STEPS_PER_DAY==0)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021. Individuals get second dose after 21 days and within 30 days of the first dose
-        {
+				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3, time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3, time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.5, time_step);
 
-                  count_type new_vaccinated2_candidates_list_size_LE20 = new_vaccinated2_candidates_LE20.size();
-                  if (new_vaccinated2_candidates_list_size_LE20 > vaccFn2*.2){
-             //Randomly permute the list of candidates
-	     std::shuffle(new_vaccinated2_candidates_LE20.begin(), new_vaccinated2_candidates_LE20.end(), GENERATOR);	  
-	   }
-           bool vaccination_works = false;
-          count_type num_of_individuals_to_be_vaccinated2_LE20 = vaccFn2*.2;
-	  count_type num_LE20 = std::min(new_vaccinated2_candidates_list_size_LE20, num_of_individuals_to_be_vaccinated2_LE20);
-       for(count_type a = 0; a < num_LE20; ++a){
-	    nodes[new_vaccinated2_candidates_LE20[a]].vaccinated2 = true;
-             vaccination_works = bernoulli(GLOBAL.VACCINATION_EFFECTIVENESS2);
-         if ((vaccination_works)&&(nodes[new_vaccinated2_candidates_LE20[a]].infection_status==Progression::susceptible)){ 
-             nodes[new_vaccinated2_candidates_LE20[a]].infection_status = Progression::recovered;
-             nodes[new_vaccinated2_candidates_LE20[a]].state_before_recovery = Progression::vaccinated2;
-          }
-        }
-        }
+				vaccinate_waning2_candidates(nodes, new_waning2_candidates_LE20, vaccFn2*0.2, time_step);
 
-		       //-----------Selecting Waning based on VaccnFn2------------------//
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3, time_step);
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3, time_step);
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT60, vaccFn4*0.5, time_step);
 
-        		if (time_step>Time_VaccStart+600 && time_step<Time_VaccStart+630 && time_step%GLOBAL.SIM_STEPS_PER_DAY==0)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021. Individuals are in waning cateogry after 5 months
-		{
-                            count_type new_waning_candidates_list_size = new_waning_candidates_GT60.size();
-                  if (new_waning_candidates_list_size > vaccFn2*.5){
-             //Randomly permute the list of candidates
-	     std::shuffle(new_waning_candidates_GT60.begin(), new_waning_candidates_GT60.end(), GENERATOR);
-	  
-	   }
-           bool vaccination_works = false;
-          count_type num_of_individuals_to_be_vaccinated = vaccFn2*.5;
-	  count_type num = std::min(new_waning_candidates_list_size, num_of_individuals_to_be_vaccinated);
-       for(count_type a = 0; a < num; ++a){
-	    nodes[new_waning_candidates_GT60[a]].vaccinated1 = true;
-             vaccination_works = bernoulli(GLOBAL.VACCINATION_EFFECTIVENESS_WANING);
-         if ((vaccination_works)&&(nodes[new_waning_candidates_GT60[a]].infection_status==Progression::susceptible)){ 
-             nodes[new_waning_candidates_GT60[a]].infection_status = Progression::recovered;
-             nodes[new_waning_candidates_GT60[a]].state_before_recovery = Progression::vaccinated2;
-          }
-        }//----need to incorporate effectiveness of other doses of vaccines.
-		
-		
-		
-     }
- //-----------Selecting Waning based on VaccnFn2------------------//
-
-        		if (time_step>Time_VaccStart+600 && time_step<Time_VaccStart+630 &&  time_step%GLOBAL.SIM_STEPS_PER_DAY==0)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021. Individuals are in waning cateogry after 5 months
-		{
-                            count_type new_waning_candidates_list_size = new_waning_candidates_GT60.size();
-                  if (new_waning_candidates_list_size > vaccFn2*.5){
-             //Randomly permute the list of candidates
-	     std::shuffle(new_waning_candidates_GT60.begin(), new_waning_candidates_GT60.end(), GENERATOR);
-	  
-	   }
-           bool vaccination_works = false;
-          count_type num_of_individuals_to_be_vaccinated = vaccFn2*.5;
-	  count_type num = std::min(new_waning_candidates_list_size, num_of_individuals_to_be_vaccinated);
-       for(count_type a = 0; a < num; ++a){
-	    nodes[new_waning_candidates_GT60[a]].vaccinated1 = true;
-             vaccination_works = bernoulli(GLOBAL.VACCINATION_EFFECTIVENESS_WANING);
-         if ((vaccination_works)&&(nodes[new_waning_candidates_GT60[a]].infection_status==Progression::susceptible)){ 
-             nodes[new_waning_candidates_GT60[a]].infection_status = Progression::recovered;
-             nodes[new_waning_candidates_GT60[a]].state_before_recovery = Progression::waning;
-          }
-        }//----need to incorporate effectiveness of other doses of vaccines.
-		
-		
-		
-     }
-
-            		if (time_step>Time_VaccStart+600 && time_step<Time_VaccStart+630 && time_step%GLOBAL.SIM_STEPS_PER_DAY==0)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021. Individuals are in waning cateogry after 5 months
-		{
-   count_type new_waning_candidates_list_size_30_to_60 = new_waning_candidates_30_to_60.size();
-                  if (new_waning_candidates_list_size_30_to_60 > vaccFn2*.3){
-             //Randomly permute the list of candidates
-	     std::shuffle(new_waning_candidates_30_to_60.begin(), new_waning_candidates_30_to_60.end(), GENERATOR);
-	  
-	   }
-           bool vaccination_works = false;
-          count_type num_of_individuals_to_be_waning_30_to_60 = vaccFn2*.3;
-	  count_type num_30_to_60 = std::min(new_waning_candidates_list_size_30_to_60, num_of_individuals_to_be_waning_30_to_60);
-       for(count_type a = 0; a < num_30_to_60; ++a){
-	    nodes[new_waning_candidates_30_to_60[a]].waning = true;
-             vaccination_works = bernoulli(GLOBAL.VACCINATION_EFFECTIVENESS_WANING);
-         if ((vaccination_works)&&(nodes[new_waning_candidates_30_to_60[a]].infection_status==Progression::susceptible)){ 
-             nodes[new_waning_candidates_30_to_60[a]].infection_status = Progression::recovered;
-             nodes[new_waning_candidates_30_to_60[a]].state_before_recovery = Progression::waning;
-          }
-        }
-     }
-        
-
-               		if (time_step>Time_VaccStart+600 && time_step<Time_VaccStart+630 && time_step%GLOBAL.SIM_STEPS_PER_DAY==0)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021. Individuals are in waning cateogry after 5 months
-		{
-
-
-       count_type new_waning_candidates_list_size_LE20 = new_waning_candidates_LE20.size();
-                  if (new_waning_candidates_list_size_LE20 > vaccFn2*.2){
-             //Randomly permute the list of candidates
-	     std::shuffle(new_waning_candidates_LE20.begin(), new_waning_candidates_LE20.end(), GENERATOR);	  
-	   }
-           bool vaccination_works = false;
-          count_type num_of_individuals_to_be_waning_LE20 = vaccFn2*.2;
-	  count_type num_LE20 = std::min(new_waning_candidates_list_size_LE20, num_of_individuals_to_be_waning_LE20);
-       for(count_type a = 0; a < num_LE20; ++a){
-	    nodes[new_waning_candidates_LE20[a]].waning = true;
-             vaccination_works = bernoulli(GLOBAL.VACCINATION_EFFECTIVENESS_WANING);
-         if ((vaccination_works)&&(nodes[new_waning_candidates_LE20[a]].infection_status==Progression::susceptible)){ 
-             nodes[new_waning_candidates_LE20[a]].infection_status = Progression::recovered;
-             nodes[new_waning_candidates_LE20[a]].state_before_recovery = Progression::waning;
-          }
-        }
-    }
-
-
-    //--------------------Selecting Boosted based on vaccFn3--------------------------------------------//
-
-    		if (time_step>Time_VaccStart+630 && time_step%GLOBAL.SIM_STEPS_PER_DAY==0)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021. Booster is given after 6 months
-		{
-			
-                            count_type new_boosted_candidates_list_size = new_boosted_candidates_GT60.size();
-                  if (new_boosted_candidates_list_size > vaccFn3*.5){
-             //Randomly permute the list of candidates
-	     std::shuffle(new_boosted_candidates_GT60.begin(), new_boosted_candidates_GT60.end(), GENERATOR);
-	  
-	   }
-           bool vaccination_works = false;
-          count_type num_of_individuals_to_be_vaccinated = vaccFn2*.5;
-	  count_type num = std::min(new_boosted_candidates_list_size, num_of_individuals_to_be_vaccinated);
-       for(count_type a = 0; a < num; ++a){
-	    nodes[new_boosted_candidates_GT60[a]].vaccinated1 = true;
-             vaccination_works = bernoulli(GLOBAL.VACCINATION_EFFECTIVENESS_BOOSTED);
-         if ((vaccination_works)&&(nodes[new_boosted_candidates_GT60[a]].infection_status==Progression::susceptible)){ 
-             nodes[new_boosted_candidates_GT60[a]].infection_status = Progression::recovered;
-             nodes[new_boosted_candidates_GT60[a]].state_before_recovery = Progression::boosted;
-          }
-        }//----need to incorporate effectiveness of other doses of vaccines.
-		
-		
-		
-     }
-
-     	if (time_step>Time_VaccStart+630  && time_step%GLOBAL.SIM_STEPS_PER_DAY==0)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021. Booster is given after 6 months
-		{
-                count_type new_boosted_candidates_list_size_30_to_60 = new_boosted_candidates_30_to_60.size();
-                  if (new_boosted_candidates_list_size_30_to_60 > vaccFn3*.3){
-             //Randomly permute the list of candidates
-	     std::shuffle(new_boosted_candidates_30_to_60.begin(), new_boosted_candidates_30_to_60.end(), GENERATOR);
-	  
-	   }
-           bool vaccination_works = false;
-          count_type num_of_individuals_to_be_boosted_30_to_60 = vaccFn3*.3;
-	  count_type num_30_to_60 = std::min(new_boosted_candidates_list_size_30_to_60, num_of_individuals_to_be_boosted_30_to_60);
-       for(count_type a = 0; a < num_30_to_60; ++a){
-	    nodes[new_boosted_candidates_30_to_60[a]].boosted = true;
-             vaccination_works = bernoulli(GLOBAL.VACCINATION_EFFECTIVENESS_BOOSTED);
-         if ((vaccination_works)&&(nodes[new_boosted_candidates_30_to_60[a]].infection_status==Progression::susceptible)){ 
-             nodes[new_boosted_candidates_30_to_60[a]].infection_status = Progression::recovered;
-             nodes[new_boosted_candidates_30_to_60[a]].state_before_recovery = Progression::boosted;
-          }
-        }
-     }
-
-
-    	if (time_step>Time_VaccStart+630 && time_step%GLOBAL.SIM_STEPS_PER_DAY==0)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021. Booster is given after 6 months
-		{
-
-
-
-       count_type new_boosted_candidates_list_size_LE20 = new_boosted_candidates_LE20.size();
-                  if (new_boosted_candidates_list_size_LE20 > vaccFn3*.2){
-             //Randomly permute the list of candidates
-	     std::shuffle(new_boosted_candidates_LE20.begin(), new_boosted_candidates_LE20.end(), GENERATOR);	  
-	   }
-           bool vaccination_works = false;
-          count_type num_of_individuals_to_be_boosted_LE20 = vaccFn2*.2;
-	  count_type num_LE20 = std::min(new_boosted_candidates_list_size_LE20, num_of_individuals_to_be_boosted_LE20);
-       for(count_type a = 0; a < num_LE20; ++a){
-	    nodes[new_boosted_candidates_LE20[a]].boosted = true;
-             vaccination_works = bernoulli(GLOBAL.VACCINATION_EFFECTIVENESS_BOOSTED);
-         if ((vaccination_works)&&(nodes[new_boosted_candidates_LE20[a]].infection_status==Progression::susceptible)){ 
-             nodes[new_boosted_candidates_LE20[a]].infection_status = Progression::recovered;
-             nodes[new_boosted_candidates_LE20[a]].state_before_recovery = Progression::boosted;
-          }
-        }
-    }
-
+		   }
 	
 	
 
@@ -2323,22 +2044,22 @@ GLOBAL.MASK_ACTIVE=bernoulli(mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskc
 	  }
 	  
 //---counting vaccinated classes-----	  
-	  if((nodes[j].state_before_recovery == Progression::vaccinated1)){
+	  if((nodes[j].state_before_recovery == Progression::vaccinated1 || nodes[j].vaccinated1==true) && (new_day==0) && (nodes[j].new_vaccinated1==true)){
 		n_vaccinated1 += 1;
 	  }
 
-	  if((nodes[j].state_before_recovery == Progression::vaccinated2)){
+	  if((nodes[j].state_before_recovery == Progression::vaccinated2 || nodes[j].vaccinated2==true) && (new_day==0) && (nodes[j].new_vaccinated2==true)){
 		n_vaccinated2 += 1;
 	  }
-	  if((nodes[j].state_before_recovery == Progression::boosted)){
+	  if((nodes[j].state_before_recovery == Progression::boosted|| nodes[j].boosted==true) && (new_day==0) && (nodes[j].new_boosted==true)){
 		n_boosted += 1;
 	  }
-	  if((nodes[j].state_before_recovery == Progression::waning)){
+	  if((nodes[j].state_before_recovery == Progression::waning  || nodes[j].waning==true) && (new_day==0) && (nodes[j].new_waning==true)){
 		n_waning += 1;
-	  }	  	  	  
-	  if((nodes[j].state_before_recovery == Progression::boosted2)){
+	  }
+	  if((nodes[j].state_before_recovery == Progression::boosted2 ||  nodes[j].boosted2==true) && (new_day==0) && (nodes[j].new_boosted2==true)){
 		n_boosted2 += 1;
-	  }	  	  	  	  
+	  }  	  	  	  
 	}
 
 	//Apportion new expected infections (in next time step) to currently

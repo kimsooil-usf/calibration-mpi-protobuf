@@ -58,7 +58,7 @@ void set_kappa_lockdown_hillsborugh_node(agent& node, const int cur_time, const 
   {
   if(node.workplace_type==WorkplaceType::office){
     node.kappa_W = intv_params.lockdown_kappas_compliant.kappa_W/2.5;
-    node.kappa_W_incoming = intv_params.lockdown_kappas_compliant.kappa_W_incoming/2.5;//10 percent of work places are banks, hospitals and grocery in the first lockdown
+    node.kappa_W_incoming = intv_params.lockdown_kappas_compliant.kappa_W_incoming/2.5;//10 percent of work places are banks, hospitals and grocery in the first lockdown 0.25/2.5=0.1 which is scaling the original parameter to 10 percent.
   }else{
 	//Schools and colleges are assumed closed in all lockdowns
     node.kappa_W = 0.0;
@@ -95,10 +95,10 @@ void set_kappa_lockdown_hillsborugh_node(agent& node, const int cur_time, const 
     node.kappa_C = intv_params.lockdown_kappas_compliant.kappa_C;//25 percent of of the outdoor/restaurants are opepend in the second lockdown
     node.kappa_C_incoming = intv_params.lockdown_kappas_compliant.kappa_C_incoming;//25 percent of of the outdoor/restaurants are opepend in the second lockdown
   }else{
-    node.kappa_H = intv_params.lockdown_kappas_non_compliant.kappa_H;
-    node.kappa_H_incoming = intv_params.lockdown_kappas_non_compliant.kappa_H_incoming;
-    node.kappa_C = intv_params.lockdown_kappas_non_compliant.kappa_C;
-    node.kappa_C_incoming = intv_params.lockdown_kappas_non_compliant.kappa_C_incoming;
+    node.kappa_H = intv_params.lockdown_kappas_non_compliant.kappa_H*2;
+    node.kappa_H_incoming = intv_params.lockdown_kappas_non_compliant.kappa_H_incoming*2;
+    node.kappa_C = intv_params.lockdown_kappas_non_compliant.kappa_C*2;
+    node.kappa_C_incoming = intv_params.lockdown_kappas_non_compliant.kappa_C_incoming*2;
   }
   }//second lockdown ends--Shakir
 
@@ -116,13 +116,13 @@ void set_kappa_lockdown_hillsborugh_node(agent& node, const int cur_time, const 
   if(node.compliant){
     node.kappa_H = intv_params.lockdown_kappas_compliant.kappa_H;
     node.kappa_H_incoming = intv_params.lockdown_kappas_compliant.kappa_H_incoming;
-    node.kappa_C = intv_params.lockdown_kappas_compliant.kappa_C*2;//50 percent of the outdoor/restaurants are opened in the third lockdown
-    node.kappa_C_incoming = intv_params.lockdown_kappas_compliant.kappa_C_incoming*2;//50 percent of of the outdoor/restaurants are opepend in the third lockdown
+    node.kappa_C = intv_params.lockdown_kappas_compliant.kappa_C;//50 percent of the outdoor/restaurants are opened in the third lockdown but complaint people do not go out
+    node.kappa_C_incoming = intv_params.lockdown_kappas_compliant.kappa_C_incoming;//50 percent of of the outdoor/restaurants are opepend in the third lockdown
   }else{
     node.kappa_H = intv_params.lockdown_kappas_non_compliant.kappa_H;
-    node.kappa_H_incoming = intv_params.lockdown_kappas_non_compliant.kappa_H_incoming;
-    node.kappa_C = intv_params.lockdown_kappas_non_compliant.kappa_C;
-    node.kappa_C_incoming = intv_params.lockdown_kappas_non_compliant.kappa_C_incoming;
+    node.kappa_H_incoming = intv_params.lockdown_kappas_non_compliant.kappa_H_incoming;//50 percent of the outdoor/restaurants are opened in the third lockdown
+    node.kappa_C = intv_params.lockdown_kappas_non_compliant.kappa_C*2;
+    node.kappa_C_incoming = intv_params.lockdown_kappas_non_compliant.kappa_C_incoming*2;//50 percent of the outdoor/restaurants are opened in the third lockdown
   }
   }//Third lockdown ends--Shakir
 
@@ -130,23 +130,23 @@ void set_kappa_lockdown_hillsborugh_node(agent& node, const int cur_time, const 
   {
     if(node.workplace_type==WorkplaceType::office){
     node.kappa_W = intv_params.lockdown_kappas_compliant.kappa_W*4;
-    node.kappa_W_incoming = intv_params.lockdown_kappas_compliant.kappa_W_incoming*4;//100 percent of offices are opened (3*0.75) in the forth lockdown
+    node.kappa_W_incoming = intv_params.lockdown_kappas_compliant.kappa_W_incoming*4;//100 percent of offices are opened (4*0.25) in the forth lockdown
   }else{
 	//Schools and colleges are assumed closed in all lockdowns
     node.kappa_W = 0.5;//50 percent schools are opepend in fourth lockdown
-    node.kappa_W_incoming = 0.0;//50 percent of schools are opened in fourth lockdown.
+    node.kappa_W_incoming = 0.5;//50 percent of schools are opened in fourth lockdown.
   }
 
   if(node.compliant){
     node.kappa_H = intv_params.lockdown_kappas_compliant.kappa_H;
     node.kappa_H_incoming = intv_params.lockdown_kappas_compliant.kappa_H_incoming;
-    node.kappa_C = intv_params.lockdown_kappas_compliant.kappa_C*3;//75 percent of outdoor/restaurants are opepend in the fourth lockdown
-    node.kappa_C_incoming = intv_params.lockdown_kappas_compliant.kappa_C_incoming*3;//75 percent of outdoor/restaurants are opepend in the fourth lockdown
+    node.kappa_C = intv_params.lockdown_kappas_compliant.kappa_C;//75 percent of outdoor/restaurants are opepend in the fourth lockdown
+    node.kappa_C_incoming = intv_params.lockdown_kappas_compliant.kappa_C_incoming;//75 percent of outdoor/restaurants are opepend in the fourth lockdown. But complaint people go out less.
   }else{
     node.kappa_H = intv_params.lockdown_kappas_non_compliant.kappa_H;
-    node.kappa_H_incoming = intv_params.lockdown_kappas_non_compliant.kappa_H_incoming;
+    node.kappa_H_incoming = intv_params.lockdown_kappas_non_compliant.kappa_H_incoming*3;
     node.kappa_C = intv_params.lockdown_kappas_non_compliant.kappa_C;
-    node.kappa_C_incoming = intv_params.lockdown_kappas_non_compliant.kappa_C_incoming;
+    node.kappa_C_incoming = intv_params.lockdown_kappas_non_compliant.kappa_C_incoming*3;//non compliant people go out in large numbers
   }
   }//Forth lockdown ends--Shakir
 }

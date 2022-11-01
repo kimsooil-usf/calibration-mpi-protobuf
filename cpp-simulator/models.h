@@ -405,7 +405,7 @@ struct global_params{
   double MEAN_HOSPITAL_REGULAR_PERIOD = 8;
   double MEAN_HOSPITAL_CRITICAL_PERIOD = 8;
 
-  double MEAN_RECOVERED_TO_SUSCEPTIBLE_PERIOD=365;//---Loss of immunity--Shakir
+  double MEAN_RECOVERED_TO_SUSCEPTIBLE_PERIOD=2*365;//---Loss of immunity--Shakir
   double MEAN_RECOVERED_TO_SUSCEPTIBLE_PERIOD_VACCINATED1=30;//---Loss of immunity--Shakir
   double MEAN_RECOVERED_TO_SUSCEPTIBLE_PERIOD_VACCINATED2=5*30;//---Loss of immunity--Shakir
   double MEAN_RECOVERED_TO_SUSCEPTIBLE_PERIOD_WANING=30;//---Loss of immunity--Shakir
@@ -488,23 +488,25 @@ struct global_params{
   int MEASURES=1;
   double REDUCTION_FACTOR=0.25;
 
-  double ALPHA = 0.8;
+  double ALPHA = 0.2;
   //exponent of number of people in a household while normalising
   //infection rate in a household.
 
   //Transport
   double BETA_TRAVEL = 10.0;// Validate against data
-  double P_TRAIN = 0.9; // Probability with which an agent has to travel
-  double FRACTION_FORCED_TO_TAKE_TRAIN = 1.0;
+  double P_TRAIN = 0.6; // Probability with which an agent has to travel: The probabilty that there is public transport
+  
+  double FRACTION_FORCED_TO_TAKE_TRAIN = 0.1;//play with this number---shakir for fraction using public transport
+
   // What fraction of people, among those who are attending work and take the
   // train in usual circumstances, are forced (in the absence of other
   // employer-provided means, for example) to take the train.  Only relevant
   // when TRAINS_RUNNING is true.
 
-  bool TRAINS_RUNNING = false;
+  bool TRAINS_RUNNING = true;
 
   //Multiplicative fatcor for infection rates in high density areas
-  double HD_AREA_FACTOR = 2.0;
+  double HD_AREA_FACTOR = 1.5;
 
   double HD_AREA_EXPONENT = 0.3;
 
@@ -642,7 +644,7 @@ struct global_params{
   location city_SW, city_NE;
   double NBR_CELL_SIZE = 1; //in km
   bool ENABLE_CONTAINMENT = false;
-  bool ENABLE_NBR_CELLS = false;
+  bool ENABLE_NBR_CELLS = true;
 
   std::string intervention_filename = "intervention_params.json";
 
@@ -780,9 +782,9 @@ struct intervention_hillsborough_params {
   double ward_containment_leakage = 1.0;
   double ward_containment_threshold = 0.001;
 
-  bool trains_active = false;//---This means for hillsborough wether buses are running or not.
+  bool trains_active = true;//---This means for hillsborough wether buses are running or not.
 
-  double fraction_forced_to_take_train = 1;
+  double fraction_forced_to_take_train = 0.1;//Shakir changed it on October 25 2022, from 1 to 0.1
   kappa_values lockdown_kappas_compliant;
   kappa_values lockdown_kappas_non_compliant;
 
@@ -887,7 +889,8 @@ enum class Progression {
    vaccinated2,
    waning,
    boosted,
-   boosted2
+   boosted2,
+   waning2
 };
 
 enum class DiseaseLabel{
@@ -1099,8 +1102,10 @@ struct agent{
   // sk/shakir //////////////////////////
   count_type time_at_vaccine1 = 0;
   count_type time_at_vaccine2 = 0;
+  count_type time_at_waning=0;
   count_type time_at_boosted = 0;
   count_type time_at_boosted2 = 0;
+  count_type time_at_waning2=0;
 
   //-------Comorbidity index-------------//
   int comorbidity=0;
@@ -1122,7 +1127,15 @@ struct agent{
   bool vaccinated2 = false;
   bool waning = false;
   bool boosted = false;
+  bool waning2=false;
   bool boosted2 = false;
+  
+  bool new_vaccinated1=false;
+  bool new_vaccinated2=false;
+  bool new_waning=false;
+  bool new_boosted=false;
+  bool new_waning2=false;
+  bool new_boosted2=false;
 
   double lambda_h = 0;
   //individuals contribution to his home cluster
@@ -1217,7 +1230,7 @@ struct agent{
   //Transporation
   bool has_to_travel = false; //does the agent take a train to go to
 							  //work?
-  bool forced_to_take_train = false;
+  bool forced_to_take_train = true;
   //Will the agent be forced to take the train today, as employer did not provide transit?
 
   double commute_distance = 0; //in km

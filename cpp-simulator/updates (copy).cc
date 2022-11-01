@@ -5,26 +5,13 @@
 #include <cstdlib>
 #include <iostream>
 #include <cmath>
-#include <unordered_map>
 
 #include "updates.h"
 #include "interventions.h"
 #include "testing.h"
-#include "train_loader.h"
 
 using std::cerr;
 using std::vector;
-
-namespace {
-  void reset_cohort_lambdas(
-    std::unordered_map<count_type, vector<cohort_space>>& cohorts) {
-    for (auto& iter1 : cohorts) {
-      for (auto& iter2 : iter1.second) {
-        iter2.lambda_interaction_external = 0.0;
-      }
-    }
-  }
-}
 
 bool mask_active(int cur_time){
 	int mask_start_date = GLOBAL.MASK_START_DATE;
@@ -212,7 +199,7 @@ node_update_status update_infection(agent& node, int cur_time){
 	else if(node.new_strain==4){
 		double probability_omicronNew_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_NEW,0.33)*STATE_TRAN4[age_index][0]*STATE_TRAN_CoMorb4[node.comorbidity][0];
 	  transition = bernoulli(probability_omicronNew_strain);
-	}			
+	}
 	else if(node.new_strain==5){
 		double probability_omicronBA4_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA4,0.33)*STATE_TRAN5[age_index][0]*STATE_TRAN_CoMorb5[node.comorbidity][0];
 	  transition = bernoulli(probability_omicronBA4_strain);
@@ -319,7 +306,7 @@ node_update_status update_infection(agent& node, int cur_time){
 	  node.state_before_recovery = node.infection_status;
 	  node.infection_status = Progression::susceptible;//loose immunity and become susceptible again
 	  node.infective = false;
-  }
+	}
   }//recovered individulas after hospitalization can become susceptible again
 
   else if(node.infection_status==Progression::critical
@@ -600,7 +587,7 @@ void updated_lambda_project(const vector<agent>& nodes, workplace& workplace){
 		  }
 		  if (nodes[workplace.projects[i].individuals[j]].new_strain==6){
 			  sum_value_project_higher[6-1] += nodes[workplace.projects[i].individuals[j]].lambda_w;  
-		  }
+		  }		  		  
 		//   if (nodes[workplace.projects[i].individuals[j]].new_strain){
 		// 	  sum_value_project_higher += nodes[workplace.projects[i].individuals[j]].lambda_w;  
 		//   }	//----originally oly this condition was there	  		  		  		  		  
@@ -620,104 +607,7 @@ void updated_lambda_project(const vector<agent>& nodes, workplace& workplace){
 
 //------lambda_incoming_higher for variants ends--shakir------//  
 
-            }
-          }
-double get_individual_lambda_cohort(const agent& node, int cur_time){
-  double mask_factor = 1.0;
-  if(mask_active(cur_time) && node.compliant){
-	  mask_factor = GLOBAL.MASK_FACTOR;
-  }
-  if (!GLOBAL.TRAINS_RUNNING) {
-	  return 0;
-  }
-  return (node.infective?1.0:0.0)
-    * node.my_cohort.edge_weight //TODO[NKV]: We would need to update this edge weight from cohorts.cc, I guess!
-	* node.kappa_T
-	* node.infectiousness
-	* mask_factor
-	* node.kappa_W //Nodes contribution is weighted by kappa_w
-	* node.attending;
-	// /	* (1 + node.severity)
-}
-
-void update_lambda_intra_cohort(std::unordered_map<count_type, vector<cohort_space>>& cohorts, vector<agent>& nodes, int cur_time){
-
-	for (auto& it1: cohorts) { //cohort_hash (src*100) + dst
-		for (auto& cohort_it: it1.second) {
-			double sum_value = 0;
-			if(cur_time % 2){
-				for (auto& j: cohort_it.internal_nodes){
-					sum_value += get_individual_lambda_cohort(nodes[j], cur_time);
-				}
-			}
-			cohort_it.lambda_interaction_internal = cohort_it.scale * sum_value;
-			// if (bernoulli(0.01)){std::cout<<cohort_it.lambda_interaction_internal<<cohort_it.internal_nodes.size()<<std::endl;}
-		}
-	}
-}
-
-void update_cohort_edge_weights(std::unordered_map<count_type, vector<cohort_space>>& cohorts, const vector<agent>& nodes){
-	//TODO[v2]: update this logic for inter cohort interactions - overlap time
-	return;
-}
-
-//TODO[v2]: Update the code to work on the unordered_map
-void update_lambda_inter_cohort(
-    const std::unordered_map<count_type, std::vector<train_coach>>& am_coachs,
-    const std::unordered_map<count_type, std::vector<train_coach>>& pm_coachs,
-    std::unordered_map<count_type, vector<cohort_space>>& cohorts,const TrainLoader& trains, int cur_time){
-  reset_cohort_lambdas(cohorts);
-  //morning trip
-  if (cur_time % GLOBAL.SIM_STEPS_PER_DAY == 1){
-    for (auto& coach_line : am_coachs) {
-      for (auto& coach : coach_line.second) {
-        for (auto& cohort_ptr: coach.cohorts) {
-          // auto current_cohort = cohorts[unordered_index][vector_index];
-          double sum_value = 0.0;
-
-          for (auto& cohort_ptr2: coach.cohorts) {
-            if (cohort_ptr == cohort_ptr2) {
-              continue;
-            }
-            // auto other_cohort = cohorts[unordered_index2][vector_index2];
-            double overlap_time = trains.GetOverlapMinutesAlongLine(
-              coach.trainLine,
-              cohort_ptr->source_station,
-              cohort_ptr->destination_station,
-              cohort_ptr2->source_station,
-              cohort_ptr2->destination_station);
-            sum_value += cohort_ptr2->lambda_interaction_internal * overlap_time;
-          }
-          cohort_ptr->lambda_interaction_external += sum_value;
-        }
-      }
-    }
-  }
-  //evening trip
-  else if (cur_time % GLOBAL.SIM_STEPS_PER_DAY == 3){
-    for (auto& coach_line : pm_coachs) {
-      for (auto& coach : coach_line.second) {
-        for (auto& cohort_ptr: coach.cohorts) {
-          double sum_value = 0.0;
-
-          for (auto& cohort_ptr2: coach.cohorts) {
-            if (cohort_ptr == cohort_ptr2) {
-              continue;
-            }
-			// Reversing src dest for PM.
-            double overlap_time = trains.GetOverlapMinutesAlongLine(
-              coach.trainLine,
-              cohort_ptr->destination_station,
-              cohort_ptr->source_station,
-              cohort_ptr2->destination_station,
-              cohort_ptr2->source_station);
-            sum_value += cohort_ptr2->lambda_interaction_internal * overlap_time;
-          }
-          cohort_ptr->lambda_interaction_external += sum_value;
-        }
-      }
-    }
-  }
+  }  
 }
 
 void updated_lambda_w_age_independent(const vector<agent>& nodes, workplace& workplace){
@@ -748,7 +638,7 @@ double sum_value_higher[6] = {0};
 		  }
 		  if (nodes[workplace.individuals[i]].new_strain==6){
 			  sum_value_higher[6-1] += nodes[workplace.individuals[i]].lambda_w;  
-		  }	
+		  }			  			  
 	// if (nodes[workplace.individuals[i]].new_strain){
 	// 	sum_value_higher += nodes[workplace.individuals[i]].lambda_w;//-----original new_strain blcoked by shakir
 	// }
@@ -799,7 +689,7 @@ double sum_value_higher[6] = {0};
 		  }
 		  if (nodes[home.individuals[i]].new_strain==6){
 			  sum_value_higher[6-1] += nodes[home.individuals[i]].lambda_h;  
-		  }	
+		  }		  			  
 	// if (nodes[home.individuals[i]].new_strain){
 	// 	sum_value_higher += nodes[home.individuals[i]].lambda_h;
 	// }///----original new_strain if condition blocked by shakir
@@ -924,7 +814,7 @@ double updated_travel_fraction(const vector<agent>& nodes, const int cur_time){
 
 
 
-#pragma omp parallel for default(none) shared(nodes, SIZE, cur_time, MASK_FACTOR, GLOBAL) \
+#pragma omp parallel for default(none) shared(nodes) \
   reduction (+: usual_travellers, actual_travellers,  \
 			 infected_distance, total_distance)
   for(count_type i = 0; i < SIZE; ++i){
@@ -951,7 +841,7 @@ double updated_travel_fraction(const vector<agent>& nodes, const int cur_time){
 		  }
 		  if(nodes[i].new_strain==4){
 		infected_distance += nodes[i].commute_distance * mask_factor * GLOBAL.INFECTIOUSNESS_OMICRON_NEW;
-		  }		  		  
+		  }
 		  if(nodes[i].new_strain==5){
 		infected_distance += nodes[i].commute_distance * mask_factor * GLOBAL.INFECTIOUSNESS_OMICRON_BA4;
 		  }
@@ -973,30 +863,12 @@ double updated_travel_fraction(const vector<agent>& nodes, const int cur_time){
   
 }
 
-vector<double>  updated_travel_fraction_higher(const vector<agent>& nodes, const int cur_time){
+double *updated_travel_fraction_higher(const vector<agent>& nodes, const int cur_time){
   //double infected_distance_higher, total_distance = 0;//---Blocked by shakir for new variants
 
   //-------lambda_incoming_higher for variants begins--shakir------//
 double infected_distance_higher[7] = {0},total_distance = 0;
-std::vector<double> zeros;
-std::vector<double> travel_fraction_higher;
-
-travel_fraction_higher.push_back(0);
-travel_fraction_higher.push_back(0);
-travel_fraction_higher.push_back(0);
-travel_fraction_higher.push_back(0);
-travel_fraction_higher.push_back(0);
-travel_fraction_higher.push_back(0);
-travel_fraction_higher.push_back(0);
-
-zeros.push_back(0);
-zeros.push_back(0);
-zeros.push_back(0);
-zeros.push_back(0);
-zeros.push_back(0);
-zeros.push_back(0);
-zeros.push_back(0);
-//double travel_fraction_higher[7] ={0};
+double travel_fraction_higher[7] ={0};
 //------lambda_incoming_higher for variants ends--shakir------//  
 
   count_type actual_travellers = 0, usual_travellers = 0;
@@ -1007,9 +879,9 @@ zeros.push_back(0);
 
 
 
-#pragma omp parallel for default(none) shared(nodes, cur_time, MASK_FACTOR, GLOBAL, SIZE) \
+#pragma omp parallel for default(none) shared(nodes) \
   reduction (+: usual_travellers, actual_travellers,  \
-			 infected_distance_higher, total_distance)
+			 infected_distance, total_distance)
   for(count_type i = 0; i < SIZE; ++i){
 	if(nodes[i].has_to_travel){
 	  ++usual_travellers;
@@ -1038,11 +910,11 @@ zeros.push_back(0);
 	  }
 	  if((nodes[i].infective)&&(nodes[i].new_strain==6)){//---new_strain replaced by shakir
 		infected_distance_higher[6-1] += nodes[i].commute_distance * mask_factor  * GLOBAL.INFECTIOUSNESS_OMICRON_BA5;
-	  }	  	  	  
+	  }		  		  	  	  	  
 	}
   }
   if(total_distance == 0 || usual_travellers == 0){
-	  return zeros;//0;
+	  return 0;
   } else{
 	for(int i=1;i<=7;i++){
 		travel_fraction_higher[i-1]=infected_distance_higher[i-1]/total_distance 
@@ -1055,7 +927,7 @@ zeros.push_back(0);
 }
 
 
-void update_lambdas(agent&node, const vector<house>& homes, const vector<workplace>& workplaces, const vector<community>& communities, const vector<vector<nbr_cell>>& nbr_cells, const double travel_fraction, std::vector<double> travel_fraction_higher, const int cur_time){
+void update_lambdas(agent&node, const vector<house>& homes, const vector<workplace>& workplaces, const vector<community>& communities, const vector<vector<nbr_cell>>& nbr_cells, const double travel_fraction, const double* travel_fraction_higher, const int cur_time){
   node.lambda_incoming.set_zero();
  // node.lambda_incoming_higher.set_zero();//---delete shakir later
 
@@ -1121,8 +993,8 @@ void update_lambdas(agent&node, const vector<house>& homes, const vector<workpla
 	if(node.workplace != WORKPLACE_HOME) {
 	  node.lambda_incoming.work = (node.attending?1.0:GLOBAL.ATTENDANCE_LEAKAGE)*node.kappa_W_incoming
 		* workplaces[node.workplace].age_independent_mixing;
-	  //FEATURE_PROPOSAL: make the mixing dependent on node.age_group;
-	  
+	//FEATURE_PROPOSAL: make the mixing dependent on node.age_group;
+
 
 //-------lambda_incoming_higher for variants begins--shakir------//
 	  node.lambda_incoming_higher1.work = (node.attending?1.0:GLOBAL.ATTENDANCE_LEAKAGE)*node.kappa_W_incoming
@@ -1202,7 +1074,7 @@ void update_lambdas(agent&node, const vector<house>& homes, const vector<workpla
 	* node.hd_area_factor
 	* pow(communities[node.community].individuals.size(),
 		  node.hd_area_exponent);
-  
+
   node.lambda_incoming_higher2.community = node.kappa_C_incoming
 	* node.zeta_a
 	* node.funct_d_ck
@@ -1297,7 +1169,6 @@ void update_lambdas(agent&node, const vector<house>& homes, const vector<workpla
 										
 
 //------lambda_incoming_higher for variants ends--shakir------//  
-//std::cout<<"Neighbour size"<<"\t"<<nbr_cells.size()<<std::endl;
 
   if(nbr_cells.size()>0){
 	node.lambda_incoming.nbr_cell = node.kappa_C_incoming
@@ -1364,23 +1235,18 @@ void update_lambdas(agent&node, const vector<house>& homes, const vector<workpla
 
 
   //Travel only happens at "odd" times, twice a day
-//std::cout<<"curr time, cur_time%2, has to travel, attending, compliant, and quarantined "<<cur_time<<"\t"<<cur_time%2<<"\t"<<node.has_to_travel<<"\t"<<node.has_to_travel<<"\t"<<node.attending<<"\t"<<node.compliant<<"\t"<<node.quarantined<<"\t"<<(!(node.quarantined && node.compliant))<<"\t"<<node.travels()<<std::endl;
-
   if((cur_time % 2) && node.travels()){
 	node.lambda_incoming.travel = GLOBAL.BETA_TRAVEL
 	  * node.commute_distance
 	  * travel_fraction;
-	
-//std::cout<<"travel force"<<node.lambda_incoming.travel<<std::endl;
+	  
 
-
+  
 //-------lambda_incoming_higher for variants begins--shakir------//
- // std::cout<<"travel force ends"<<node.lambda_incoming.travel<<"\t travel fraction vector casing"<<"\t"<<travel_fraction_higher[1-1]<<std::endl;
 	  
 	node.lambda_incoming_higher1.travel = GLOBAL.BETA_TRAVEL
 	  * node.commute_distance
 	  * travel_fraction_higher[1-1];
- // std::cout<<"travel force ends"<<node.lambda_incoming.travel<<std::endl;
 	  
 	node.lambda_incoming_higher2.travel = GLOBAL.BETA_TRAVEL
 	  * node.commute_distance
@@ -1401,8 +1267,7 @@ void update_lambdas(agent&node, const vector<house>& homes, const vector<workpla
 	node.lambda_incoming_higher6.travel = GLOBAL.BETA_TRAVEL
 	  * node.commute_distance
 	  * travel_fraction_higher[6-1];
- // std::cout<<"travel force ends"<<node.lambda_incoming.travel<<std::endl;
-
+  
 
 //------lambda_incoming_higher for variants ends--shakir------//  
 
@@ -1481,31 +1346,8 @@ void update_lambdas(agent&node, const vector<house>& homes, const vector<workpla
 //------lambda_incoming_higher for variants ends--shakir------//  
 
 }
-// sk ///////////////////////
-void update_individual_lambda_cohort(vector<agent>&nodes, const int cur_time, std::unordered_map<count_type, vector<cohort_space>>& cohorts){
-	if (!GLOBAL.ENABLE_COHORTS || !GLOBAL.TRAINS_RUNNING || ((cur_time % 2 )==0) ){
-		return;
-	}
-	for (auto& it1:cohorts){
-		for (auto& it2:it1.second){
-			for (auto indiv:it2.internal_nodes){				
-				auto& node=nodes[indiv];
-				if(node.attending){
-					double sum_interactions = it2.lambda_interaction_internal * it2.commute_time + it2.lambda_interaction_external;
-					//FIX: Possible problem related to GLOBAL.SIM_STEPS_PER_DAY. SHould cohorts lambda scale with GLOBAL.SIM_STEPS_PER_DAY?
-					node.lambda_incoming.cohorts = sum_interactions * node.kappa_W_incoming; //
-				
-					if(mask_active(cur_time) && node.compliant){	
-						node.lambda_incoming.cohorts *= GLOBAL.MASK_FACTOR;
-  					}
-				}				
-				node.lambda = node.lambda_incoming.sum();
-			}
-		}
-	}
-	return;
-}
-/////////////////////////////
+
+
 void updated_lambda_c_local(const vector<agent>& nodes, community& community){
   double sum_value = 0;
   //double sum_value_higher = 0,sum_alpha=0,sum_delta=0,sum_omicron=0,sum_omicronnew=0,sum_omicronBA4=0,sum_omicronBA5=0;
@@ -1560,7 +1402,7 @@ double sum_value_higher[6]={0};
 	  sum_value_higher[6-1]+= nodes[community.individuals[i]].lambda_c
 	  * std::min(community.w_c,
 				 nodes[community.individuals[i]].neighborhood_access_factor);
-	}							 
+	}
 	// if (nodes[community.individuals[i]].new_strain){---orignal new_strain if condition blocked by shakir			 
 	// sum_value_higher
 	//   += nodes[community.individuals[i]].lambda_c
@@ -1652,10 +1494,10 @@ void updated_lambda_c_local_random_community(const vector<agent>& nodes, const v
 	  }
 	  if (nodes[indiv].new_strain==4){
 	     lambda_random_community_outgoing_higher[4-1] += nodes[indiv].lambda_c;  
-	  }	  	  	  	  
+	  }	 
 	  if (nodes[indiv].new_strain==5){
 	     lambda_random_community_outgoing_higher[5-1] += nodes[indiv].lambda_c;  
-	}
+	  }
 	  if (nodes[indiv].new_strain==6){
 	     lambda_random_community_outgoing_higher[6-1] += nodes[indiv].lambda_c;  
 	  }		  		   	  	  	  
@@ -1746,7 +1588,7 @@ void updated_lambda_c_local_random_community(const vector<agent>& nodes, const v
 	houses[i].random_households.lambda_random_community_higher1 = houses[i].random_households.scale
 	  * sum_value_household_higher[1-1]
 	  * std::min(communities[houses[i].community].w_c, houses[i].neighborhood_access_factor);
-    
+
 	houses[i].random_households.lambda_random_community_higher2 = houses[i].random_households.scale
 	  * sum_value_household_higher[2-1]
 	  * std::min(communities[houses[i].community].w_c, houses[i].neighborhood_access_factor);
@@ -1819,21 +1661,21 @@ if (nodes[houses[house_index].individuals[k]].new_strain==4)
 				sum_values_higher[4-1]+= nodes[houses[house_index].individuals[k]].lambda_nbr_cell
 			        * std::min(communities[houses[house_index].community].w_c,
 					   houses[house_index].neighborhood_access_factor);
-			}													
+			}
 if (nodes[houses[house_index].individuals[k]].new_strain==5)
 			{
 				//sum_omicronBA4 
 				sum_values_higher[5-1]+= nodes[houses[house_index].individuals[k]].lambda_nbr_cell
 			        * std::min(communities[houses[house_index].community].w_c,
 					   houses[house_index].neighborhood_access_factor);
-		}
+			}
 if (nodes[houses[house_index].individuals[k]].new_strain==6)
 			{
 				//sum_omicronBA5
 				sum_values_higher[6-1] += nodes[houses[house_index].individuals[k]].lambda_nbr_cell
 			        * std::min(communities[houses[house_index].community].w_c,
 					   houses[house_index].neighborhood_access_factor);
-	  }
+			}																			
 		}
 	  }
 
@@ -2139,7 +1981,7 @@ casualty_stats get_infected_community(const vector<agent>& nodes, const communit
 
   const auto SIZE = community.individuals.size(); 
 
-#pragma omp parallel for default(none) shared(nodes, community, SIZE)			\
+#pragma omp parallel for default(none) shared(nodes, community)			\
   reduction(+: errors,													\
 			susceptible,unvaccinated,vaccinated1,vaccinated2,waning,boosted,boosted2, hd_area_susceptible,							\
 			exposed, hd_area_exposed,									\
@@ -3044,7 +2886,7 @@ casualty_stats get_infected_community(const vector<agent>& nodes, const communit
 		// 		  infected_race_group_7+=1;
 	  	// 		}
 
-		//----------------income group----
+		// //----------------income group----
 
 		// 	if(income==1){
 		// 		  infected_income_group_1+=1;
@@ -3106,7 +2948,7 @@ casualty_stats get_infected_community(const vector<agent>& nodes, const communit
 	  }
 	if((state_before_recovery == Progression::boosted)){
 		boosted += 1;
-	  }	  	  	  
+	  }	
 
 	if((state_before_recovery == Progression::boosted2)){
 		boosted2 += 1;
@@ -3135,7 +2977,7 @@ casualty_stats get_infected_community(const vector<agent>& nodes, const communit
   stat.vaccinated1=vaccinated1;
   stat.vaccinated2=vaccinated2;
   stat.waning=waning;
-  stat.boosted=boosted;  
+  stat.boosted=boosted;
   stat.boosted2=boosted2;  
   stat.hd_area_susceptible = hd_area_susceptible;
   stat.exposed = exposed;
@@ -3440,6 +3282,7 @@ void vaccinate_firstdose(vector<agent>& nodes, vector<count_type> new_vaccinated
 				  }
 				}
 }
+
 void vaccinate_second_dose(vector<agent>& nodes, vector<count_type> new_vaccinated2_candidates, count_type vaccFn,count_type time_step){
 					  count_type new_vaccinated2_candidates_list_size = new_vaccinated2_candidates.size();
 					  if (new_vaccinated2_candidates_list_size > vaccFn){
@@ -3555,7 +3398,7 @@ void vaccinate_waning2_candidates(vector<agent>& nodes, vector<count_type> new_v
 				    nodes[new_vaccinated1_candidates[a]].waning2 = true;
 				    nodes[new_vaccinated1_candidates[a]].new_waning2 = true;
 
-				    nodes[new_vaccinated1_candidates[a]].time_at_waning2=time_step;
+				    nodes[new_vaccinated1_candidates[a]].time_at_vaccine1=time_step;
 					 vaccination_works = bernoulli(GLOBAL.VACCINATION_EFFECTIVENESS_WANING2);//1;//drand48();
 				 if ((vaccination_works)&&(nodes[new_vaccinated1_candidates[a]].infection_status==Progression::susceptible ||nodes[new_vaccinated1_candidates[a]].infection_status==Progression::recovered)){ 
 				     nodes[new_vaccinated1_candidates[a]].infection_status = Progression::recovered;
