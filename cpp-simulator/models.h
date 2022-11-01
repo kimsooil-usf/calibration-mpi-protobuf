@@ -488,7 +488,7 @@ struct global_params{
   int MEASURES=1;
   double REDUCTION_FACTOR=0.25;
 
-  double ALPHA = 0.2;
+  double ALPHA = 0.8;
   //exponent of number of people in a household while normalising
   //infection rate in a household.
 
