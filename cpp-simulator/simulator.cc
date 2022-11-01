@@ -356,7 +356,7 @@ plot_data_struct run_simulation(){
   
   std::vector<count_type> new_strain_candidates;
   new_strain_candidates.reserve(GLOBAL.num_people);
-  std::string logging1 = "Time_step,total_new_infections,new_strain_infections0,new_strain1_infections,new_strain2_infections,new_strain3_infections,new_strain4_infections,new_strain5_infections,new_strain6_infections,active_patients,active_patients_new_strain2,active_patients_new_strain1,active_patients_new_strain2,active_patients_new_strain3,active_patients_new_strain4,active_patients_new_strain5,active_patients_new_strain6" ;
+  std::string logging1 = "Time_step,total_new_infections,new_strain0_infections,new_strain1_infections,new_strain2_infections,new_strain3_infections,new_strain4_infections,new_strain5_infections,new_strain6_infections,active_patients,active_patients_new_strain2,active_patients_new_strain1,active_patients_new_strain2,active_patients_new_strain3,active_patients_new_strain4,active_patients_new_strain5,active_patients_new_strain6" ;
   std::vector<std::string> logger1;
   logger1.push_back(logging1);
 
