@@ -16,7 +16,7 @@ def rmse_save_posterior(parameters, piece_directory, nsd):
     #data = dataCols['total Cases'].to_list()
     dataCols = data_temp[['total cases']]
     data = dataCols['total cases'].to_list()
-    parameters[rank][43]
+
     # print("i am in rmse\n")
     nSimPerDay = 4 #number of simulations per-day
 #infections_from_new_strain0_150
