@@ -1997,6 +1997,7 @@ casualty_stats get_infected_community(const vector<agent>& nodes, const communit
   count_type vaccinated2=0;
   count_type waning=0;
   count_type boosted=0;
+  count_type waning2=0;
   count_type boosted2=0;
 
   count_type hd_area_susceptible = 0;
@@ -2141,7 +2142,7 @@ casualty_stats get_infected_community(const vector<agent>& nodes, const communit
 
 #pragma omp parallel for default(none) shared(nodes, community, SIZE)			\
   reduction(+: errors,													\
-			susceptible,unvaccinated,vaccinated1,vaccinated2,waning,boosted,boosted2, hd_area_susceptible,							\
+			susceptible,unvaccinated,vaccinated1,vaccinated2,waning,boosted,waning2,boosted2, hd_area_susceptible,							\
 			exposed, hd_area_exposed,									\
 			infective, hd_area_infective,								\
 			symptomatic, hd_area_symptomatic,							\
@@ -2562,6 +2563,16 @@ casualty_stats get_infected_community(const vector<agent>& nodes, const communit
 		  hd_area_recovered_from_vaccination += 1;
 		}
 	   case Progression::boosted:
+		recovered_from_vaccination += 1;
+		if(hd_area_resident){
+		  hd_area_recovered_from_vaccination += 1;
+		}
+	   case Progression::waning2:
+		recovered_from_vaccination += 1;
+		if(hd_area_resident){
+		  hd_area_recovered_from_vaccination += 1;
+		}
+	   case Progression::boosted2:
 		recovered_from_vaccination += 1;
 		if(hd_area_resident){
 		  hd_area_recovered_from_vaccination += 1;
