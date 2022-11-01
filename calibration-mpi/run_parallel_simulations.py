@@ -15,20 +15,12 @@ def main():
     my_parser.add_argument('-piece')
     my_parser.add_argument('-outdir')
     args = my_parser.parse_args()
+
     connect = int(args.c)
-
     piece = int(args.piece)
-
     outdir = str(args.outdir)
-    paramText_path=outdir+"paramText.txt"
-    f = open(paramText_path, "r")
-    parameters = f.read()
-    # print(parameters)
 
-    parameterArgument = []
-    parameterString = parameters.split(",")
-    for i in getElements(parameterString, 46):
-        parameterArgument.append(i)
+    parameters = pd.read_csv(outdir+"prior_parameters_sequential_"+str(piece)+".csv")
 
     comm = MPI.COMM_WORLD
     nprocs = comm.Get_size()
@@ -41,7 +33,7 @@ def main():
     # Start parameter from where previous simulation ended
     rank += NPROCESSORS*connect
     #print('rank', rank, 'len(parameterArgument)', len(parameterArgument))
-    command = run_parameter_simulator(parameterArgument, rank)
+    command = run_parameter_simulator(parameters.values, rank)
 
     if piece==1:
         store_time_step = piece*NUM_DAYS*4 -1

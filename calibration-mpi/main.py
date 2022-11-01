@@ -154,22 +154,6 @@ def main():
         parameters["output_directory"] = MPI_DIR + "piece_"+str(nsd) + "/"
         parameters["input_directory"] = INPUT_DIR
         parameters.to_csv(os.path.join(MPI_DIR,"piece_"+str(nsd),"prior_parameters_sequential_"+str(nsd)+".csv"))
-        #parameters["STORE_STATE_TIME_STEP"]=int(float((parameters["START_DAY"]-1+30)*4 -1)) # Save at the last TIME_STEP
-        paramArray = parameters.to_numpy()
-        
-
-        paramString = ''
-        for i in paramArray:
-            for j in i:
-                paramString += str(j)
-                paramString +=','
-        paramString = paramString[0:-1]
-
-        # f = open("./paramText.txt", "w+")
-        paramText_path=MPI_DIR + "piece_"+str(nsd) + "/"+"paramText.txt"
-        f = open(paramText_path, "w+") # SK:  same contents as in prior_parameters_sequential_X.csv
-        f.write(paramString)
-        f.close()
 
         # remain_params is the parameter remaining at the end
         # ex) remain_params=40 when NPARAMS is 400 and NPROCESSORS is 360
