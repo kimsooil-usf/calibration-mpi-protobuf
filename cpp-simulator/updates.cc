@@ -3147,7 +3147,8 @@ casualty_stats get_infected_community(const vector<agent>& nodes, const communit
   stat.vaccinated2=vaccinated2;
   stat.waning=waning;
   stat.boosted=boosted;  
-  stat.boosted2=boosted2;  
+  stat.waning2=waning2;
+  stat.boosted2=boosted2;
   stat.hd_area_susceptible = hd_area_susceptible;
   stat.exposed = exposed;
   stat.hd_area_exposed = hd_area_exposed;

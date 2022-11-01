@@ -94,6 +94,7 @@ struct casualty_stats{
   count_type vaccinated2 =0;
   count_type waning=0;
   count_type boosted=0;
+  count_type waning2=0;
   count_type boosted2=0;
 
   count_type hd_area_susceptible = 0;
