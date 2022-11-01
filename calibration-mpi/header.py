@@ -15,11 +15,11 @@ import argparse
 import random
 
 np.set_printoptions(threshold=np.inf)
-DATE_TO_RUN="1028"
-INPUT_DIR = "/largedisk/mpi-folder/calibration-mpi-1026/staticInst/output/hills_1.5m"
-OUTPUT_DIR =  "/largedisk/mpi-folder/calibration-mpi-1026/output-mpi-"+DATE_TO_RUN+"/"  # should be same as MPI_DIR # also use absolute path
-MPI_DIR = "/largedisk/mpi-folder/calibration-mpi-1026/output-mpi-"+DATE_TO_RUN+"/"  # should be same as OUTPUT_DIR
-PLOT_DIR = "/largedisk/mpi-folder/calibration-mpi-1026/output-mpi-"+DATE_TO_RUN+"/plots/"
+DATE_TO_RUN="1101"
+INPUT_DIR = "/largedisk/mpi-folder/calibration-mpi-protobuf/staticInst/output/hills_1.5m"
+OUTPUT_DIR =  "/largedisk/mpi-folder/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/"  # should be same as MPI_DIR # also use absolute path
+MPI_DIR = "/largedisk/mpi-folder/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/"  # should be same as OUTPUT_DIR
+PLOT_DIR = "/largedisk/mpi-folder/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/plots/"
 
 if not os.path.exists(OUTPUT_DIR):
         os.system("mkdir -p " + OUTPUT_DIR)
@@ -28,14 +28,14 @@ PIECE = 32 # 32
 NUM_DAYS = 30
 # NUM_DAYS = 5
 
+NRMSE=80 # How many RMSE indices to be used in the next piece (Top NRMSE smallest RMSE values)
+
 # NPARAMS = 400
 # NPROCESSORS = 360
 #NPARAMS = 15
 NPARAMS = 3200 # Must be even number and multiple of NPROCESSORS, no error. (SK & JK 10/19)
 NPROCESSORS = 720
 NPERNODE = 90
-
-NRMSE = 80 # How many top (smallest RMSE) indices of sorted RMSE tables will be reused in the later pieces - see run_paralle_simulations.py for more
 
 # Initialize minValues, maxValues
 # Later used as the parameter for drive_simulator in run_simulator.py

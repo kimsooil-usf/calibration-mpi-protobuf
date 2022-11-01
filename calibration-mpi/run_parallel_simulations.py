@@ -20,7 +20,7 @@ def main():
     piece = int(args.piece)
     outdir = str(args.outdir)
 
-    parameters = pd.read_csv(outdir+"prior_parameters_sequential_"+str(piece)+".csv")
+    Allparameters = pd.read_csv(outdir+"prior_parameters_sequential_"+str(piece)+".csv")
     rmse_table = pd.read_csv(outdir+"rmse_priors_"+str(piece)+".csv")
     rmse_sorted = rmse_table.sort_values(by="RMSE")
 
@@ -29,8 +29,8 @@ def main():
     rank = comm.Get_rank()
 
     rank_to_use = int(rmse_sorted.values[rank%NRMSE][0]) # rank of the previous piece which have top (smallest) RMSE vlues
-    SEED=parameters['PROVIDE_INITIAL_SEED'][rank_to_use]
-    SEED_GRAPH=parameters['PROVIDE_INITIAL_SEED_GRAPH'][rank_to_use]
+    SEED=Allparameters['PROVIDE_INITIAL_SEED'][rank_to_use]
+    SEED_GRAPH=Allparameters['PROVIDE_INITIAL_SEED_GRAPH'][rank_to_use]
 
     #comm.Barrier() ##############################################################
     print("Rank: ", rank, "\t-\t", time.ctime(time.time()))
@@ -38,7 +38,20 @@ def main():
     # Start parameter from where previous simulation ended
     rank += NPROCESSORS*connect
     #print('rank', rank, 'len(parameterArgument)', len(parameterArgument))
-    command = run_parameter_simulator(parameters.values, rank, SEED, SEED_GRAPH)
+    rank_to_use=rank
+    SEED = Allparameters['PROVIDE_INITIAL_SEED'][rank]
+    SEED_GRAPH=Allparameters['PROVIDE_INITIAL_SEED_GRAPH'][rank]
+    in_dir=INPUT_DIR
+    out_dir=Allparameters['output_directory'][rank]+str(rank)+"/"
+    start_day=Allparameters['START_DAY'][rank]
+    if piece > 1:
+        rmse_table = pd.read_csv(outdir+"rmse_priors_"+str(piece)+".csv")
+        rmse_sorted = rmse_table.sort_values(by="RMSE")
+        rank_to_use = int(rmse_sorted.values[rank % NRMSE][0]) # rank of the previous piece which have top (smallest) RMSE vlues
+        SEED=Allparameters['PROVIDE_INITIAL_SEED'][rank_to_use]
+        SEED_GRAPH=Allparameters['PROVIDE_INITIAL_SEED_GRAPH'][rank_to_use]
+
+    command = run_parameter_simulator(Allparameters.values, rank, SEED, SEED_GRAPH, start_day, in_dir, out_dir)
 
     if piece==1:
         store_time_step = piece*NUM_DAYS*4 -1

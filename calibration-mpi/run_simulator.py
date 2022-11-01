@@ -15,7 +15,7 @@ def getCommand(params):
 
     return command
 
-def run_parameter_simulator(parameters, rank, seed1, seed2):
+def run_parameter_simulator(parameters, rank, seed1, seed2, start_day, in_dir, out_dir):
     params = {
         "execDir": "../cpp-simulator/",
 
@@ -78,12 +78,15 @@ def run_parameter_simulator(parameters, rank, seed1, seed2):
 
         # "PROVIDE_INITIAL_SEED_GRAPH":parameters[rank][41],
         # "PROVIDE_INITIAL_SEED":parameters[rank][42],
-        "PROVIDE_INITIAL_SEED_GRAPH":seed2,
-        "PROVIDE_INITIAL_SEED":seed1,
+        "PROVIDE_INITIAL_SEED_GRAPH":int(seed2),
+        "PROVIDE_INITIAL_SEED":int(seed1),
 
-        "START_DAY": parameters[rank][43],
-        "output_directory": parameters[rank][44] + str(rank) + "/",
-        "input_directory": parameters[rank][45]
+        # "START_DAY": params[rank][43],
+        # "output_directory": str(params[rank][44]) + str(rank) + "/",
+        # "input_directory": params[rank][45],
+        "START_DAY": int(start_day),
+        "output_directory": out_dir,
+        "input_directory": in_dir,   
     }
     
     command=getCommand(params)
