@@ -3555,7 +3555,7 @@ void vaccinate_waning2_candidates(vector<agent>& nodes, vector<count_type> new_v
 				    nodes[new_vaccinated1_candidates[a]].waning2 = true;
 				    nodes[new_vaccinated1_candidates[a]].new_waning2 = true;
 
-				    nodes[new_vaccinated1_candidates[a]].time_at_vaccine1=time_step;
+				    nodes[new_vaccinated1_candidates[a]].time_at_waning2=time_step;
 					 vaccination_works = bernoulli(GLOBAL.VACCINATION_EFFECTIVENESS_WANING2);//1;//drand48();
 				 if ((vaccination_works)&&(nodes[new_vaccinated1_candidates[a]].infection_status==Progression::susceptible ||nodes[new_vaccinated1_candidates[a]].infection_status==Progression::recovered)){ 
 				     nodes[new_vaccinated1_candidates[a]].infection_status = Progression::recovered;

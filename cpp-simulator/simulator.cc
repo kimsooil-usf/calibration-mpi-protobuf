@@ -775,14 +775,14 @@ int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
 			vacc1=true;
 				if(vacc1)
 				{			
-				new_waning2_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+				new_waning_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
 				}
 
 			}
 
 //------------------Boosted candidates--------------------------------------------//
 
-		if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine2>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY )){//----->age between 1 and 10
+		if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY )){//----->age between 1 and 10
 			bool vacc1=false;
 			vacc1=true;
 				if(vacc1)
@@ -792,7 +792,7 @@ int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
 				}
 
 			}
-		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine1>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY)){//----->age between 1 and 10
+		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY)){//----->age between 1 and 10
 				bool vacc1=false;
 				//numvac1+=1;
 
@@ -805,7 +805,7 @@ int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
 					
 			}
 		    
-		    if(age_index>5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine1>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY)){//----->age between 1 and 10
+		    if(age_index>5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY)){//----->age between 1 and 10
 				bool vacc1=false;
 				//numvac1+=1;
 
@@ -818,7 +818,58 @@ int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
 					
 					
 			}
-//-------------------------------------------------------------------------------//
+//-------------------Waning and boosted 2-------------------------------------//
+
+//-------------------Waning 2---------------------------------------------------//
+
+		if((nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=5*30.0*GLOBAL.SIM_STEPS_PER_DAY )){//----->age between 1 and 10
+			bool vacc1=false;
+			vacc1=true;
+				if(vacc1)
+				{			
+				new_waning2_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+				}
+
+			}
+
+//------------------Boosted2 candidates--------------------------------------------//
+
+		if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY )){//----->age between 1 and 10
+			bool vacc1=false;
+			vacc1=true;
+				if(vacc1)
+				{			
+				new_boosted_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+
+				}
+
+			}
+		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY)){//----->age between 1 and 10
+				bool vacc1=false;
+				//numvac1+=1;
+
+				vacc1=true;
+					if(vacc1)
+					{			
+					new_boosted_candidates_30_to_60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+
+					}
+					
+			}
+		    
+		    if(age_index>5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY)){//----->age between 1 and 10
+				bool vacc1=false;
+				//numvac1+=1;
+
+				vacc1=true;
+					if(vacc1)
+					{			
+					new_boosted_candidates_GT60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+
+					}
+					
+					
+			}
 
 		}
 
@@ -1100,11 +1151,17 @@ int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
 				vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.3, time_step);
 				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.5, time_step);
 
-				vaccinate_waning_candidates(nodes, new_waning2_candidates_LE20, vaccFn2*0.2, time_step);
+				vaccinate_waning_candidates(nodes, new_waning_candidates_LE20, vaccFn2*0.2, time_step);
 
 				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3, time_step);
 				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3, time_step);
 				vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.5, time_step);
+
+				vaccinate_waning2_candidates(nodes, new_waning2_candidates_LE20, vaccFn2*0.2, time_step);
+
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3, time_step);
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3, time_step);
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT60, vaccFn4*0.5, time_step);
 
 		   }
 	
