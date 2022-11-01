@@ -53,7 +53,7 @@ def main():
         #os.system("gunzip "+prev_out_dir+str(rank)+"/agentStore.pbstore") # uncompress previous simulation's pbstore
         os.system(command)
         #comm.Barrier() ##############################################################
-        os.system("gzip "+prev_out_dir+str(rank)+"/agentStore.pbstore") # jk 10/24
+        #os.system("gzip "+prev_out_dir+str(rank)+"/agentStore.pbstore") # jk 10/24
 
     comm.Barrier() ##############################################################
     #MPI.Finalize() # sk: make sure... 
