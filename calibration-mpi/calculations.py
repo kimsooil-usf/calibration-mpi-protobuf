@@ -22,8 +22,9 @@ def rmse_save_posterior(parameters, piece_directory, nsd):
 #infections_from_new_strain0_150
     for i in range(len(parameters)):
         output_directory = piece_directory +str(int(i))+"/"
-        if(os.path.exists(os.path.join(output_directory,"infections_with_new_strain"+str(START_DAY)+str(NUM_DAYS)+".csv"))):
-            modeldata = pd.read_csv(os.path.join(output_directory,"infections_with_new_strain"+str(START_DAY)+str(NUM_DAYS)+".csv"))
+        START_DAY = nsd * NUM_DAYS # It is not passed from cpp_simulator(drive_simulator)'s command line. So be careful (SK 1101)
+        if(os.path.exists(os.path.join(output_directory,"infections_from_new_strain"+str(START_DAY)+str(NUM_DAYS)+".csv"))):
+            modeldata = pd.read_csv(os.path.join(output_directory,"infections_from_new_strain"+str(START_DAY)+str(NUM_DAYS)+".csv"))
             modeldata = modeldata['num_infected']
             modeldata = modeldata.iloc[0::nSimPerDay].to_list()
 

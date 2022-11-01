@@ -26,7 +26,7 @@ def main():
     nprocs = comm.Get_size()
     rank = comm.Get_rank()
 
-    comm.Barrier() ##############################################################
+    #comm.Barrier() ##############################################################
 
     print("Rank: ", rank, "\t-\t", time.ctime(time.time()))
 
@@ -48,12 +48,12 @@ def main():
         prev_out_dir=re.sub('piece_\d+', 'piece_'+str(piece-1), outdir)
         command += " --agent_load_file "+prev_out_dir+str(rank)+"/agentStore.pbstore"
         command += " --STORE_STATE_TIME_STEP "+str(store_time_step)
-        print("-----command", command)
+        #print("-----command", command)
 
         #os.system("gunzip "+prev_out_dir+str(rank)+"/agentStore.pbstore") # uncompress previous simulation's pbstore
         os.system(command)
         #comm.Barrier() ##############################################################
-        os.system("gzip "+prev_out_dir+str(rank)+"/agentStore.pbstore") # jk 10/24
+        #os.system("gzip "+prev_out_dir+str(rank)+"/agentStore.pbstore") # jk 10/24
 
     comm.Barrier() ##############################################################
     #MPI.Finalize() # sk: make sure... 
