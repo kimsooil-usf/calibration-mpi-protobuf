@@ -15,7 +15,7 @@ def getCommand(params):
 
     return command
 
-def run_parameter_simulator(parameters, rank):
+def run_parameter_simulator(parameters, rank, seed1, seed2):
     params = {
         "execDir": "../cpp-simulator/",
 
@@ -76,8 +76,10 @@ def run_parameter_simulator(parameters, rank):
         "TIME_OMICRON":int(float(parameters[rank][39])),
         "TIME_OMICRON_NEW":int(float(parameters[rank][40])),
 
-        "PROVIDE_INITIAL_SEED_GRAPH":parameters[rank][41],
-        "PROVIDE_INITIAL_SEED":parameters[rank][42],
+        # "PROVIDE_INITIAL_SEED_GRAPH":parameters[rank][41],
+        # "PROVIDE_INITIAL_SEED":parameters[rank][42],
+        "PROVIDE_INITIAL_SEED_GRAPH":seed2,
+        "PROVIDE_INITIAL_SEED":seed1,
 
         "START_DAY": parameters[rank][43],
         "output_directory": parameters[rank][44] + str(rank) + "/",

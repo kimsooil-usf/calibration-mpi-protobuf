@@ -28,7 +28,9 @@ def main():
     nprocs = comm.Get_size()
     rank = comm.Get_rank()
 
-    rank_to_use = int(rmse_sorted.values[rank%NRMSE][0])
+    rank_to_use = int(rmse_sorted.values[rank%NRMSE][0]) # rank of the previous piece which have top (smallest) RMSE vlues
+    SEED=parameters['PROVIDE_INITIAL_SEED'][rank_to_use]
+    SEED_GRAPH=parameters['PROVIDE_INITIAL_SEED_GRAPH'][rank_to_use]
 
     #comm.Barrier() ##############################################################
     print("Rank: ", rank, "\t-\t", time.ctime(time.time()))
@@ -36,7 +38,7 @@ def main():
     # Start parameter from where previous simulation ended
     rank += NPROCESSORS*connect
     #print('rank', rank, 'len(parameterArgument)', len(parameterArgument))
-    command = run_parameter_simulator(parameters.values, rank)
+    command = run_parameter_simulator(parameters.values, rank, SEED, SEED_GRAPH)
 
     if piece==1:
         store_time_step = piece*NUM_DAYS*4 -1
