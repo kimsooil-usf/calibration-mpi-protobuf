@@ -48,7 +48,7 @@ def main():
         prev_out_dir=re.sub('piece_\d+', 'piece_'+str(piece-1), outdir)
         command += " --agent_load_file "+prev_out_dir+str(rank)+"/agentStore.pbstore"
         command += " --STORE_STATE_TIME_STEP "+str(store_time_step)
-        print("-----command", command)
+        #print("-----command", command)
 
         #os.system("gunzip "+prev_out_dir+str(rank)+"/agentStore.pbstore") # uncompress previous simulation's pbstore
         os.system(command)
