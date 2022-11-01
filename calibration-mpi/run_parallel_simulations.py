@@ -21,13 +21,16 @@ def main():
     outdir = str(args.outdir)
 
     parameters = pd.read_csv(outdir+"prior_parameters_sequential_"+str(piece)+".csv")
+    rmse_table = pd.read_csv(outdir+"rmse_priors_"+str(piece)+".csv")
+    rmse_sorted = rmse_table.sort_values(by="RMSE")
 
     comm = MPI.COMM_WORLD
     nprocs = comm.Get_size()
     rank = comm.Get_rank()
 
-    #comm.Barrier() ##############################################################
+    rank_to_use = int(rmse_sorted.values[rank%NRMSE][0])
 
+    #comm.Barrier() ##############################################################
     print("Rank: ", rank, "\t-\t", time.ctime(time.time()))
 
     # Start parameter from where previous simulation ended
@@ -46,7 +49,7 @@ def main():
         store_time_step = piece*NUM_DAYS*4 -1
         command += " --LOAD_STATE_TIME_STEP "+str(load_time_step)
         prev_out_dir=re.sub('piece_\d+', 'piece_'+str(piece-1), outdir)
-        command += " --agent_load_file "+prev_out_dir+str(rank)+"/agentStore.pbstore"
+        command += " --agent_load_file "+prev_out_dir+str(rank_to_use)+"/agentStore.pbstore"
         command += " --STORE_STATE_TIME_STEP "+str(store_time_step)
         #print("-----command", command)
 
