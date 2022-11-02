@@ -46,25 +46,25 @@ def priors_history(nParams, nsd):
     print(chicrit)
     posterior_index=[]
 
- # use big number for saving all/// relax conditions
-    for i in rmse_table['index']:
-        if rmse_table['RMSE'][i] < chicrit and rmse_table['RMSE'][i]>0:
-            posterior_index.append(i)
-    if len(posterior_index)==0: # make sure... posterior is not empty
-        posterior_index=list(rmse_table.index.values)
+# use big number for saving all/// relax conditions
+    # for i in rmse_table['index']:
+    #     if rmse_table['RMSE'][i] < chicrit and rmse_table['RMSE'][i]>0:
+    #         posterior_index.append(i)
+    # if len(posterior_index)==0: # make sure... posterior is not empty
+    #     posterior_index=list(rmse_table.index.values)
 
     # Fix this: RMSE condition need to be relaxed to get enough parameter sets from prior
     # MIN_NUM_index=20
     # RMSE_THRESHOLD=1000
 
-    # MIN_NUM_index=20
-    # RMSE_THRESHOLD=1000000
-    # r_th=10
-    # while(len(list(set(posterior_index)))<MIN_NUM_index and r_th<RMSE_THRESHOLD): # sk & Shakir (10/20): relax conditions based on total # of simulations per 30 days
-    #     for i in rmse_table['index']:
-    #         if rmse_table['RMSE'][i]<r_th and rmse_table['RMSE'][i]>0:
-    #             posterior_index.append(i)
-    #     r_th+=1
+    MIN_NUM_index=20
+    RMSE_THRESHOLD=1000000
+    r_th=10
+    while(len(list(set(posterior_index)))<MIN_NUM_index and r_th<RMSE_THRESHOLD): # sk & Shakir (10/20): relax conditions based on total # of simulations per 30 days
+        for i in rmse_table['index']:
+            if rmse_table['RMSE'][i]<r_th and rmse_table['RMSE'][i]>0:
+                posterior_index.append(i)
+        r_th+=1
 
     posterior_index=list(set(posterior_index))
     prior=pd.read_csv(os.path.join(piece_directory,"prior_parameters_sequential_"+str(nsd-1)+".csv"))
@@ -72,9 +72,11 @@ def priors_history(nParams, nsd):
     infectedcases=[]
     for jk in posterior_index:
         output_directory =  piece_directory + str(int(jk)) + "/"
-        if(os.path.exists(os.path.join(output_directory,"num_infected.csv"))):
-            inf=pd.read_csv(os.path.join(output_directory,"num_infected.csv"))
-            infectedcases.append(inf["num_infected"][len(inf)-1])
+        START_DAY = (nsd-1) * NUM_DAYS
+        filename="infections_from_new_strain"+str(START_DAY)+"_"+str(NUM_DAYS)+".csv"
+        if(os.path.exists(filename)):
+            inf=pd.read_csv(filename)
+            infectedcases.append(inf['total_new_infections'][len(inf)-1])
     # sk 10/20
     minValues['INIT_FIXED_NUMBER_INFECTED']=min(infectedcases+[1]);
     maxValues['INIT_FIXED_NUMBER_INFECTED']=max(infectedcases+[1]);
