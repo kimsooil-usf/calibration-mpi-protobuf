@@ -51,7 +51,7 @@ def main():
         SEED=Allparameters['PROVIDE_INITIAL_SEED'][rank_to_use]
         SEED_GRAPH=Allparameters['PROVIDE_INITIAL_SEED_GRAPH'][rank_to_use]
 
-    print("Rank: ", rank, "\t-\t", time.ctime(time.time()), "rank2:", rank_org, "rank_to_use:", rank_to_use)
+    print("Rank: ", rank, "\t-\t", time.ctime(time.time()), "rank_org:", rank_org, "rank_to_use:", rank_to_use)
 
     command = run_parameter_simulator(Allparameters.values, rank, SEED, SEED_GRAPH, start_day, in_dir, out_dir)
 
