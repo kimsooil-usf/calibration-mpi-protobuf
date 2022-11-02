@@ -368,7 +368,7 @@ vector<intervention_params> init_intervention_params(){
 	  }
 	}
   }
-  std::cout<<std::endl<<"Intervention params size = "<<intv_params.size();
+  //std::cout<<std::endl<<"Intervention params size = "<<intv_params.size();
   return intv_params;
 }
 
@@ -624,7 +624,7 @@ vector<testing_probability> init_testing_protocol(){
 	  }
 	}
   }
-  std::cout<<std::endl<<"Intervention params size = "<<testing_protocol.size();
+  //std::cout<<std::endl<<"Intervention params size = "<<testing_protocol.size();
   return testing_protocol;
 }
 
@@ -884,7 +884,7 @@ int tstep,yes=0,vac1,vac2,wan,boost;
   }
   assert(i == GLOBAL.num_people);
 
-printf("total vaccinated1 = %lf %lf\n",totvacc1,totvacc1/GLOBAL.num_people);
+//printf("total vaccinated1 = %lf %lf\n",totvacc1,totvacc1/GLOBAL.num_people);
   // If seeding a fixed number, go through the list of seed candidates
   // and seed a randomly chosen fixed number of them
   if(GLOBAL.SEED_FIXED_NUMBER){
