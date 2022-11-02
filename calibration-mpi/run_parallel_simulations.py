@@ -53,7 +53,8 @@ def main():
 
     print("Rank: ", rank, "\t-\t", time.ctime(time.time()), "rank_org:", rank_org, "rank_to_use:", rank_to_use)
 
-    command = run_parameter_simulator(Allparameters.values, rank, SEED, SEED_GRAPH, start_day, in_dir, out_dir)
+    #command = run_parameter_simulator(Allparameters.values, rank, SEED, SEED_GRAPH, start_day, in_dir, out_dir)
+    command = run_parameter_simulator(Allparameters, rank, SEED, SEED_GRAPH, start_day, in_dir, out_dir)
 
     #print("rank, -----command (0)", rank, command)
     if piece==1:
