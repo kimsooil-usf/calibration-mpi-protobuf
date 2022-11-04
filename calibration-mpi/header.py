@@ -15,7 +15,7 @@ import argparse
 import random
 
 np.set_printoptions(threshold=np.inf)
-DATE_TO_RUN="1102-2"
+DATE_TO_RUN="1103-1"
 INPUT_DIR = "/largedisk/mpi-folder/calibration-mpi-protobuf/staticInst/output/hills_1.5m"
 OUTPUT_DIR =  "/largedisk/mpi-folder/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/"  # should be same as MPI_DIR # also use absolute path
 MPI_DIR = "/largedisk/mpi-folder/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/"  # should be same as OUTPUT_DIR
@@ -24,7 +24,7 @@ PLOT_DIR = "/largedisk/mpi-folder/calibration-mpi-protobuf/output-mpi-"+DATE_TO_
 if not os.path.exists(OUTPUT_DIR):
         os.system("mkdir -p " + OUTPUT_DIR)
 
-PIECE = 32 # 32
+PIECE = 30 # 32
 NUM_DAYS = 30
 # NUM_DAYS = 5
 
@@ -33,8 +33,8 @@ NRMSE=180 # How many RMSE indices to be used in the next piece (Top NRMSE smalle
 # NPARAMS = 400
 # NPROCESSORS = 360
 #NPARAMS = 15
-NPARAMS = 720 # Must be even number and multiple of NPROCESSORS, no error. (SK & JK 10/19)
-NPROCESSORS = 720
+NPARAMS = 360 # Must be even number and multiple of NPROCESSORS, no error. (SK & JK 10/19)
+NPROCESSORS = 360
 NPERNODE = 90
 
 # Initialize minValues, maxValues

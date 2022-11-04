@@ -654,8 +654,9 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 // if t = 0 = December 15th 2021, daily third doses = third_polynomial(t)
 // if t >138 (January 9th, 2022) daily third doses = 225/day
 
-
-
+count_type DAY_84=84;
+count_type FIVE_MONTH=5*30*GLOBAL.SIM_STEPS_PER_DAY;
+count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 
 	for(count_type j = 0; j < NUM_PEOPLE; ++j){
 		int age_index=nodes[j].age_index;
@@ -737,7 +738,7 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 					}
 			}
 //-------------------New Vaccinated2----------------------------------------------------//
-		if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine1>=84 )){//----->age between 1 and 10
+		if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine1>=DAY_84 )){//----->age between 1 and 10
 			bool vacc1=false;
 			vacc1=true;
 				if(vacc1)
@@ -747,7 +748,7 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 				}
 
 			}
-		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine1>=84)){//----->age between 1 and 10
+		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine1>=DAY_84)){//----->age between 1 and 10
 				bool vacc1=false;
 				//numvac1+=1;
 
@@ -760,7 +761,7 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 					
 			}
 		    
-		    if(age_index>5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine1>=84)){//----->age between 1 and 10
+		    if(age_index>5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine1>=DAY_84)){//----->age between 1 and 10
 				bool vacc1=false;
 				//numvac1+=1;
 
@@ -776,7 +777,7 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 
 //-------------------Waning 1---------------------------------------------------//
 
-		if((nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=5*30.0*GLOBAL.SIM_STEPS_PER_DAY )){//----->age between 1 and 10
+		if((nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=FIVE_MONTH )){//----->age between 1 and 10
 			bool vacc1=false;
 			vacc1=true;
 				if(vacc1)
@@ -788,7 +789,7 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 
 //------------------Boosted candidates--------------------------------------------//
 
-		if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY )){//----->age between 1 and 10
+		if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=SIX_MONTH )){//----->age between 1 and 10
 			bool vacc1=false;
 			vacc1=true;
 				if(vacc1)
@@ -798,7 +799,7 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 				}
 
 			}
-		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY)){//----->age between 1 and 10
+		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=SIX_MONTH)){//----->age between 1 and 10
 				bool vacc1=false;
 				//numvac1+=1;
 
@@ -811,7 +812,7 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 					
 			}
 		    
-		    if(age_index>5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY)){//----->age between 1 and 10
+		    if(age_index>5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=SIX_MONTH){//----->age between 1 and 10
 				bool vacc1=false;
 				//numvac1+=1;
 
@@ -828,7 +829,7 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 
 //-------------------Waning 2---------------------------------------------------//
 
-		if((nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=5*30.0*GLOBAL.SIM_STEPS_PER_DAY )){//----->age between 1 and 10
+		if((nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=FIVE_MONTH )){//----->age between 1 and 10
 			bool vacc1=false;
 			vacc1=true;
 				if(vacc1)
@@ -840,7 +841,7 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 
 //------------------Boosted2 candidates--------------------------------------------//
 
-		if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY )){//----->age between 1 and 10
+		if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=SIX_MONTH )){//----->age between 1 and 10
 			bool vacc1=false;
 			vacc1=true;
 				if(vacc1)
@@ -850,7 +851,7 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 				}
 
 			}
-		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY)){//----->age between 1 and 10
+		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=SIX_MONTH)){//----->age between 1 and 10
 				bool vacc1=false;
 				//numvac1+=1;
 
@@ -863,7 +864,7 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 					
 			}
 		    
-		    if(age_index>5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=6*30.0*GLOBAL.SIM_STEPS_PER_DAY)){//----->age between 1 and 10
+		    if(age_index>5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=SIX_MONTH)){//----->age between 1 and 10
 				bool vacc1=false;
 				//numvac1+=1;
 
