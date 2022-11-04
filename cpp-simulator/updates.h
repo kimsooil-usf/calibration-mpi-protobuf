@@ -10,11 +10,11 @@
 
 double update_individual_lambda_h(const agent& node, int cur_time);
 
-double update_individual_lambda_w(const agent& node, int cur_time);
+double update_individual_lambda_w(const agent& node, int cur_time,bool mask_wearing, double mask_scaling);
 
-double update_individual_lambda_c(const agent& node, int cur_time);
+double update_individual_lambda_c(const agent& node, int cur_time,bool mask_wearing,double mask_scaling);
 
-double update_individual_lambda_nbr_cell(const agent& node, int cur_time);
+double update_individual_lambda_nbr_cell(const agent& node, int cur_time, bool mask_wearing,double mask_scaling);
 
 struct node_update_status{
   bool new_infection = false;
@@ -35,20 +35,20 @@ void vaccinate_waning2_candidates(std::vector<agent>& nodes, std::vector<count_t
 //void update_vaccination_step(std::vector<house>& homes, std::vector<workplace>& workplaces,std::vector<community>& communities,std::vector<house>& houses, matrix<nbr_cell>& nbr_cells);
 
 //Returns whether the node was infected or turned symptomatic in this time step
-node_update_status update_infection(agent& node, int cur_time);
+node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,double mask_scaling);
 
-void update_all_kappa(std::vector<agent>& nodes, std::vector<house>& homes, std::vector<workplace>& workplaces, std::vector<community>& communities, matrix<nbr_cell>& nbr_cells, std::vector<intervention_params>& intv_params, int cur_time);
+void update_all_kappa(std::vector<agent>& nodes, std::vector<house>& homes, std::vector<workplace>& workplaces, std::vector<community>& communities, matrix<nbr_cell>& nbr_cells, std::vector<intervention_params>& intv_params, int cur_time, std::vector<mask>& mask);
 
 void updated_lambda_w_age_independent(const std::vector<agent>& nodes, workplace& workplace);
 
 void updated_lambda_h_age_independent(const std::vector<agent>& nodes, house& home);
 
-double updated_travel_fraction(const std::vector<agent>& nodes, int cur_time);
+double updated_travel_fraction(const std::vector<agent>& nodes, int cur_time,const std::vector<mask>& mask);
 
 
-std::vector<double> updated_travel_fraction_higher(const std::vector<agent>& nodes, int cur_time);
+std::vector<double> updated_travel_fraction_higher(const std::vector<agent>& nodes, int cur_time,const std::vector<mask>& mask);
 
-void update_lambdas(agent&node, const std::vector<house>& homes, const std::vector<workplace>& workplaces, const std::vector<community>& communities, const std::vector<std::vector<nbr_cell>>& nbr_cells, double travel_fraction, std::vector<double> travel_fraction_higher, int cur_time);
+void update_lambdas(agent&node, const std::vector<house>& homes, const std::vector<workplace>& workplaces, const std::vector<community>& communities, const std::vector<std::vector<nbr_cell>>& nbr_cells, double travel_fraction, std::vector<double> travel_fraction_higher, int cur_time,bool mask_wearing,double mask_scaling);
 
 void updated_lambda_c_local(const std::vector<agent>& nodes, community& community);
 void updated_lambda_c_local_random_community(const std::vector<agent>& nodes, const std::vector<community>& communities, std::vector<house>& houses);

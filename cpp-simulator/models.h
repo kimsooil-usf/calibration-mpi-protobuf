@@ -1255,6 +1255,14 @@ struct agent{
 		   || infection_status == Progression::critical
 		   || infection_status == Progression::dead);
   }
+  inline bool travels_private() const {
+	return forced_to_take_train
+	  && has_to_travel && attending
+	  && !((quarantined && compliant)
+		   || infection_status == Progression::hospitalised
+		   || infection_status == Progression::critical
+		   || infection_status == Progression::dead);
+  }
 
   //attendance probability at given time, for the agent
   double get_attendance_probability(count_type time) const;

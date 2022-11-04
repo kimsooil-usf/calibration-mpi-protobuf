@@ -40,9 +40,10 @@ double update_individual_lambda_h(const agent& node,int cur_time){
 	* node.kappa_H;
 }
 
-double update_individual_lambda_w(const agent& node, int cur_time){
+double update_individual_lambda_w(const agent& node, int cur_time,bool mask_wearing,double mask_scaling){
   double mask_factor = 1.0;
-  if(mask_active(cur_time) && node.compliant){
+  bool compliant=mask_wearing;
+  if(mask_active(cur_time) && compliant){// && node.compliant){{//Shakir-old logic for checking compliant is gone. Because there is no compliant node found in the DT algorithm
 	  mask_factor = GLOBAL.MASK_FACTOR;
   }
   return (node.infective?1.0:0.0)
@@ -54,9 +55,10 @@ double update_individual_lambda_w(const agent& node, int cur_time){
 	* mask_factor;
 }
 
-double update_individual_lambda_c(const agent& node, int cur_time){
+double update_individual_lambda_c(const agent& node, int cur_time,bool mask_wearing, double mask_scaling){
   double mask_factor = 1.0;
-  if(mask_active(cur_time) && node.compliant){
+  bool compliant=mask_wearing;//bernoulli(mask_scaling);
+  if(mask_active(cur_time) && compliant){//&& node.compliant){{//Shakir-old logic for checking compliant is gone. Because there is no compliant node found in the DT algorithm
 	  mask_factor = GLOBAL.MASK_FACTOR;
   }
   return (node.infective?1.0:0.0)
@@ -70,9 +72,10 @@ double update_individual_lambda_c(const agent& node, int cur_time){
 	// optimised version: return node.lambda_h * node.funct_d_ck;
 }
 
-double update_individual_lambda_nbr_cell(const agent& node, int cur_time){
+double update_individual_lambda_nbr_cell(const agent& node, int cur_time,bool mask_wearing,double mask_scaling){
   double mask_factor = 1.0;
-  if(mask_active(cur_time) && node.compliant){
+  bool compliant=mask_wearing;
+  if(mask_active(cur_time) && compliant){// && node.compliant){//Shakir-old logic for checking compliant is gone. Because there is no compliant node found in the DT algorithm
 	  mask_factor = GLOBAL.MASK_FACTOR;
   }
   return (node.infective?1.0:0.0)
@@ -85,7 +88,7 @@ double update_individual_lambda_nbr_cell(const agent& node, int cur_time){
 }
 
 //Returns whether the node was infected or turned symptomatic in this time step
-node_update_status update_infection(agent& node, int cur_time){
+node_update_status update_infection(agent& node, int cur_time,bool mask_wearing, double mask_scaling){
   int age_index = node.age_index;
   bool transition = false;
   node_update_status update_status;
@@ -470,14 +473,14 @@ node_update_status update_infection(agent& node, int cur_time){
 
 
   node.lambda_h = update_individual_lambda_h(node,cur_time);
-  node.lambda_w = update_individual_lambda_w(node,cur_time);
-  node.lambda_c = update_individual_lambda_c(node,cur_time);
-  node.lambda_nbr_cell = update_individual_lambda_nbr_cell(node,cur_time);
+  node.lambda_w = update_individual_lambda_w(node,cur_time,mask_wearing,mask_scaling);
+  node.lambda_c = update_individual_lambda_c(node,cur_time,mask_wearing,mask_scaling);
+  node.lambda_nbr_cell = update_individual_lambda_nbr_cell(node,cur_time,mask_wearing,mask_scaling);
 
   return update_status;
 }
 
-void update_all_kappa(vector<agent>& nodes, vector<house>& homes, vector<workplace>& workplaces, vector<community>& communities, matrix<nbr_cell>& nbr_cells, vector<intervention_params>& intv_params, int cur_time){
+void update_all_kappa(vector<agent>& nodes, vector<house>& homes, vector<workplace>& workplaces, vector<community>& communities, matrix<nbr_cell>& nbr_cells, vector<intervention_params>& intv_params, int cur_time, vector<mask>& mask){
   intervention_params intv_params_local;
   if(cur_time < GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS*GLOBAL.SIM_STEPS_PER_DAY){
     //get_kappa_no_intervention(nodes, homes, workplaces, communities,cur_time);
@@ -552,7 +555,7 @@ void update_all_kappa(vector<agent>& nodes, vector<house>& homes, vector<workpla
 							  GLOBAL.FIRST_PERIOD, GLOBAL.SECOND_PERIOD);
 	  break;
 	case Intervention::intv_Hillsborough:
-      get_kappa_Hillsborough(nodes, homes, workplaces, communities, cur_time);
+      get_kappa_Hillsborough(nodes, homes, workplaces, communities, cur_time, mask);
 	  break;
     case Intervention::intv_nbr_containment:
       get_kappa_containment(nodes, homes, workplaces, communities, nbr_cells, cur_time, GLOBAL.FIRST_PERIOD, Intervention::intv_nbr_containment);
@@ -914,7 +917,7 @@ vector<double> updated_lambda_c_local_age_dependent(const vector<agent>& nodes, 
  return lambda_age_group;
 }
 
-double updated_travel_fraction(const vector<agent>& nodes, const int cur_time){
+double updated_travel_fraction(const vector<agent>& nodes, const int cur_time,const vector<mask>& mask){
   double infected_distance = 0, total_distance = 0;
   count_type actual_travellers = 0, usual_travellers = 0;
 
@@ -931,9 +934,10 @@ double updated_travel_fraction(const vector<agent>& nodes, const int cur_time){
 	if(nodes[i].has_to_travel){
 	  ++usual_travellers;
 	}
+	bool compliant=bernoulli(mask[int(cur_time/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance);
 	if(nodes[i].travels()){
 	  double mask_factor = 1.0;
-	  if(mask_active(cur_time) && nodes[i].compliant){
+	  if(mask_active(cur_time) && compliant){// && nodes[i].compliant){
 		mask_factor = MASK_FACTOR;
 	  }
 	  ++actual_travellers;
@@ -973,7 +977,7 @@ double updated_travel_fraction(const vector<agent>& nodes, const int cur_time){
   
 }
 
-vector<double>  updated_travel_fraction_higher(const vector<agent>& nodes, const int cur_time){
+vector<double>  updated_travel_fraction_higher(const vector<agent>& nodes, const int cur_time,const vector<mask>& mask){
   //double infected_distance_higher, total_distance = 0;//---Blocked by shakir for new variants
 
   //-------lambda_incoming_higher for variants begins--shakir------//
@@ -1011,12 +1015,14 @@ zeros.push_back(0);
   reduction (+: usual_travellers, actual_travellers,  \
 			 infected_distance_higher, total_distance)
   for(count_type i = 0; i < SIZE; ++i){
+	bool compliant=bernoulli(mask[int(cur_time/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance);
+
 	if(nodes[i].has_to_travel){
 	  ++usual_travellers;
 	}
 	if(nodes[i].travels()){
 	  double mask_factor = 1.0;
-	  if(mask_active(cur_time) && nodes[i].compliant){
+	  if(mask_active(cur_time) && compliant){// && nodes[i].compliant){
 		mask_factor = MASK_FACTOR;
 	  }
 	  ++actual_travellers;
@@ -1055,10 +1061,11 @@ zeros.push_back(0);
 }
 
 
-void update_lambdas(agent&node, const vector<house>& homes, const vector<workplace>& workplaces, const vector<community>& communities, const vector<vector<nbr_cell>>& nbr_cells, const double travel_fraction, std::vector<double> travel_fraction_higher, const int cur_time){
+void update_lambdas(agent&node, const vector<house>& homes, const vector<workplace>& workplaces, const vector<community>& communities, const vector<vector<nbr_cell>>& nbr_cells, const double travel_fraction, std::vector<double> travel_fraction_higher, const int cur_time,bool mask_wearing,double mask_scaling){
   node.lambda_incoming.set_zero();
  // node.lambda_incoming_higher.set_zero();//---delete shakir later
 
+bool compliant=mask_wearing;
 //-------lambda_incoming_higher for variants--shakir------//
   node.lambda_incoming_higher1.set_zero();
   node.lambda_incoming_higher2.set_zero();
@@ -1362,9 +1369,16 @@ void update_lambdas(agent&node, const vector<house>& homes, const vector<workpla
 
   }
 
-
+//node.forced_to_take_train=true;
+/*
+forced_to_take_train
+	  && has_to_travel && attending
+	  && !((quarantined && compliant)
+*///---These variable need to be true for travel to happen for the individual.
   //Travel only happens at "odd" times, twice a day
-//std::cout<<"curr time, cur_time%2, has to travel, attending, compliant, and quarantined "<<cur_time<<"\t"<<cur_time%2<<"\t"<<node.has_to_travel<<"\t"<<node.has_to_travel<<"\t"<<node.attending<<"\t"<<node.compliant<<"\t"<<node.quarantined<<"\t"<<(!(node.quarantined && node.compliant))<<"\t"<<node.travels()<<std::endl;
+  if(cur_time>=GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS && node.forced_to_take_train)
+//std::cout<<"curr time, cur_time%2,forced_to_take_train, has to travel, attending, compliant, and quarantined, (!(node.quarantined && node.compliant)),  node.travels()\n"<<cur_time<<"\t"<<cur_time%2<<"\t"<<node.forced_to_take_train<<"\t"<<node.has_to_travel<<"\t"<<node.has_to_travel<<"\t"<<node.attending<<"\t"<<node.compliant<<"\t"<<node.quarantined<<"\t"<<(!(node.quarantined && node.compliant))<<"\t"<<node.travels()<<std::endl;
+std::cout<<"UPDATING node is forced to take train at time"<<"\t"<<node.forced_to_take_train<<"\t"<<cur_time<<"\t"<<node.travels()<<std::endl;
 
   if((cur_time % 2) && node.travels()){
 	node.lambda_incoming.travel = GLOBAL.BETA_TRAVEL
@@ -1408,7 +1422,7 @@ void update_lambdas(agent&node, const vector<house>& homes, const vector<workpla
 
   }
 
-  if(mask_active(cur_time) && node.compliant){
+  if(mask_active(cur_time)&& compliant){ // && node.compliant){
 	node.lambda_incoming.work *= GLOBAL.MASK_FACTOR;
 	node.lambda_incoming.community *= GLOBAL.MASK_FACTOR;
 	node.lambda_incoming.travel *= GLOBAL.MASK_FACTOR;

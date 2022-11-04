@@ -49,6 +49,6 @@ void get_kappa_Mumbai_alternative_version(std::vector<agent>& nodes, std::vector
 
 void get_kappa_Mumbai_cyclic(std::vector<agent>& nodes, std::vector<house>& homes, const std::vector<workplace>& workplaces, std::vector<community>& communities, const matrix<nbr_cell>& nbr_cells, int cur_time, double FIRST_PERIOD, double SECOND_PERIOD);
 
-void get_kappa_Hillsborough(std::vector<agent>& nodes, std::vector<house>& homes, const std::vector<workplace>& workplaces, std::vector<community>& communities, int cur_time);
+void get_kappa_Hillsborough(std::vector<agent>& nodes, std::vector<house>& homes, const std::vector<workplace>& workplaces, std::vector<community>& communities, int cur_time, std::vector<mask>& mask);
 
 #endif

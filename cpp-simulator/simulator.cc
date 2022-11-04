@@ -48,7 +48,7 @@ plot_data_struct run_simulation(){
 //std::cout<<"Enabled neighbors? before intiating"<<"\t"<<GLOBAL.ENABLE_NBR_CELLS<<std::endl;//---delete shakir
  
   auto homes = init_homes();
-  //auto mask = init_mask();//---disabled temporariliy --shakir
+  auto mask = init_mask();//---disabled temporariliy --shakir
   
   auto workplaces = init_workplaces();
   auto communities = init_community();
@@ -143,6 +143,7 @@ plot_data_struct run_simulation(){
 	 {"num_infected", {}},
 	 {"num_exposed", {}},
 	 {"num_hospitalised", {}},
+	 {"num_susceptible",{}},
 	{"num_unvaccinated", {}},
 		{"num_vaccinated1", {}},
 		{"num_vaccinated2", {}},
@@ -493,6 +494,8 @@ plot_data_struct run_simulation(){
   for(count_type time_step = time_step_start; time_step < time_step_end; ++time_step){
 
 int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
+double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance;//Shakir new mask and google trends informed compliance and risk reduction scheme....
+
 //----Time depdendent mask factor
 //GLOBAL.MASK_FACTOR=0.8;
 //GLOBAL.MASK_ACTIVE=bernoulli(mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance);//put the time dependent function here indicating mask active or not.
@@ -559,7 +562,10 @@ int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
                     * nodes[j].get_attendance_probability(time_step));
 		nodes[j].forced_to_take_train = GLOBAL.TRAINS_RUNNING
 		  && bernoulli(GLOBAL.FRACTION_FORCED_TO_TAKE_TRAIN);
-		  //std::cout<<"node is forced to take train"<<"\t"<<nodes[j].forced_to_take_train<<std::endl;
+		  if(time_step>=GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS && nodes[j].forced_to_take_train )
+		  {
+		  std::cout<<"node is forced to take train at time"<<"\t"<<nodes[j].forced_to_take_train<<"\t"<<time_step<<std::endl;
+		}
       }
     }
 
@@ -874,9 +880,8 @@ int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
 		}
 
 //----vaccine paraemeters need work: to be updated according to new data and functional forms as and when they become available
-
-
-	  auto node_update_status = update_infection(nodes[j], time_step); 
+    bool mask_wearing=bernoulli(mask_scaling);// for deciding individual lelvel mask wearing;
+	  auto node_update_status = update_infection(nodes[j], time_step, mask_wearing,mask_scaling); 
 	  nodes[j].psi_T = psi_T(nodes[j], time_step);
 
 
@@ -953,141 +958,141 @@ int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
                                   }
                               }
                     }					
-//---New suceptible individuals by Shakir--second wave
-	  if(time_step==GLOBAL.TIME_ALPHA-60){
-		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
-			  bool is_reinfection_candidate=bernoulli(GLOBAL.FRACTION_SUSCEPTIBLE_ALPHA);
-			  if(is_reinfection_candidate){
-				  nodes[j].infection_status=Progression::susceptible;
-			  }
-		  }
-	  }
-	  //---New exposed individuals by Shakir--second (alpha) wave
-	  if(time_step==GLOBAL.TIME_ALPHA){
-		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
-			  bool is_reinfection_candidate=bernoulli(GLOBAL.REINFECTION_ALPHA);
-			  if(is_reinfection_candidate){
-				  nodes[j].infection_status=Progression::exposed;
-                  nodes[j].new_strain = 1;		//new strain 1 is alpha
-		          nodes[j].infectiousness = nodes[j].infectiousness_original*GLOBAL.INFECTIOUSNESS_ALPHA;
+// //---New suceptible individuals by Shakir--second wave
+// 	  if(time_step==GLOBAL.TIME_ALPHA-60){
+// 		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
+// 			  bool is_reinfection_candidate=bernoulli(GLOBAL.FRACTION_SUSCEPTIBLE_ALPHA);
+// 			  if(is_reinfection_candidate){
+// 				  nodes[j].infection_status=Progression::susceptible;
+// 			  }
+// 		  }
+// 	  }
+// 	  //---New exposed individuals by Shakir--second (alpha) wave
+// 	  if(time_step==GLOBAL.TIME_ALPHA){
+// 		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
+// 			  bool is_reinfection_candidate=bernoulli(GLOBAL.REINFECTION_ALPHA);
+// 			  if(is_reinfection_candidate){
+// 				  nodes[j].infection_status=Progression::exposed;
+//                   nodes[j].new_strain = 1;		//new strain 1 is alpha
+// 		          nodes[j].infectiousness = nodes[j].infectiousness_original*GLOBAL.INFECTIOUSNESS_ALPHA;
 
-				  nodes[j].time_of_infection=time_step;
-			  }
-		  }
-	  }
+// 				  nodes[j].time_of_infection=time_step;
+// 			  }
+// 		  }
+// 	  }
 
-//---New susceptible individuals by Shakir--- third (delta) wave
-	  if(time_step==GLOBAL.TIME_DELTA-60){
-		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
-			  bool is_reinfection_candidate=bernoulli(GLOBAL.FRACTION_SUSCEPTIBLE_DELTA);
-			  if(is_reinfection_candidate){
-				  nodes[j].infection_status=Progression::susceptible;
-			  }
-		  }
-	  }
-	  //---New exposed individuals by Shakir--third (delta) wave
-	  if(time_step==GLOBAL.TIME_DELTA){
-		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
-			  bool is_reinfection_candidate=bernoulli(GLOBAL.REINFECTION_DELTA);
-			  if(is_reinfection_candidate){
-				  nodes[j].infection_status=Progression::exposed;
-				  nodes[j].time_of_infection=time_step;
-                  nodes[j].new_strain = 2;//new_strain=2 is delta		
-		          nodes[j].infectiousness = nodes[j].infectiousness_original*GLOBAL.INFECTIOUSNESS_DELTA;
+// //---New susceptible individuals by Shakir--- third (delta) wave
+// 	  if(time_step==GLOBAL.TIME_DELTA-60){
+// 		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
+// 			  bool is_reinfection_candidate=bernoulli(GLOBAL.FRACTION_SUSCEPTIBLE_DELTA);
+// 			  if(is_reinfection_candidate){
+// 				  nodes[j].infection_status=Progression::susceptible;
+// 			  }
+// 		  }
+// 	  }
+// 	  //---New exposed individuals by Shakir--third (delta) wave
+// 	  if(time_step==GLOBAL.TIME_DELTA){
+// 		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
+// 			  bool is_reinfection_candidate=bernoulli(GLOBAL.REINFECTION_DELTA);
+// 			  if(is_reinfection_candidate){
+// 				  nodes[j].infection_status=Progression::exposed;
+// 				  nodes[j].time_of_infection=time_step;
+//                   nodes[j].new_strain = 2;//new_strain=2 is delta		
+// 		          nodes[j].infectiousness = nodes[j].infectiousness_original*GLOBAL.INFECTIOUSNESS_DELTA;
 
-			  }
-		  }
-	  }
+// 			  }
+// 		  }
+// 	  }
 
 
-	  //---New susceptible individuals by Shakir--fourth (omicron) wave
-	  if(time_step==GLOBAL.TIME_OMICRON-60){
-		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
-			  bool is_reinfection_candidate=bernoulli(GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON);
-			  if(is_reinfection_candidate){
-				  nodes[j].infection_status=Progression::susceptible;
-			  }
-		  }
-	  }	  
-	  if(time_step==GLOBAL.TIME_OMICRON){
-		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
-			  bool is_reinfection_candidate=bernoulli(GLOBAL.REINFECTION_OMICRON);
-			  if(is_reinfection_candidate){
-				  nodes[j].infection_status=Progression::exposed;
-				  nodes[j].time_of_infection=time_step;
-                  nodes[j].new_strain = 3;//new_strain 3 is omicron		
-		          nodes[j].infectiousness = nodes[j].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON;
+// 	  //---New susceptible individuals by Shakir--fourth (omicron) wave
+// 	  if(time_step==GLOBAL.TIME_OMICRON-60){
+// 		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
+// 			  bool is_reinfection_candidate=bernoulli(GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON);
+// 			  if(is_reinfection_candidate){
+// 				  nodes[j].infection_status=Progression::susceptible;
+// 			  }
+// 		  }
+// 	  }	  
+// 	  if(time_step==GLOBAL.TIME_OMICRON){
+// 		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
+// 			  bool is_reinfection_candidate=bernoulli(GLOBAL.REINFECTION_OMICRON);
+// 			  if(is_reinfection_candidate){
+// 				  nodes[j].infection_status=Progression::exposed;
+// 				  nodes[j].time_of_infection=time_step;
+//                   nodes[j].new_strain = 3;//new_strain 3 is omicron		
+// 		          nodes[j].infectiousness = nodes[j].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON;
 
-			  }
-		  }
-	  }
+// 			  }
+// 		  }
+// 	  }
 
 		
-	  //---New susceptible individuals by Shakir--fifth (Omicron_new) wave
-	  if(time_step==GLOBAL.TIME_OMICRON_NEW-60){
-		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
-			  bool is_reinfection_candidate=bernoulli(GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON_NEW);
-			  if(is_reinfection_candidate){
-				  nodes[j].infection_status=Progression::susceptible;
-			  }
-		  }
-	  }	  
-	  if(time_step==GLOBAL.TIME_OMICRON_NEW){
-		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
-			  bool is_reinfection_candidate=bernoulli(GLOBAL.REINFECTION_OMICRON_NEW);
-			  if(is_reinfection_candidate){
-				  nodes[j].infection_status=Progression::exposed;
-				  nodes[j].time_of_infection=time_step;
-                  nodes[j].new_strain = 4;//new_strain=4 is omicron new.		
-		          nodes[j].infectiousness = nodes[j].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_NEW;
+// 	  //---New susceptible individuals by Shakir--fifth (Omicron_new) wave
+// 	  if(time_step==GLOBAL.TIME_OMICRON_NEW-60){
+// 		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
+// 			  bool is_reinfection_candidate=bernoulli(GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON_NEW);
+// 			  if(is_reinfection_candidate){
+// 				  nodes[j].infection_status=Progression::susceptible;
+// 			  }
+// 		  }
+// 	  }	  
+// 	  if(time_step==GLOBAL.TIME_OMICRON_NEW){
+// 		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
+// 			  bool is_reinfection_candidate=bernoulli(GLOBAL.REINFECTION_OMICRON_NEW);
+// 			  if(is_reinfection_candidate){
+// 				  nodes[j].infection_status=Progression::exposed;
+// 				  nodes[j].time_of_infection=time_step;
+//                   nodes[j].new_strain = 4;//new_strain=4 is omicron new.		
+// 		          nodes[j].infectiousness = nodes[j].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_NEW;
 
-			  }
-		  }
-	  }
+// 			  }
+// 		  }
+// 	  }
 
-	  //---New susceptible individuals by Shakir--fifth (Omicron_new) wave
-	  if(time_step==GLOBAL.TIME_OMICRON_BA4-60){
-		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
-			  bool is_reinfection_candidate=bernoulli(GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON_BA4);
-			  if(is_reinfection_candidate){
-				  nodes[j].infection_status=Progression::susceptible;
-			  }
-		  }
-	  }	  
-	  if(time_step==GLOBAL.TIME_OMICRON_BA4){
-		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
-			  bool is_reinfection_candidate=bernoulli(GLOBAL.REINFECTION_OMICRON_BA4);
-			  if(is_reinfection_candidate){
-				  nodes[j].infection_status=Progression::exposed;
-				  nodes[j].time_of_infection=time_step;
-                  nodes[j].new_strain = 5;//new_strain=4 is omicron new.		
-		          nodes[j].infectiousness = nodes[j].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA4;
+// 	  //---New susceptible individuals by Shakir--fifth (Omicron_new) wave
+// 	  if(time_step==GLOBAL.TIME_OMICRON_BA4-60){
+// 		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
+// 			  bool is_reinfection_candidate=bernoulli(GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON_BA4);
+// 			  if(is_reinfection_candidate){
+// 				  nodes[j].infection_status=Progression::susceptible;
+// 			  }
+// 		  }
+// 	  }	  
+// 	  if(time_step==GLOBAL.TIME_OMICRON_BA4){
+// 		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
+// 			  bool is_reinfection_candidate=bernoulli(GLOBAL.REINFECTION_OMICRON_BA4);
+// 			  if(is_reinfection_candidate){
+// 				  nodes[j].infection_status=Progression::exposed;
+// 				  nodes[j].time_of_infection=time_step;
+//                   nodes[j].new_strain = 5;//new_strain=4 is omicron new.		
+// 		          nodes[j].infectiousness = nodes[j].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA4;
 
-			  }
-		  }
-	  }
+// 			  }
+// 		  }
+// 	  }
 
-	  //---New susceptible individuals by Shakir--fifth (Omicron_new) wave
-	  if(time_step==GLOBAL.TIME_OMICRON_BA5-60){
-		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
-			  bool is_reinfection_candidate=bernoulli(GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON_BA5);
-			  if(is_reinfection_candidate){
-				  nodes[j].infection_status=Progression::susceptible;
-			  }
-		  }
-	  }	  
-	  if(time_step==GLOBAL.TIME_OMICRON_BA5){
-		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
-			  bool is_reinfection_candidate=bernoulli(GLOBAL.REINFECTION_OMICRON_BA5);
-			  if(is_reinfection_candidate){
-				  nodes[j].infection_status=Progression::exposed;
-				  nodes[j].time_of_infection=time_step;
-                  nodes[j].new_strain = 6;//new_strain=4 is omicron new.		
-		          nodes[j].infectiousness = nodes[j].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA5;
+// 	  //---New susceptible individuals by Shakir--fifth (Omicron_new) wave
+// 	  if(time_step==GLOBAL.TIME_OMICRON_BA5-60){
+// 		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
+// 			  bool is_reinfection_candidate=bernoulli(GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON_BA5);
+// 			  if(is_reinfection_candidate){
+// 				  nodes[j].infection_status=Progression::susceptible;
+// 			  }
+// 		  }
+// 	  }	  
+// 	  if(time_step==GLOBAL.TIME_OMICRON_BA5){
+// 		  if(nodes[j].infection_status==Progression::recovered || nodes[j].infection_status==Progression::susceptible){
+// 			  bool is_reinfection_candidate=bernoulli(GLOBAL.REINFECTION_OMICRON_BA5);
+// 			  if(is_reinfection_candidate){
+// 				  nodes[j].infection_status=Progression::exposed;
+// 				  nodes[j].time_of_infection=time_step;
+//                   nodes[j].new_strain = 6;//new_strain=4 is omicron new.		
+// 		          nodes[j].infectiousness = nodes[j].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA5;
 
-			  }
-		  }
-	  }
+// 			  }
+// 		  }
+// 	  }
 
 
 	  if(node_update_status.new_infection){
@@ -1141,33 +1146,33 @@ int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
 	//----------Selecting individuals to be vaccinated based on number of doseses delivered, This is is given by the variables 'vaccFn',"vaccFn2","vaccFn3","vaccFn4"----------------------------//
 
 
-	       if ((time_step >= Time_VaccStart && new_day==0)){
+	    //    if ((time_step >= Time_VaccStart && new_day==0)){
 
-				vaccinate_firstdose(nodes, new_vaccinated1_candidates_LE20, vaccFn*0.2, time_step);
-				vaccinate_firstdose(nodes, new_vaccinated1_candidates_30_to_60, vaccFn*0.3, time_step);
-				vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*0.5, time_step);
+		// 		vaccinate_firstdose(nodes, new_vaccinated1_candidates_LE20, vaccFn*0.2, time_step);
+		// 		vaccinate_firstdose(nodes, new_vaccinated1_candidates_30_to_60, vaccFn*0.3, time_step);
+		// 		vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*0.5, time_step);
 
-				vaccinate_second_dose(nodes, new_vaccinated2_candidates_LE20, vaccFn2*0.2, time_step);
-				vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.3, time_step);
-				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.5, time_step);
+		// 		vaccinate_second_dose(nodes, new_vaccinated2_candidates_LE20, vaccFn2*0.2, time_step);
+		// 		vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.3, time_step);
+		// 		vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.5, time_step);
 
-				vaccinate_waning_candidates(nodes, new_waning_candidates_LE20, vaccFn2*0.2, time_step);
+		// 		vaccinate_waning_candidates(nodes, new_waning_candidates_LE20, vaccFn2*0.2, time_step);
 
-				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3, time_step);
-				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3, time_step);
-				vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.5, time_step);
+		// 		vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3, time_step);
+		// 		vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3, time_step);
+		// 		vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.5, time_step);
 
-				vaccinate_waning2_candidates(nodes, new_waning2_candidates_LE20, vaccFn2*0.2, time_step);
+		// 		vaccinate_waning2_candidates(nodes, new_waning2_candidates_LE20, vaccFn2*0.2, time_step);
 
-				vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3, time_step);
-				vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3, time_step);
-				vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT60, vaccFn4*0.5, time_step);
+		// 		vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3, time_step);
+		// 		vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3, time_step);
+		// 		vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT60, vaccFn4*0.5, time_step);
 
-		   }
+		//    }
 	
 	
 
-	update_all_kappa(nodes, homes, workplaces, communities, nbr_cells, intv_params, time_step);
+	update_all_kappa(nodes, homes, workplaces, communities, nbr_cells, intv_params, time_step, mask);
 	if(GLOBAL.ENABLE_TESTING){
 		update_test_status(nodes, time_step);
 		update_infection_testing(nodes, homes, time_step);
@@ -1285,14 +1290,23 @@ int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
 	update_lambda_c_global(communities, community_fk_matrix);
 	update_lambda_nbr_cells(nodes, nbr_cells, homes, communities);
 
-	travel_fraction = updated_travel_fraction(nodes,time_step);
-	travel_fraction_higher = updated_travel_fraction_higher(nodes,time_step);
+	travel_fraction = updated_travel_fraction(nodes,time_step,mask);
+	travel_fraction_higher = updated_travel_fraction_higher(nodes,time_step,mask);
+
+    //----Hard code mask_wearing into node properties.
+
+
+
+	//------------------------------------------------------------//
+
+
 
 	// Update lambdas for the next step
 #pragma omp parallel for default(none)									\
   shared(travel_fraction, travel_fraction_higher, time_step, homes, workplaces, communities, nbr_cells, nodes, NUM_PEOPLE)
 	for (count_type j = 0; j < NUM_PEOPLE; ++j){
-	  update_lambdas(nodes[j], homes, workplaces, communities, nbr_cells, travel_fraction, travel_fraction_higher, time_step);
+		bool mask_wearing=bernoulli(mask_scaling);
+	  update_lambdas(nodes[j], homes, workplaces, communities, nbr_cells, travel_fraction, travel_fraction_higher, time_step,mask_wearing,mask_scaling);
 	}
 	// sk ///////////////////////////
 		if (GLOBAL.ENABLE_COHORTS && GLOBAL.TRAINS_RUNNING)
@@ -1308,6 +1322,7 @@ int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
 	  n_critical = 0,
 	  n_fatalities = 0,
 	  n_recovered = 0,
+	  n_susceptible = 0,
 	////////////// sk:  begin: newly added data
 	n_unvaccinated=0,
 	n_vaccinated1=0,
@@ -1458,7 +1473,7 @@ int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
   reduction(+: n_infected, n_exposed,									\
 			n_hospitalised, n_symptomatic,								\
 			n_critical, n_fatalities,									\
-			n_recovered, n_affected, n_infective,						\
+			n_recovered,n_susceptible, n_affected, n_infective,						\
 				n_unvaccinated,n_vaccinated1,n_vaccinated2,n_waning,n_boosted,n_boosted2,           \
 				n_infected_age_group_1,n_infected_age_group_2,   								\
                 n_infected_age_group_3,n_infected_age_group_4,   								\
@@ -1561,6 +1576,7 @@ int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
 		susceptible_lambda_PROJECT += nodes[j].lambda_incoming.project;
 		susceptible_lambda_NBR_CELL += nodes[j].lambda_incoming.nbr_cell;
 		susceptible_lambda_RANDOM_COMMUNITY += nodes[j].lambda_incoming.random_community;
+		n_susceptible +=1;
 	  }
 	  if(infection_status == Progression::infective
 		 || infection_status == Progression::symptomatic
@@ -2078,6 +2094,7 @@ int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
 	plot_data.nums["num_infected"].push_back({time_step, {n_infected}});
 	plot_data.nums["num_exposed"].push_back({time_step, {n_exposed}});
 	plot_data.nums["num_hospitalised"].push_back({time_step, {n_hospitalised}});
+	plot_data.nums["num_susceptible"].push_back({time_step, {n_susceptible}});
 
 	plot_data.nums["num_unvaccinated"].push_back({time_step, {n_unvaccinated}});
 	plot_data.nums["num_vaccinated1"].push_back({time_step, {n_vaccinated1}});

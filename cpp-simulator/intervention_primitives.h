@@ -8,10 +8,12 @@
 constexpr int UPPER_AGE = 65;
 
 void set_kappa_base_node(agent& node, double community_factor, int cur_time);
+void set_kappa_hillsborough_base_node(agent& node, double community_factor, int cur_time,double mask_scaling);//new function added-Shakir
+
 
 void set_kappa_lockdown_node(agent& node, int cur_time, const intervention_params intv_params);
 
-void set_kappa_lockdown_hillsborugh_node(agent& node, int cur_time, const intervention_hillsborough_params intv_params);
+void set_kappa_lockdown_hillsborugh_node(agent& node, int cur_time, const intervention_hillsborough_params intv_params,double mask_scaling);
 
 void modify_kappa_SDE_node(agent& node);
 

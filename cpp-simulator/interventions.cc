@@ -520,7 +520,7 @@ void get_kappa_custom_modular(std::vector<agent>& nodes, std::vector<house>& hom
 void get_kappa_custom_modular_hillsborough(std::vector<agent>& nodes, std::vector<house>& homes,
 							  const std::vector<workplace>& workplaces, std::vector<community>& communities,
 							  const matrix<nbr_cell>& nbr_cells,
-							  const int cur_time, const intervention_hillsborough_params intv_params){
+							  const int cur_time, const intervention_hillsborough_params intv_params, std::vector<mask>& mask){
   if(intv_params.trains_active){
     GLOBAL.TRAINS_RUNNING = true;
     GLOBAL.FRACTION_FORCED_TO_TAKE_TRAIN = intv_params.fraction_forced_to_take_train;
@@ -556,10 +556,14 @@ void get_kappa_custom_modular_hillsborough(std::vector<agent>& nodes, std::vecto
 #pragma omp parallel for default(none) shared(nodes, homes, communities, intv_params, cur_time, GLOBAL)
   for (count_type count = 0; count < nodes.size(); ++count){
     //choose base kappas
+	double mask_scaling=mask[int(cur_time/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance;
+	bool mask_wearing=bernoulli(mask_scaling);
     if(intv_params.lockdown && cur_time<GLOBAL.SIM_STEPS_PER_DAY*(GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS+GLOBAL.FIRST_PERIOD+GLOBAL.SECOND_PERIOD+GLOBAL.THIRD_PERIOD+GLOBAL.FOURTH_PERIOD)){
-      set_kappa_lockdown_hillsborugh_node(nodes[count], cur_time, intv_params);	  
+      set_kappa_lockdown_hillsborugh_node(nodes[count], cur_time, intv_params, mask_scaling);	  
     }else{
-      set_kappa_base_node(nodes[count], intv_params.community_factor, cur_time);
+      //set_kappa_base_node(nodes[count], intv_params.community_factor, cur_time);//Blocked by shakir as new function specific to hillborough is implemented.
+	  set_kappa_hillsborough_base_node(nodes[count], intv_params.community_factor, cur_time, mask_scaling);
+	  //printf("lock down is exited %d %d\n",nodes[count].quarantined,nodes[count].compliant);
     }
 
     //modifiers begin
@@ -773,7 +777,7 @@ void get_kappa_Mumbai_cyclic(vector<agent>& nodes, vector<house>& homes,
   }
 }
 
-void get_kappa_Hillsborough(vector<agent>& nodes, vector<house>& homes, const vector<workplace>& workplaces, vector<community>& communities, const int cur_time){
+void get_kappa_Hillsborough(vector<agent>& nodes, vector<house>& homes, const vector<workplace>& workplaces, vector<community>& communities, const int cur_time, vector<mask>& mask){
 	const double FIRST_PERIOD = 3;
 	const double SECOND_PERIOD = 1;
 	const double THIRD_PERIOD = 3;
@@ -814,7 +818,12 @@ void get_kappa_Hillsborough(vector<agent>& nodes, vector<house>& homes, const ve
 	if(cur_time> GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS*GLOBAL.SIM_STEPS_PER_DAY && cur_time<GLOBAL.SIM_STEPS_PER_DAY*(GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS+GLOBAL.FIRST_PERIOD+GLOBAL.SECOND_PERIOD+GLOBAL.THIRD_PERIOD+GLOBAL.FOURTH_PERIOD)){
 	  //get_kappa_lockdown(nodes, homes, workplaces, communities, cur_time);
 	  intv_params.lockdown = true;
-	  get_kappa_custom_modular_hillsborough(nodes, homes, workplaces, communities, nbr_cells, cur_time, intv_params);
+	  get_kappa_custom_modular_hillsborough(nodes, homes, workplaces, communities, nbr_cells, cur_time, intv_params,mask);
+	}
+	else{
+		intv_params.lockdown = false;
+		get_kappa_custom_modular_hillsborough(nodes, homes, workplaces, communities, nbr_cells, cur_time, intv_params,mask);
+
 	}	
 }
 //The version below is an older version, based on a different generic implementation

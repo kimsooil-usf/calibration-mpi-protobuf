@@ -50,7 +50,11 @@ vector<house> init_homes(){
   count_type index = 0;
 
   bool compliance; 
-  
+  int kk=0;
+  std::ofstream fp;
+  fp.open("compliancecheck.csv");
+  fp<<"homes"<<","<<"compliance"<<std::endl;
+
   for (auto &elem: houseJSON.GetArray()){
     temp_non_compliance_metric = get_non_compliance_metric();
     if(elem.HasMember("slum") && elem["slum"].GetInt()){
@@ -73,7 +77,14 @@ vector<house> init_homes(){
 	  homes[index].age_dependent_mixing.resize(GLOBAL.NUM_AGE_GROUPS, 0);
 	}
 	++index;
+	if(homes[index].compliant){
+		kk+=1;
+		
+	}
+	fp<<index<<","<<homes[index].compliant<<std::endl;
   }
+  std::cout<<kk<<"\t"<<homes.size()<<std::endl;
+  fp.close();
   return homes;
 }
 
@@ -81,6 +92,7 @@ vector<mask> init_mask(){//---Mask wearing function introduced by shakir
   auto maskJSON = readJSONFile(GLOBAL.input_base + "maskwearing_July2022.json");
   auto size = maskJSON.GetArray().Size();
   vector<mask> mask(size);
+  std::cout<<"mask read \t"<<mask.size()<<std::endl;
 //   GLOBAL.num_homes = size;
 //   double temp_non_compliance_metric = 0;
    count_type index = 0;
@@ -703,6 +715,8 @@ vector<agent> init_nodes(){
 //  auto variantJSON = readJSONFile(GLOBAL.input_base + "cases_variant_prop.json");//reading variant proportions...Shakir Jun 14 2022.
 
   auto size = indivJSON.GetArray().Size();
+    std::cout<<"diversity read \t"<<size<<std::endl;
+
   GLOBAL.num_people = size;
   vector<agent> nodes(size);
   auto community_infection_prob = compute_prob_infection_given_community(GLOBAL.INIT_FRAC_INFECTED, GLOBAL.USE_SAME_INFECTION_PROB_FOR_ALL_WARDS);
@@ -901,6 +915,7 @@ int tstep,yes=0,vac1,vac2,wan,boost;
 									 -uniform_real(0, nodes[seed_candidates[j]].incubation_period));
 	}
   }
+
   return nodes;
 }
 
