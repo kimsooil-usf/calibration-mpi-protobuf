@@ -664,8 +664,9 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 		nodes[j].new_vaccinated2=false;
 		nodes[j].new_waning=false;
 		nodes[j].new_boosted=false;
-		nodes[j].new_boosted2=false;
-// int get_age_index(int age){
+count_type DAY_84=84;
+count_type FIVE_MONTH=5*30*GLOBAL.SIM_STEPS_PER_DAY;
+count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 //   // Determine age category of individual.
 //   if(age < 10) {
 //     return 0;
