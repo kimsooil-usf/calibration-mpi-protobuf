@@ -88,7 +88,10 @@ def run_parameter_simulator(params, rank, seed1, seed2, start_day, in_dir, out_d
         "output_directory": out_dir,
         "input_directory": in_dir,           
     }
-    
+    if start_day>0:
+        params_to_send["CALIBRATION_DELAY"]=0
+        params_to_send["DAYS_BEFORE_LOCKDOWN"]=0
+        
     command=getCommand(params_to_send)
     
     return command

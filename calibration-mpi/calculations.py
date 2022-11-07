@@ -24,12 +24,12 @@ def rmse_save_posterior(parameters, piece_directory, nsd):
         output_directory = piece_directory +str(int(i))+"/"
         START_DAY = (nsd-1) * NUM_DAYS # It is not passed from cpp_simulator(drive_simulator)'s command line. So be careful (SK 1101)
         filename="num_infected.csv"
-        #filename="infections_from_new_strain"+str(START_DAY)+"_"+str(NUM_DAYS)+".csv"
+        filename="infections_from_new_strain"+str(START_DAY)+"_"+str(NUM_DAYS)+".csv"
         #print("infections_from_new_strain: ", output_directory+filename)
         if(os.path.exists(output_directory+filename)):
             modeldata = pd.read_csv(output_directory+filename)
-            # modeldata = modeldata['total_new_infections']
-            modeldata = modeldata['num_infected']
+            modeldata = modeldata['total_new_infections']
+            # modeldata = modeldata['num_infected']
             modeldata = modeldata.iloc[0::nSimPerDay].to_list()
 
             RMSE_df['RMSE'][i]=datamodel_Gap(modeldata,data)
