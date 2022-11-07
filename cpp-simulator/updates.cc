@@ -1378,7 +1378,7 @@ forced_to_take_train
   //Travel only happens at "odd" times, twice a day
   if(cur_time>=GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS && node.forced_to_take_train)
 //std::cout<<"curr time, cur_time%2,forced_to_take_train, has to travel, attending, compliant, and quarantined, (!(node.quarantined && node.compliant)),  node.travels()\n"<<cur_time<<"\t"<<cur_time%2<<"\t"<<node.forced_to_take_train<<"\t"<<node.has_to_travel<<"\t"<<node.has_to_travel<<"\t"<<node.attending<<"\t"<<node.compliant<<"\t"<<node.quarantined<<"\t"<<(!(node.quarantined && node.compliant))<<"\t"<<node.travels()<<std::endl;
-std::cout<<"UPDATING node is forced to take train at time"<<"\t"<<node.forced_to_take_train<<"\t"<<cur_time<<"\t"<<node.travels()<<std::endl;
+//std::cout<<"UPDATING node is forced to take train at time"<<"\t"<<node.forced_to_take_train<<"\t"<<cur_time<<"\t"<<node.travels()<<std::endl;
 
   if((cur_time % 2) && node.travels()){
 	node.lambda_incoming.travel = GLOBAL.BETA_TRAVEL
