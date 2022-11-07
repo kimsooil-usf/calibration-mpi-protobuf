@@ -15,11 +15,11 @@ import argparse
 import random
 
 np.set_printoptions(threshold=np.inf)
-DATE_TO_RUN="1103-1"
-INPUT_DIR = "/largedisk/mpi-folder/calibration-mpi-protobuf/staticInst/output/hills_1.5m"
-OUTPUT_DIR =  "/largedisk/mpi-folder/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/"  # should be same as MPI_DIR # also use absolute path
-MPI_DIR = "/largedisk/mpi-folder/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/"  # should be same as OUTPUT_DIR
-PLOT_DIR = "/largedisk/mpi-folder/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/plots/"
+DATE_TO_RUN="1107-2"
+INPUT_DIR = "/largedisk/mpi-folder/kimsooil/calibration-mpi-protobuf/staticInst/output/hills-1.4m"
+OUTPUT_DIR =  "/largedisk/mpi-folder/kimsooil/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/"  # should be same as MPI_DIR # also use absolute path
+MPI_DIR = "/largedisk/mpi-folder/kimsooil/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/"  # should be same as OUTPUT_DIR
+PLOT_DIR = "/largedisk/mpi-folder/kimsooil/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/plots/"
 
 if not os.path.exists(OUTPUT_DIR):
         os.system("mkdir -p " + OUTPUT_DIR)
