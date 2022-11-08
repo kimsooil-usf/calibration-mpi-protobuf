@@ -144,11 +144,15 @@ def main():
         if nsd==1:
             parameters = priors(NPARAMS)
         else:
-            par1=priors(int(NPARAMS/2))
-            par2=priors_history(int(NPARAMS/2), nsd)
+            # par1=priors(int(NPARAMS/2))
+            # par2=priors_history(int(NPARAMS/2), nsd)
+            # # print('par1',par1)
+            # # print('par2',par2)
+            # parameters = pd.concat([par1,par2],ignore_index=True)
+            par2=priors_history(NPARAMS, nsd)
             # print('par1',par1)
             # print('par2',par2)
-            parameters = pd.concat([par1,par2],ignore_index=True)
+            parameters = par2
             
         #print('nsd',nsd,'parameters', parameters)
         #parameters["START_DAY"] = 1 + (nsd-1)*30
