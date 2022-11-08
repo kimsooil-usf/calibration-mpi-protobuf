@@ -15,7 +15,7 @@ import argparse
 import random
 
 np.set_printoptions(threshold=np.inf)
-DATE_TO_RUN="1107-2"
+DATE_TO_RUN="1108-1"
 INPUT_DIR = "/largedisk/mpi-folder/kimsooil/calibration-mpi-protobuf/staticInst/output/hills-1.4m"
 OUTPUT_DIR =  "/largedisk/mpi-folder/kimsooil/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/"  # should be same as MPI_DIR # also use absolute path
 MPI_DIR = "/largedisk/mpi-folder/kimsooil/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/"  # should be same as OUTPUT_DIR
@@ -24,7 +24,7 @@ PLOT_DIR = "/largedisk/mpi-folder/kimsooil/calibration-mpi-protobuf/output-mpi-"
 if not os.path.exists(OUTPUT_DIR):
         os.system("mkdir -p " + OUTPUT_DIR)
 
-PIECE = 30 # 32
+PIECE = 4 # 32
 NUM_DAYS = 30
 # NUM_DAYS = 5
 

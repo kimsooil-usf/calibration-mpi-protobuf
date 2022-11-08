@@ -172,13 +172,13 @@ def main():
         for connect in range(num_connect):
             # Running the last remaining simulations
             if remain_params != 0 and connect == num_connect-1:
-                #command = "mpirun --hostfile /largedisk/mpi-test/host_file8 -np " + str(remain_params) + " \
+                #command = "mpirun --host worker2:90 -np " + str(remain_params) + " \
                 command = "mpirun --hostfile /largedisk/mpi-test/host_file4_3 -np " + str(remain_params) + " \
                 python run_parallel_simulations.py -c " + str(connect) + " -piece "+ str(nsd)+" -out_dir '"+str(MPI_DIR + "piece_"+str(nsd) + "/")+"'"
                 
             # All other simulations
             else:
-                #command = "mpirun --hostfile /largedisk/mpi-test/host_file8 -npernode " + str(NPERNODE) + " -np " + str(NPROCESSORS) + " \
+                #command = "mpirun --host worker2:90 -npernode " + str(NPERNODE) + " -np " + str(NPROCESSORS) + " \
                 command = "mpirun --hostfile /largedisk/mpi-test/host_file4_3 -npernode " + str(NPERNODE) + " -np " + str(NPROCESSORS) + " \
                 python run_parallel_simulations.py -c " + str(connect) + " -piece "+ str(nsd)+" -outdir '"+str(MPI_DIR + "piece_"+str(nsd) + "/")+"'"
 
