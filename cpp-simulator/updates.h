@@ -33,6 +33,7 @@ void vaccinate_booster2_dose(std::vector<agent>& nodes, std::vector<count_type> 
 void vaccinate_waning2_candidates(std::vector<agent>& nodes, std::vector<count_type> new_vaccinated1_candidates, count_type vaccFn, count_type time_step);
 
 //void update_vaccination_step(std::vector<house>& homes, std::vector<workplace>& workplaces,std::vector<community>& communities,std::vector<house>& houses, matrix<nbr_cell>& nbr_cells);
+void new_strain_initiate(std::vector<agent>& nodes, std::vector<count_type> new_strain_candidates,int strain, count_type num_new_infections,count_type time_step);
 
 //Returns whether the node was infected or turned symptomatic in this time step
 node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,double mask_scaling);

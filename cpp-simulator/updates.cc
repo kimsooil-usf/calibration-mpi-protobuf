@@ -3463,6 +3463,9 @@ void vaccinate_firstdose(vector<agent>& nodes, vector<count_type> new_vaccinated
 				 if ((vaccination_works)&&(nodes[new_vaccinated1_candidates[a]].infection_status==Progression::susceptible ||nodes[new_vaccinated1_candidates[a]].infection_status==Progression::recovered)){ 
 				     nodes[new_vaccinated1_candidates[a]].infection_status = Progression::recovered;
 				     nodes[new_vaccinated1_candidates[a]].state_before_recovery = Progression::vaccinated1;
+					//  //-------------------------------------------------------------//
+					//  nodes[new_vaccinated1_candidates[a]].infectiousness*=GLOBAL.VACCINATION_EFFECTIVENESS1;
+					//  //-------------------------------------------------------------//
 				  }
 				}
 }
@@ -3484,6 +3487,9 @@ void vaccinate_second_dose(vector<agent>& nodes, vector<count_type> new_vaccinat
 				 if ((vaccination_works)&&(nodes[new_vaccinated2_candidates[a]].infection_status==Progression::susceptible ||nodes[new_vaccinated2_candidates[a]].infection_status==Progression::recovered)){ 
 				     nodes[new_vaccinated2_candidates[a]].infection_status = Progression::recovered;
 				     nodes[new_vaccinated2_candidates[a]].state_before_recovery = Progression::vaccinated2;
+
+					//  nodes[new_vaccinated2_candidates[a]].infectiousness*=GLOBAL.VACCINATION_EFFECTIVENESS2/GLOBAL.VACCINATION_EFFECTIVENESS1;
+					 
 				  }
 				}
 }
@@ -3507,6 +3513,8 @@ void vaccinate_waning_candidates(vector<agent>& nodes, vector<count_type> new_va
 				 if ((vaccination_works)&&(nodes[new_vaccinated1_candidates[a]].infection_status==Progression::susceptible ||nodes[new_vaccinated1_candidates[a]].infection_status==Progression::recovered)){ 
 				     nodes[new_vaccinated1_candidates[a]].infection_status = Progression::recovered;
 				     nodes[new_vaccinated1_candidates[a]].state_before_recovery = Progression::waning;
+					//  nodes[new_vaccinated1_candidates[a]].infectiousness*=GLOBAL.VACCINATION_EFFECTIVENESS_WANING/GLOBAL.VACCINATION_EFFECTIVENESS2;
+					 
 				  }
 				  else if((!vaccination_works)&&(nodes[new_vaccinated1_candidates[a]].infection_status==Progression::susceptible ||nodes[new_vaccinated1_candidates[a]].infection_status==Progression::recovered)){
 					 nodes[new_vaccinated1_candidates[a]].infection_status = Progression::recovered;
@@ -3537,6 +3545,8 @@ void vaccinate_booster_dose(vector<agent>& nodes, vector<count_type> new_vaccina
 				 if ((vaccination_works)&&(nodes[new_vaccinated1_candidates[a]].infection_status==Progression::susceptible ||nodes[new_vaccinated1_candidates[a]].infection_status==Progression::recovered)){ 
 				     nodes[new_vaccinated1_candidates[a]].infection_status = Progression::recovered;
 				     nodes[new_vaccinated1_candidates[a]].state_before_recovery = Progression::boosted;
+					//  nodes[new_vaccinated1_candidates[a]].infectiousness*=GLOBAL.VACCINATION_EFFECTIVENESS_BOOSTED/GLOBAL.VACCINATION_EFFECTIVENESS_WANING;
+
 				  }
 				   }
 				}
@@ -3562,6 +3572,8 @@ void vaccinate_booster2_dose(vector<agent>& nodes, vector<count_type> new_vaccin
 				 if ((vaccination_works)&&(nodes[new_vaccinated1_candidates[a]].infection_status==Progression::susceptible ||nodes[new_vaccinated1_candidates[a]].infection_status==Progression::recovered)){ 
 				     nodes[new_vaccinated1_candidates[a]].infection_status = Progression::recovered;
 				     nodes[new_vaccinated1_candidates[a]].state_before_recovery = Progression::boosted2;
+					//  nodes[new_vaccinated1_candidates[a]].infectiousness*=GLOBAL.VACCINATION_EFFECTIVENESS_BOOSTED2/GLOBAL.VACCINATION_EFFECTIVENESS_WANING2;
+
 				  }
 				   }
 				}
@@ -3586,7 +3598,37 @@ void vaccinate_waning2_candidates(vector<agent>& nodes, vector<count_type> new_v
 				 if ((vaccination_works)&&(nodes[new_vaccinated1_candidates[a]].infection_status==Progression::susceptible ||nodes[new_vaccinated1_candidates[a]].infection_status==Progression::recovered)){ 
 				     nodes[new_vaccinated1_candidates[a]].infection_status = Progression::recovered;
 				     nodes[new_vaccinated1_candidates[a]].state_before_recovery = Progression::waning2;
+					//  nodes[new_vaccinated1_candidates[a]].infectiousness*=GLOBAL.VACCINATION_EFFECTIVENESS_WANING2/GLOBAL.VACCINATION_EFFECTIVENESS_BOOSTED;
+
 				  }
 				}
 				   }
+}
+
+//--------------------New strain initiating module---------------------------//
+
+void new_strain_initiate(vector<agent>& nodes, vector<count_type> new_strain_candidates,int strain, count_type num_new_infections,count_type time_step){
+	
+					  count_type new_strain_candidates_list_size = new_strain_candidates.size();
+					  if (new_strain_candidates_list_size > num_new_infections){
+				     //Randomly permute the list of candidates
+				     std::shuffle(new_strain_candidates.begin(), new_strain_candidates.end(), GENERATOR);	  
+				   }
+				   bool vaccination_works = false;
+				  count_type num_of_individuals_with_new_strain = num_new_infections;
+				  count_type num = std::min(new_strain_candidates_list_size, num_of_individuals_with_new_strain);
+			       for(count_type a = 0; a < num; ++a){
+
+			if((nodes[new_strain_candidates[a]].infection_status == Progression::exposed)
+			   ||(nodes[new_strain_candidates[a]].infection_status == Progression::infective)
+			   ||(nodes[new_strain_candidates[a]].infection_status == Progression::symptomatic)
+			   ||(nodes[new_strain_candidates[a]].infection_status == Progression::hospitalised)
+			   ||(nodes[new_strain_candidates[a]].infection_status == Progression::critical)
+			    && nodes[new_strain_candidates[a]].new_strain!=strain){
+
+				    nodes[new_strain_candidates[a]].new_strain = strain;
+
+		            nodes[new_strain_candidates[a]].infectiousness = nodes[new_strain_candidates[a]].infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA5;
+				  }
+				}
 }
