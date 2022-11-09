@@ -31,8 +31,11 @@ def rmse_save_posterior(parameters, piece_directory, nsd):
             modeldata = modeldata['total_new_infections']
             # modeldata = modeldata['num_infected']
             modeldata = modeldata.iloc[0::nSimPerDay].to_list()
-
-            RMSE_df['RMSE'][i]=datamodel_Gap(modeldata,data)
+            RMSE_actual=datamodel_Gap(modeldata,data)
+            if RMSE_actual!=0:
+                RMSE_df['RMSE'][i]=RMSE_actual
+            else:
+                RMSE_df['RMSE'][i]=1000000 # sk 1109: make sure if 0(empty) it will be ignored since smallest RMSE are chosen
 
             RMSE_df['p_value'][i] = 1000
             RMSE_df['index'][i] = i

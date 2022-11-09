@@ -15,26 +15,27 @@ import argparse
 import random
 
 np.set_printoptions(threshold=np.inf)
-DATE_TO_RUN="1108-1"
-INPUT_DIR = "/largedisk/mpi-folder/kimsooil/calibration-mpi-protobuf/staticInst/output/hills-1.4m"
-OUTPUT_DIR =  "/largedisk/mpi-folder/kimsooil/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/"  # should be same as MPI_DIR # also use absolute path
-MPI_DIR = "/largedisk/mpi-folder/kimsooil/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/"  # should be same as OUTPUT_DIR
-PLOT_DIR = "/largedisk/mpi-folder/kimsooil/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/plots/"
+DATE_TO_RUN="1109-test"
+# INPUT_DIR = "/largedisk/mpi-folder2/calibration-mpi-protobuf/staticInst/output/hills-1.4m"
+INPUT_DIR = "/largedisk/mpi-folder2/calibration-mpi-protobuf/staticInst/output/hills-100k" # small pop for testing
+OUTPUT_DIR =  "/largedisk/mpi-folder2/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/"  # should be same as MPI_DIR # also use absolute path
+MPI_DIR = "/largedisk/mpi-folder2/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/"  # should be same as OUTPUT_DIR
+PLOT_DIR = "/largedisk/mpi-folder2/calibration-mpi-protobuf/output-mpi-"+DATE_TO_RUN+"/plots/"
 
 if not os.path.exists(OUTPUT_DIR):
         os.system("mkdir -p " + OUTPUT_DIR)
 
-PIECE = 4 # 32
+PIECE = 3 # 32
 NUM_DAYS = 30
 # NUM_DAYS = 5
 
-NRMSE=180 # How many RMSE indices to be used in the next piece (Top NRMSE smallest RMSE values)
+NRMSE=500 # How many RMSE indices to be used in the next piece (Top NRMSE smallest RMSE values)
 
 # NPARAMS = 400
 # NPROCESSORS = 360
 #NPARAMS = 15
-NPARAMS = 360 # Must be even number and multiple of NPROCESSORS, no error. (SK & JK 10/19)
-NPROCESSORS = 360
+NPARAMS = 20000 # 20250=810x25 # Must be even number and multiple of NPROCESSORS, no error. (SK & JK 10/19)
+NPROCESSORS = 900
 NPERNODE = 90
 
 # Initialize minValues, maxValues
