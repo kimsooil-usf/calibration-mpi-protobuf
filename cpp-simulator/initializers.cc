@@ -51,8 +51,9 @@ vector<house> init_homes(){
 
   bool compliance; 
   int kk=0;
+  std::string compliancecheck_path = GLOBAL.output_path + "compliancecheck.csv";
   std::ofstream fp;
-  fp.open("compliancecheck.csv");
+  fp.open(compliancecheck_path);
   fp<<"homes"<<","<<"compliance"<<std::endl;
 
   for (auto &elem: houseJSON.GetArray()){
