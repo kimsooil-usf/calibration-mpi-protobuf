@@ -15,8 +15,8 @@ import argparse
 import random
 
 np.set_printoptions(threshold=np.inf)
-# DATE_TO_RUN="1110-50k-960days"
-DATE_TO_RUN="1110-final-test-for-960d-onepiece"
+DATE_TO_RUN="1110-50k-960days"
+# DATE_TO_RUN="1110-final-test-for-960d-onepiece"
 INPUT_DIR = "/largedisk/mpi-folder2/calibration-mpi-protobuf/staticInst/output/hills-1.45m"
 # INPUT_DIR = "/largedisk/mpi-folder2/calibration-mpi-protobuf/staticInst/output/hills-150k" # small pop for testing
 OUTPUT_DIR =  "/largedisk2/mpi-folder/output-mpi-"+DATE_TO_RUN+"/"  # should be same as MPI_DIR # also use absolute path
