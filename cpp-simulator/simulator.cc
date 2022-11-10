@@ -494,6 +494,8 @@ plot_data_struct run_simulation(){
 	/////////////////////////////////////////////
 	
   for(count_type time_step = time_step_start; time_step < time_step_end; ++time_step){
+// for long simulation... show time_step to monitor progress
+std::cout << "Time_Step at"+std::to_string(time_step) << std::endl;
 
 int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
 double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance;//Shakir new mask and google trends informed compliance and risk reduction scheme....
