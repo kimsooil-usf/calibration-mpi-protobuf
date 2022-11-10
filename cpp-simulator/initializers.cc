@@ -51,10 +51,10 @@ vector<house> init_homes(){
 
   bool compliance; 
   int kk=0;
-  std::string compliancecheck_path = GLOBAL.output_path + "compliancecheck.csv";
-  std::ofstream fp;
-  fp.open(compliancecheck_path);
-  fp<<"homes"<<","<<"compliance"<<std::endl;
+//   std::string compliancecheck_path = GLOBAL.output_path + "compliancecheck.csv";
+//   std::ofstream fp;
+//   fp.open(compliancecheck_path);
+//   fp<<"homes"<<","<<"compliance"<<std::endl;
 
   for (auto &elem: houseJSON.GetArray()){
     temp_non_compliance_metric = get_non_compliance_metric();
@@ -82,10 +82,10 @@ vector<house> init_homes(){
 		kk+=1;
 		
 	}
-	fp<<index<<","<<homes[index].compliant<<std::endl;
+	// fp<<index<<","<<homes[index].compliant<<std::endl;
   }
-  std::cout<<kk<<"\t"<<homes.size()<<std::endl;
-  fp.close();
+//   std::cout<<kk<<"\t"<<homes.size()<<std::endl;
+//   fp.close();
   return homes;
 }
 
