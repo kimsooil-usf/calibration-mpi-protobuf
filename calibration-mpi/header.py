@@ -15,7 +15,7 @@ import argparse
 import random
 
 np.set_printoptions(threshold=np.inf)
-DATE_TO_RUN="1111-50k-960days"
+DATE_TO_RUN="1111-50k-973days"
 # DATE_TO_RUN="1110-final-test-for-960d-onepiece"
 INPUT_DIR = "/largedisk/mpi-folder2/calibration-mpi-protobuf/staticInst/output/hills-1.45m"
 # INPUT_DIR = "/largedisk/mpi-folder2/calibration-mpi-protobuf/staticInst/output/hills-150k" # small pop for testing
@@ -37,7 +37,7 @@ NUM_DAYS = 973
 #NPARAMS = 15
 #NPARAMS=24
 NPARAMS = 50000 # 20250=810x25 # Must be even number and multiple of NPROCESSORS, no error. (SK & JK 10/19)
-NPROCESSORS = 1000
+NPROCESSORS = 1524
 #NPERNODE = 90 ###### NOT using at the most recent simulations 
 
 # NPARAMS = 4 # 20250=810x25 # Must be even number and multiple of NPROCESSORS, no error. (SK & JK 10/19)
