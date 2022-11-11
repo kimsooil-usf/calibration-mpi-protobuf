@@ -15,7 +15,7 @@ import argparse
 import random
 
 np.set_printoptions(threshold=np.inf)
-DATE_TO_RUN="1110-50k-960days"
+DATE_TO_RUN="1111-50k-960days"
 # DATE_TO_RUN="1110-final-test-for-960d-onepiece"
 INPUT_DIR = "/largedisk/mpi-folder2/calibration-mpi-protobuf/staticInst/output/hills-1.45m"
 # INPUT_DIR = "/largedisk/mpi-folder2/calibration-mpi-protobuf/staticInst/output/hills-150k" # small pop for testing
@@ -30,15 +30,15 @@ PIECE = 1 # 32
 # NUM_DAYS = 30
 NUM_DAYS = 960
 
-NRMSE=500 # How many RMSE indices to be used in the next piece (Top NRMSE smallest RMSE values)
+#NRMSE=500 # How many RMSE indices to be used in the next piece (Top NRMSE smallest RMSE values)
 
 # NPARAMS = 400
 # NPROCESSORS = 360
 #NPARAMS = 15
-
+#NPARAMS=24
 NPARAMS = 50000 # 20250=810x25 # Must be even number and multiple of NPROCESSORS, no error. (SK & JK 10/19)
-NPROCESSORS = 1500
-NPERNODE = 90 ###### NOT using at the most recent simulations 
+NPROCESSORS = 1000
+#NPERNODE = 90 ###### NOT using at the most recent simulations 
 
 # NPARAMS = 4 # 20250=810x25 # Must be even number and multiple of NPROCESSORS, no error. (SK & JK 10/19)
 # NPROCESSORS = 4

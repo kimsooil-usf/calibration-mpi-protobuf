@@ -16,6 +16,7 @@ ifeq ($(enable_proto), yes)
 #set proto flags
 LDLIBS = -lprotobuf
 proto_def =-DENABLE_PROTO
+#proto_def =
 obj = cohorts.o train_loader.o agents_store.pb.o initializers.o models.o interventions.o intervention_primitives.o updates.o simulator.o testing.o outputs.o drive_simulator.o
 else
 LDLIBS =
