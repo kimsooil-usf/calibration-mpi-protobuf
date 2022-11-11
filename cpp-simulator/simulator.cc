@@ -975,7 +975,7 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 			   ||(nodes[j].infection_status == Progression::infective)
 			   ||(nodes[j].infection_status == Progression::symptomatic)
 			   ||(nodes[j].infection_status == Progression::hospitalised)
-			   ||(nodes[j].infection_status == Progression::critical) && nodes[j].new_strain!=6){
+			   ||(nodes[j].infection_status == Progression::critical) && nodes[j].new_strain!=8){
 
                  bool is_new_strain = bernoulli(GLOBAL.FRACTION_NEW_OMICRON_BA7);
                    if(is_new_strain){
