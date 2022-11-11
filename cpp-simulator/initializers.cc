@@ -90,7 +90,7 @@ vector<house> init_homes(){
 }
 
 vector<mask> init_mask(){//---Mask wearing function introduced by shakir
-  auto maskJSON = readJSONFile(GLOBAL.input_base + "maskwearing_October_26_2022.json");
+  auto maskJSON = readJSONFile(GLOBAL.input_base + "maskwearing_November10_2022.json");
   auto size = maskJSON.GetArray().Size();
   vector<mask> mask(size);
   std::cout<<"mask read \t"<<mask.size()<<std::endl;

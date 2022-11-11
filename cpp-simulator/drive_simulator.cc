@@ -205,7 +205,8 @@ int main(int argc, char** argv){
     ("VACCINATION_EFFECTIVENESS_WANING2", "vaccination effectiveness waning2",
      cxxopts::value<double>()->default_value(DEFAULTS.VACCINATION_EFFECTIVENESS_WANING2))
     ("VACCINATION_EFFECTIVENESS_BOOSTED2", "vaccination effectiveness boosted2",
-     cxxopts::value<double>()->default_value(DEFAULTS.VACCINATION_EFFECTIVENESS_BOOSTED2))     
+     cxxopts::value<double>()->default_value(DEFAULTS.VACCINATION_EFFECTIVENESS_BOOSTED2)) 
+
     ("TIME_ALPHA", "Time at which alpha",
     cxxopts::value<double>()->default_value(DEFAULTS.TIME_ALPHA))     
     ("TIME_DELTA", "Time at which delta",
@@ -214,11 +215,17 @@ int main(int argc, char** argv){
     cxxopts::value<double>()->default_value(DEFAULTS.TIME_OMICRON))             
     ("TIME_OMICRON_NEW", "Time at which omicron_new",
     cxxopts::value<double>()->default_value(DEFAULTS.TIME_OMICRON_NEW))             
-    ("TIME_OMICRON_BA4", "Time at which omicron_new",
+    ("TIME_OMICRON_BA4", "Time at which omicron_BA4",
     cxxopts::value<double>()->default_value(DEFAULTS.TIME_OMICRON_BA4))           
-    ("TIME_OMICRON_BA5", "Time at which omicron_new",
+    ("TIME_OMICRON_BA5", "Time at which omicron_BA5",
     cxxopts::value<double>()->default_value(DEFAULTS.TIME_OMICRON_BA5))           
-
+    ("TIME_OMICRON_BA6", "Time at which omicron_BA6",
+    cxxopts::value<double>()->default_value(DEFAULTS.TIME_OMICRON_BA6))           
+    ("TIME_OMICRON_BA7", "Time at which omicron_BA7",
+    cxxopts::value<double>()->default_value(DEFAULTS.TIME_OMICRON_BA7))
+    ("TIME_OMICRON_BA8", "Time at which omicron_BA8",
+    cxxopts::value<double>()->default_value(DEFAULTS.TIME_OMICRON_BA8))           
+ 
     ("INFECTIOUSNESS_ALPHA", "new alpha strain increases infectiousness by this factor",
     cxxopts::value<double>()->default_value(DEFAULTS.INFECTIOUSNESS_ALPHA))
     ("INFECTIOUSNESS_DELTA", "new delta strain increases infectiousness by this factor",
@@ -227,11 +234,16 @@ int main(int argc, char** argv){
     cxxopts::value<double>()->default_value(DEFAULTS.INFECTIOUSNESS_OMICRON))    
     ("INFECTIOUSNESS_OMICRON_NEW", "new omicronNew strain increases infectiousness by this factor",
     cxxopts::value<double>()->default_value(DEFAULTS.INFECTIOUSNESS_OMICRON_NEW))                 
-    ("INFECTIOUSNESS_OMICRON_BA4", "new omicronNew strain increases infectiousness by this factor",
+    ("INFECTIOUSNESS_OMICRON_BA4", "new omicronBA4 strain increases infectiousness by this factor",
     cxxopts::value<double>()->default_value(DEFAULTS.INFECTIOUSNESS_OMICRON_BA4))                 
-
-  ("INFECTIOUSNESS_OMICRON_BA5", "new omicronNew strain increases infectiousness by this factor",
+  ("INFECTIOUSNESS_OMICRON_BA5", "new omicronBA5 strain increases infectiousness by this factor",
     cxxopts::value<double>()->default_value(DEFAULTS.INFECTIOUSNESS_OMICRON_BA5))    
+  ("INFECTIOUSNESS_OMICRON_BA6", "new omicronBA6 strain increases infectiousness by this factor",
+    cxxopts::value<double>()->default_value(DEFAULTS.INFECTIOUSNESS_OMICRON_BA6))   
+  ("INFECTIOUSNESS_OMICRON_BA7", "new omicronBA7 strain increases infectiousness by this factor",
+    cxxopts::value<double>()->default_value(DEFAULTS.INFECTIOUSNESS_OMICRON_BA7))   
+  ("INFECTIOUSNESS_OMICRON_BA8", "new omicronBA8 strain increases infectiousness by this factor",
+    cxxopts::value<double>()->default_value(DEFAULTS.INFECTIOUSNESS_OMICRON_BA8))   
 
     ("VIRULENT_NEW_STRAIN", "new strain is more deadly by this factor",
      cxxopts::value<double>()->default_value(DEFAULTS.VIRULENT_NEW_STRAIN))
@@ -243,24 +255,29 @@ int main(int argc, char** argv){
      cxxopts::value<double>()->default_value(DEFAULTS.VIRULENT_NEW_OMICRON))               
     ("VIRULENT_NEW_OMICRON_NEW", "omicron_new strain is more deadly by this factor",
      cxxopts::value<double>()->default_value(DEFAULTS.VIRULENT_NEW_OMICRON_NEW))                    
-    ("VIRULENT_NEW_OMICRON_BA4", "omicron_new strain is more deadly by this factor",
+    ("VIRULENT_NEW_OMICRON_BA4", "omicron_BA4 strain is more deadly by this factor",
      cxxopts::value<double>()->default_value(DEFAULTS.VIRULENT_NEW_OMICRON_BA4))  
-    ("VIRULENT_NEW_OMICRON_BA5", "omicron_new strain is more deadly by this factor",
+    ("VIRULENT_NEW_OMICRON_BA5", "omicron_BA5 strain is more deadly by this factor",
      cxxopts::value<double>()->default_value(DEFAULTS.VIRULENT_NEW_OMICRON_BA5)) 
+    ("VIRULENT_NEW_OMICRON_BA6", "omicron_BA6 strain is more deadly by this factor",
+     cxxopts::value<double>()->default_value(DEFAULTS.VIRULENT_NEW_OMICRON_BA6)) 
+    ("VIRULENT_NEW_OMICRON_BA7", "omicron_BA7 strain is more deadly by this factor",
+     cxxopts::value<double>()->default_value(DEFAULTS.VIRULENT_NEW_OMICRON_BA7)) 
+    ("VIRULENT_NEW_OMICRON_BA8", "omicron_BA8 strain is more deadly by this factor",
+     cxxopts::value<double>()->default_value(DEFAULTS.VIRULENT_NEW_OMICRON_BA8)) 
+    // ("REINFECTION_ALPHA", "fraction of recovered people eligible for reinfection by alpha on time_alpha",
+    //  cxxopts::value<double>()->default_value(DEFAULTS.REINFECTION_ALPHA))
+    // ("REINFECTION_DELTA", "fraction of recovered people eligible for reinfection by delta on time_delta",
+    //  cxxopts::value<double>()->default_value(DEFAULTS.REINFECTION_DELTA))
+    // ("REINFECTION_OMICRON", "fraction of recovered people eligible for reinfection by omicron on time_omicron",
+    //  cxxopts::value<double>()->default_value(DEFAULTS.REINFECTION_OMICRON))
+    // ("REINFECTION_OMICRON_NEW", "fraction of recovered people eligible for reinfection by omicron_new on time_omicron_new",
+    //  cxxopts::value<double>()->default_value(DEFAULTS.REINFECTION_OMICRON_NEW))
 
-    ("REINFECTION_ALPHA", "fraction of recovered people eligible for reinfection by alpha on time_alpha",
-     cxxopts::value<double>()->default_value(DEFAULTS.REINFECTION_ALPHA))
-    ("REINFECTION_DELTA", "fraction of recovered people eligible for reinfection by delta on time_delta",
-     cxxopts::value<double>()->default_value(DEFAULTS.REINFECTION_DELTA))
-    ("REINFECTION_OMICRON", "fraction of recovered people eligible for reinfection by omicron on time_omicron",
-     cxxopts::value<double>()->default_value(DEFAULTS.REINFECTION_OMICRON))
-    ("REINFECTION_OMICRON_NEW", "fraction of recovered people eligible for reinfection by omicron_new on time_omicron_new",
-     cxxopts::value<double>()->default_value(DEFAULTS.REINFECTION_OMICRON_NEW))
-
-    ("REINFECTION_OMICRON_BA4", "fraction of recovered people eligible for reinfection by omicron_new on time_omicron_new",
-     cxxopts::value<double>()->default_value(DEFAULTS.REINFECTION_OMICRON_BA4))
-    ("REINFECTION_OMICRON_BA5", "fraction of recovered people eligible for reinfection by omicron_new on time_omicron_new",
-     cxxopts::value<double>()->default_value(DEFAULTS.REINFECTION_OMICRON_BA5))
+    // ("REINFECTION_OMICRON_BA4", "fraction of recovered people eligible for reinfection by omicron_new on time_omicron_new",
+    //  cxxopts::value<double>()->default_value(DEFAULTS.REINFECTION_OMICRON_BA4))
+    // ("REINFECTION_OMICRON_BA5", "fraction of recovered people eligible for reinfection by omicron_new on time_omicron_new",
+    //  cxxopts::value<double>()->default_value(DEFAULTS.REINFECTION_OMICRON_BA5))
 
     ("FRACTION_NEW_STRAIN", "fraction of infected people infected with alpha",
      cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_NEW_STRAIN))
@@ -268,28 +285,34 @@ int main(int argc, char** argv){
      cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_NEW_DELTA))
     ("FRACTION_NEW_DELTA", "fraction of infected people infected with omicron",
      cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_NEW_STRAIN))
-    ("FRACTION_NEW_OMICRON", "fraction of infected people infected with omicron_new",
+    ("FRACTION_NEW_OMICRON", "fraction of infected people infected with omicron",
      cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_NEW_OMICRON))
     ("FRACTION_NEW_OMICRON_NEW", "fraction of infected people infected with omicron_new",
      cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_NEW_OMICRON_NEW))     
+    ("FRACTION_NEW_OMICRON_BA4", "fraction of infected people infected with omicron_BA4",
+     cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_NEW_OMICRON_BA4))  
+    ("FRACTION_NEW_OMICRON_BA5", "fraction of infected people infected with omicron_BA5",
+     cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_NEW_OMICRON_BA5))  
+    ("FRACTION_NEW_OMICRON_BA6", "fraction of infected people infected with omicron_BA6",
+     cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_NEW_OMICRON_BA6)) 
+    ("FRACTION_NEW_OMICRON_BA7", "fraction of infected people infected with omicron_BA7",
+     cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_NEW_OMICRON_BA7))  
+    ("FRACTION_NEW_OMICRON_BA8", "fraction of infected people infected with omicron_BA8",
+     cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_NEW_OMICRON_BA8))   
 
-    ("FRACTION_NEW_OMICRON_BA4", "fraction of infected people infected with omicron_new",
-     cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_NEW_OMICRON_BA4))   
-    ("FRACTION_NEW_OMICRON_BA5", "fraction of infected people infected with omicron_new",
-     cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_NEW_OMICRON_BA5)) 
 
-    ("FRACTION_SUSCEPTIBLE_ALPHA", "fraction of susceptible people to alpha",
-     cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_SUSCEPTIBLE_ALPHA))     
-    ("FRACTION_SUSCEPTIBLE_DELTA", "fraction of susceptible people to delta",
-     cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_SUSCEPTIBLE_DELTA))          
-    ("FRACTION_SUSCEPTIBLE_OMICRON", "fraction of susceptible people to omicron",
-     cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_SUSCEPTIBLE_OMICRON))          
-    ("FRACTION_SUSCEPTIBLE_OMICRON_NEW", "fraction of susceptible people to omicron_new",
-     cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_SUSCEPTIBLE_OMICRON_NEW))               
-    ("FRACTION_SUSCEPTIBLE_OMICRON_BA4", "fraction of susceptible people to omicron_new",
-     cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_SUSCEPTIBLE_OMICRON_BA4))    
-    ("FRACTION_SUSCEPTIBLE_OMICRON_BA5", "fraction of susceptible people to omicron_new",
-     cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_SUSCEPTIBLE_OMICRON_BA5))         
+    // ("FRACTION_SUSCEPTIBLE_ALPHA", "fraction of susceptible people to alpha",
+    //  cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_SUSCEPTIBLE_ALPHA))     
+    // ("FRACTION_SUSCEPTIBLE_DELTA", "fraction of susceptible people to delta",
+    //  cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_SUSCEPTIBLE_DELTA))          
+    // ("FRACTION_SUSCEPTIBLE_OMICRON", "fraction of susceptible people to omicron",
+    //  cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_SUSCEPTIBLE_OMICRON))          
+    // ("FRACTION_SUSCEPTIBLE_OMICRON_NEW", "fraction of susceptible people to omicron_new",
+    //  cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_SUSCEPTIBLE_OMICRON_NEW))               
+    // ("FRACTION_SUSCEPTIBLE_OMICRON_BA4", "fraction of susceptible people to omicron_new",
+    //  cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_SUSCEPTIBLE_OMICRON_BA4))    
+    // ("FRACTION_SUSCEPTIBLE_OMICRON_BA5", "fraction of susceptible people to omicron_new",
+    //  cxxopts::value<double>()->default_value(DEFAULTS.FRACTION_SUSCEPTIBLE_OMICRON_BA5))         
 ;
   options.add_options("Cohorts")
     ("ENABLE_COHORTS", "enable cohorts",
@@ -504,6 +527,10 @@ int main(int argc, char** argv){
   GLOBAL.TIME_OMICRON_NEW = optvals["TIME_OMICRON_NEW"].as<double>();
   GLOBAL.TIME_OMICRON_BA4 = optvals["TIME_OMICRON_BA4"].as<double>();
   GLOBAL.TIME_OMICRON_BA5 = optvals["TIME_OMICRON_BA5"].as<double>();
+  GLOBAL.TIME_OMICRON_BA6 = optvals["TIME_OMICRON_BA6"].as<double>();
+  GLOBAL.TIME_OMICRON_BA7 = optvals["TIME_OMICRON_BA7"].as<double>();
+  GLOBAL.TIME_OMICRON_BA8 = optvals["TIME_OMICRON_BA8"].as<double>();
+
 
   GLOBAL.INFECTIOUSNESS_ALPHA = optvals["INFECTIOUSNESS_ALPHA"].as<double>();
   GLOBAL.INFECTIOUSNESS_DELTA = optvals["INFECTIOUSNESS_DELTA"].as<double>();
@@ -511,6 +538,9 @@ int main(int argc, char** argv){
   GLOBAL.INFECTIOUSNESS_OMICRON_NEW = optvals["INFECTIOUSNESS_OMICRON_NEW"].as<double>();
   GLOBAL.INFECTIOUSNESS_OMICRON_BA4 = optvals["INFECTIOUSNESS_OMICRON_BA4"].as<double>();
   GLOBAL.INFECTIOUSNESS_OMICRON_BA5 = optvals["INFECTIOUSNESS_OMICRON_BA5"].as<double>();
+  GLOBAL.INFECTIOUSNESS_OMICRON_BA6 = optvals["INFECTIOUSNESS_OMICRON_BA6"].as<double>();
+  GLOBAL.INFECTIOUSNESS_OMICRON_BA7 = optvals["INFECTIOUSNESS_OMICRON_BA7"].as<double>();
+  GLOBAL.INFECTIOUSNESS_OMICRON_BA8 = optvals["INFECTIOUSNESS_OMICRON_BA8"].as<double>();
 
   GLOBAL.VIRULENT_NEW_STRAIN = optvals["VIRULENT_NEW_STRAIN"].as<double>();
   GLOBAL.VIRULENT_NEW_ALPHA = optvals["VIRULENT_NEW_ALPHA"].as<double>();
@@ -519,14 +549,17 @@ int main(int argc, char** argv){
   GLOBAL.VIRULENT_NEW_OMICRON_NEW = optvals["VIRULENT_NEW_OMICRON_NEW"].as<double>();
   GLOBAL.VIRULENT_NEW_OMICRON_BA4 = optvals["VIRULENT_NEW_OMICRON_BA4"].as<double>();
   GLOBAL.VIRULENT_NEW_OMICRON_BA5 = optvals["VIRULENT_NEW_OMICRON_BA5"].as<double>();
+  GLOBAL.VIRULENT_NEW_OMICRON_BA6 = optvals["VIRULENT_NEW_OMICRON_BA6"].as<double>();
+  GLOBAL.VIRULENT_NEW_OMICRON_BA7 = optvals["VIRULENT_NEW_OMICRON_BA7"].as<double>();
+  GLOBAL.VIRULENT_NEW_OMICRON_BA8 = optvals["VIRULENT_NEW_OMICRON_BA8"].as<double>();
 
   
-  GLOBAL.REINFECTION_ALPHA = optvals["REINFECTION_ALPHA"].as<double>();
-  GLOBAL.REINFECTION_DELTA = optvals["REINFECTION_DELTA"].as<double>();
-  GLOBAL.REINFECTION_OMICRON = optvals["REINFECTION_OMICRON"].as<double>();
-  GLOBAL.REINFECTION_OMICRON_NEW = optvals["REINFECTION_OMICRON_NEW"].as<double>();
-  GLOBAL.REINFECTION_OMICRON_BA4 = optvals["REINFECTION_OMICRON_BA4"].as<double>();
-  GLOBAL.REINFECTION_OMICRON_BA5 = optvals["REINFECTION_OMICRON_BA5"].as<double>();
+  // GLOBAL.REINFECTION_ALPHA = optvals["REINFECTION_ALPHA"].as<double>();
+  // GLOBAL.REINFECTION_DELTA = optvals["REINFECTION_DELTA"].as<double>();
+  // GLOBAL.REINFECTION_OMICRON = optvals["REINFECTION_OMICRON"].as<double>();
+  // GLOBAL.REINFECTION_OMICRON_NEW = optvals["REINFECTION_OMICRON_NEW"].as<double>();
+  // GLOBAL.REINFECTION_OMICRON_BA4 = optvals["REINFECTION_OMICRON_BA4"].as<double>();
+  // GLOBAL.REINFECTION_OMICRON_BA5 = optvals["REINFECTION_OMICRON_BA5"].as<double>();
 
   GLOBAL.FRACTION_NEW_ALPHA = optvals["FRACTION_NEW_ALPHA"].as<double>();
   GLOBAL.FRACTION_NEW_DELTA = optvals["FRACTION_NEW_DELTA"].as<double>();
@@ -534,13 +567,16 @@ int main(int argc, char** argv){
   GLOBAL.FRACTION_NEW_OMICRON_NEW = optvals["FRACTION_NEW_OMICRON_NEW"].as<double>();
   GLOBAL.FRACTION_NEW_OMICRON_BA4 = optvals["FRACTION_NEW_OMICRON_BA4"].as<double>();
   GLOBAL.FRACTION_NEW_OMICRON_BA5 = optvals["FRACTION_NEW_OMICRON_BA5"].as<double>();
+  GLOBAL.FRACTION_NEW_OMICRON_BA6 = optvals["FRACTION_NEW_OMICRON_BA6"].as<double>();
+  GLOBAL.FRACTION_NEW_OMICRON_BA7 = optvals["FRACTION_NEW_OMICRON_BA7"].as<double>();
+  GLOBAL.FRACTION_NEW_OMICRON_BA8 = optvals["FRACTION_NEW_OMICRON_BA8"].as<double>();
 
-  GLOBAL.FRACTION_SUSCEPTIBLE_ALPHA = optvals["FRACTION_SUSCEPTIBLE_ALPHA"].as<double>();
-  GLOBAL.FRACTION_SUSCEPTIBLE_DELTA = optvals["FRACTION_SUSCEPTIBLE_DELTA"].as<double>();
-  GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON = optvals["FRACTION_SUSCEPTIBLE_OMICRON"].as<double>();
-  GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON_NEW = optvals["FRACTION_SUSCEPTIBLE_OMICRON_NEW"].as<double>();
-  GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON_BA4 = optvals["FRACTION_SUSCEPTIBLE_OMICRON_BA4"].as<double>();
-  GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON_BA5 = optvals["FRACTION_SUSCEPTIBLE_OMICRON_BA5"].as<double>();
+  // GLOBAL.FRACTION_SUSCEPTIBLE_ALPHA = optvals["FRACTION_SUSCEPTIBLE_ALPHA"].as<double>();
+  // GLOBAL.FRACTION_SUSCEPTIBLE_DELTA = optvals["FRACTION_SUSCEPTIBLE_DELTA"].as<double>();
+  // GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON = optvals["FRACTION_SUSCEPTIBLE_OMICRON"].as<double>();
+  // GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON_NEW = optvals["FRACTION_SUSCEPTIBLE_OMICRON_NEW"].as<double>();
+  // GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON_BA4 = optvals["FRACTION_SUSCEPTIBLE_OMICRON_BA4"].as<double>();
+  // GLOBAL.FRACTION_SUSCEPTIBLE_OMICRON_BA5 = optvals["FRACTION_SUSCEPTIBLE_OMICRON_BA5"].as<double>();
 
   GLOBAL.FRACTION_NEW_STRAIN = optvals["FRACTION_NEW_STRAIN"].as<double>();
 

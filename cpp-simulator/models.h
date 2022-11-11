@@ -292,6 +292,80 @@ const double STATE_TRAN_CoMorb6[][3] =
    {9,   9,   9}
   }; 
 
+const double STATE_TRAN7[][3] =
+  {
+   {0.0010000,   0.0500000,   0.4000000},
+   {0.0030000,   0.0500000,   0.4000000},
+   {0.0120000,   0.0500000,   0.5000000},
+   {0.0320000,   0.0500000,   0.5000000},
+   {0.0490000,   0.0630000,   0.5000000},
+   {0.1020000,   0.1220000,   0.5000000},
+   {0.1660000,   0.2740000,   0.5000000},
+   {0.2430000,   0.4320000,   0.5000000},
+   {0.2730000,   0.7090000,   0.5000000}
+  };
+const double STATE_TRAN_CoMorb7[][3] =
+  {
+   {1,   1,   1},
+   {2,   2,   3},
+   {3,   3,   3},
+   {4,   4,   4},
+   {5,   5,   5},
+   {6,   6,   6},
+   {7,   7,   7},
+   {8,   8,   8},
+   {9,   9,   9}
+  }; 
+
+const double STATE_TRAN8[][3] =
+  {
+   {0.0010000,   0.0500000,   0.4000000},
+   {0.0030000,   0.0500000,   0.4000000},
+   {0.0120000,   0.0500000,   0.5000000},
+   {0.0320000,   0.0500000,   0.5000000},
+   {0.0490000,   0.0630000,   0.5000000},
+   {0.1020000,   0.1220000,   0.5000000},
+   {0.1660000,   0.2740000,   0.5000000},
+   {0.2430000,   0.4320000,   0.5000000},
+   {0.2730000,   0.7090000,   0.5000000}
+  };
+const double STATE_TRAN_CoMorb8[][3] =
+  {
+   {1,   1,   1},
+   {2,   2,   3},
+   {3,   3,   3},
+   {4,   4,   4},
+   {5,   5,   5},
+   {6,   6,   6},
+   {7,   7,   7},
+   {8,   8,   8},
+   {9,   9,   9}
+  }; 
+
+const double STATE_TRAN9[][3] =
+  {
+   {0.0010000,   0.0500000,   0.4000000},
+   {0.0030000,   0.0500000,   0.4000000},
+   {0.0120000,   0.0500000,   0.5000000},
+   {0.0320000,   0.0500000,   0.5000000},
+   {0.0490000,   0.0630000,   0.5000000},
+   {0.1020000,   0.1220000,   0.5000000},
+   {0.1660000,   0.2740000,   0.5000000},
+   {0.2430000,   0.4320000,   0.5000000},
+   {0.2730000,   0.7090000,   0.5000000}
+  };
+const double STATE_TRAN_CoMorb9[][3] =
+  {
+   {1,   1,   1},
+   {2,   2,   3},
+   {3,   3,   3},
+   {4,   4,   4},
+   {5,   5,   5},
+   {6,   6,   6},
+   {7,   7,   7},
+   {8,   8,   8},
+   {9,   9,   9}
+  }; 
 //-------lambda_incoming_higher for variants begins--shakir------//
      
 struct testing_probability{
@@ -577,12 +651,18 @@ struct global_params{
   double VACCINATION_EFFECTIVENESS_WANING2 = 0.85;
   double VACCINATION_EFFECTIVENESS_BOOSTED2= 0.95;
 
-  double TIME_ALPHA=1060;
-  double TIME_DELTA=1460;
-  double TIME_OMICRON=1860;
-  double TIME_OMICRON_NEW=2960;
-  double TIME_OMICRON_BA4=2960;
-  double TIME_OMICRON_BA5=2960;
+  double TIME_ALPHA=1216;
+  double TIME_DELTA=1708;
+  double TIME_OMICRON=2564;
+  double TIME_OMICRON_NEW=2772;
+  double TIME_OMICRON_BA4=3192;
+  double TIME_OMICRON_BA5=3192;
+  double TIME_OMICRON_BA6=3472;
+  double TIME_OMICRON_BA7=3640;
+  double TIME_OMICRON_BA8=3660;
+  double TIME_OMICRON_BA9=3700;
+  double TIME_OMICRON_BA10=3800;
+
 
   double INFECTIOUSNESS_ALPHA=1.5;
   double INFECTIOUSNESS_DELTA=2.6;
@@ -590,6 +670,13 @@ struct global_params{
   double INFECTIOUSNESS_OMICRON_NEW=3;
   double INFECTIOUSNESS_OMICRON_BA4=3;
   double INFECTIOUSNESS_OMICRON_BA5=3;
+  double INFECTIOUSNESS_OMICRON_BA6=3;
+  double INFECTIOUSNESS_OMICRON_BA7=3;
+  double INFECTIOUSNESS_OMICRON_BA8=3;
+  double INFECTIOUSNESS_OMICRON_BA9=3;
+  double INFECTIOUSNESS_OMICRON_BA10=3;
+
+
 
   double VIRULENT_NEW_STRAIN = 1.3;
   double VIRULENT_NEW_ALPHA=1.3;
@@ -598,14 +685,19 @@ struct global_params{
   double VIRULENT_NEW_OMICRON_NEW=.8;
   double VIRULENT_NEW_OMICRON_BA4=.8;
   double VIRULENT_NEW_OMICRON_BA5=.8;
+  double VIRULENT_NEW_OMICRON_BA6=.8;
+  double VIRULENT_NEW_OMICRON_BA7=.8;
+  double VIRULENT_NEW_OMICRON_BA8=.8;
+  double VIRULENT_NEW_OMICRON_BA9=.8;
+  double VIRULENT_NEW_OMICRON_BA10=.8;
 
 
-  double REINFECTION_ALPHA=0.05;
-  double REINFECTION_DELTA=0.05;
-  double REINFECTION_OMICRON=0.05;  
-  double REINFECTION_OMICRON_NEW=0.05;
-  double REINFECTION_OMICRON_BA4=0.05;
-  double REINFECTION_OMICRON_BA5=0.05;
+  // double REINFECTION_ALPHA=0.05;
+  // double REINFECTION_DELTA=0.05;
+  // double REINFECTION_OMICRON=0.05;  
+  // double REINFECTION_OMICRON_NEW=0.05;
+  // double REINFECTION_OMICRON_BA4=0.05;
+  // double REINFECTION_OMICRON_BA5=0.05;
 
   double FRACTION_NEW_STRAIN = 0.10;
 
@@ -615,13 +707,18 @@ struct global_params{
   double FRACTION_NEW_OMICRON_NEW = 0.10;
   double FRACTION_NEW_OMICRON_BA4 = 0.10;
   double FRACTION_NEW_OMICRON_BA5 = 0.10;
+  double FRACTION_NEW_OMICRON_BA6 = 0.10;
+  double FRACTION_NEW_OMICRON_BA7 = 0.10;
+  double FRACTION_NEW_OMICRON_BA8 = 0.10;
+  double FRACTION_NEW_OMICRON_BA9 = 0.10;
+  double FRACTION_NEW_OMICRON_BA10 = 0.10;
 
-  double FRACTION_SUSCEPTIBLE_ALPHA=1;
-  double FRACTION_SUSCEPTIBLE_DELTA=1;
-  double FRACTION_SUSCEPTIBLE_OMICRON=1;
-  double FRACTION_SUSCEPTIBLE_OMICRON_NEW=1;
-  double FRACTION_SUSCEPTIBLE_OMICRON_BA4=1;
-  double FRACTION_SUSCEPTIBLE_OMICRON_BA5=1;
+  // double FRACTION_SUSCEPTIBLE_ALPHA=1;
+  // double FRACTION_SUSCEPTIBLE_DELTA=1;
+  // double FRACTION_SUSCEPTIBLE_OMICRON=1;
+  // double FRACTION_SUSCEPTIBLE_OMICRON_NEW=1;
+  // double FRACTION_SUSCEPTIBLE_OMICRON_BA4=1;
+  // double FRACTION_SUSCEPTIBLE_OMICRON_BA5=1;
 
   //Status
   count_type INIT_ACTUALLY_INFECTED = 0;
@@ -1074,6 +1171,11 @@ struct agent{
   double infectiousness_delta;
   double infectiousness_omicron;
   double infectiousness_omicron_New;
+  double infectiousness_omicron_BA4;
+  double infectiousness_omicron_BA5;
+  double infectiousness_omicron_BA6;
+  double infectiousness_omicron_BA7;
+  double infectiousness_omicron_BA8;
 
   //a.k.a rho
   double severity;
@@ -1153,6 +1255,9 @@ struct agent{
   double lambda_higher4 = 0;
   double lambda_higher5 = 0;
   double lambda_higher6 = 0;
+  double lambda_higher7 = 0;
+  double lambda_higher8 = 0;
+  double lambda_higher9 = 0;
 
   double kappa_T = 1;
   double psi_T = 0;
@@ -1177,6 +1282,10 @@ struct agent{
   lambda_incoming_data lambda_incoming_higher4;
   lambda_incoming_data lambda_incoming_higher5;
   lambda_incoming_data lambda_incoming_higher6;
+  lambda_incoming_data lambda_incoming_higher7;
+  lambda_incoming_data lambda_incoming_higher8;
+  lambda_incoming_data lambda_incoming_higher9;
+
   
  // lambda_incoming_data name;
 
@@ -1292,6 +1401,15 @@ struct random_community{
 
   double lambda_random_community6;
   double lambda_random_community_higher6;
+
+  double lambda_random_community7;
+  double lambda_random_community_higher7;
+
+  double lambda_random_community8;
+  double lambda_random_community_higher8;
+
+  double lambda_random_community9;
+  double lambda_random_community_higher9;
 //------lambda_incoming_higher for variants ends--shakir------//  
 
 
@@ -1335,6 +1453,9 @@ struct house{
   double lambda_random_community_outgoing_higher4;
   double lambda_random_community_outgoing_higher5;
   double lambda_random_community_outgoing_higher6;
+  double lambda_random_community_outgoing_higher7;
+  double lambda_random_community_outgoing_higher8;
+  double lambda_random_community_outgoing_higher9;
 
 
 //------lambda_incoming_higher for variants ends--shakir------//  
@@ -1359,6 +1480,9 @@ struct house{
   double age_independent_mixing_higher4;
   double age_independent_mixing_higher5;
   double age_independent_mixing_higher6;
+  double age_independent_mixing_higher7;
+  double age_independent_mixing_higher8;
+  double age_independent_mixing_higher9;
 
 //------lambda_incoming_higher for variants ends--shakir------//  
   std::vector<double> age_dependent_mixing;
@@ -1402,6 +1526,9 @@ struct project{
   double age_independent_mixing_higher4;
   double age_independent_mixing_higher5;
   double age_independent_mixing_higher6;
+  double age_independent_mixing_higher7;
+  double age_independent_mixing_higher8;
+  double age_independent_mixing_higher9;
 
 //------lambda_incoming_higher for variants ends--shakir------//  
   std::vector<double> age_dependent_mixing;
@@ -1429,6 +1556,9 @@ struct workplace {
   double age_independent_mixing_higher4;
   double age_independent_mixing_higher5;
   double age_independent_mixing_higher6;
+  double age_independent_mixing_higher7;
+  double age_independent_mixing_higher8;
+  double age_independent_mixing_higher9;
 
 //------lambda_incoming_higher for variants ends--shakir------//
   
@@ -1529,6 +1659,11 @@ struct community {
   double lambda_community_higher7 = 0;
   double lambda_community_global_higher7 = 0;
 
+  double lambda_community_higher8 = 0;
+  double lambda_community_global_higher8 = 0;
+
+  double lambda_community_higher9 = 0;
+  double lambda_community_global_higher9 = 0;
 //------lambda_incoming_higher for variants ends--shakir------//  
 
 
@@ -1576,6 +1711,15 @@ struct nbr_cell {
 
   double lambda_nbr6 = 0;
   double lambda_nbr_higher6=0;
+
+  double lambda_nbr7 = 0;
+  double lambda_nbr_higher7=0;
+
+  double lambda_nbr8 = 0;
+  double lambda_nbr_higher8=0;
+
+  double lambda_nbr9 = 0;
+  double lambda_nbr_higher9=0;
 //------lambda_incoming_higher for variants ends--shakir------//  
 
   int dominant_var_nbr;

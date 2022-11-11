@@ -28,7 +28,7 @@ if not os.path.exists(OUTPUT_DIR):
 
 PIECE = 1 # 32
 # NUM_DAYS = 30
-NUM_DAYS = 960
+NUM_DAYS = 973
 
 #NRMSE=500 # How many RMSE indices to be used in the next piece (Top NRMSE smallest RMSE values)
 
@@ -69,7 +69,22 @@ maxValues['INFECTIOUSNESS_OMICRON']=5
 
 
 minValues['INFECTIOUSNESS_OMICRON_NEW']=2
-maxValues['INFECTIOUSNESS_OMICRON_NEW']=6
+maxValues['INFECTIOUSNESS_OMICRON_NEW']=4
+
+minValues['INFECTIOUSNESS_OMICRON_BA4']=2
+maxValues['INFECTIOUSNESS_OMICRON_BA4']=4
+
+minValues['INFECTIOUSNESS_OMICRON_BA5']=2
+maxValues['INFECTIOUSNESS_OMICRON_BA5']=4
+
+minValues['INFECTIOUSNESS_OMICRON_BA6']=2
+maxValues['INFECTIOUSNESS_OMICRON_BA6']=4
+
+minValues['INFECTIOUSNESS_OMICRON_BA7']=2
+maxValues['INFECTIOUSNESS_OMICRON_BA7']=4
+
+minValues['INFECTIOUSNESS_OMICRON_BA8']=2
+maxValues['INFECTIOUSNESS_OMICRON_BA8']=4
 #-----------------------------------------------------------------------------#
 
 #---------------VIRULENCE values for strains----------------------------------#
@@ -84,6 +99,21 @@ maxValues['VIRULENT_NEW_OMICRON']=1
 
 minValues['VIRULENT_NEW_OMICRON_NEW']=.3
 maxValues['VIRULENT_NEW_OMICRON_NEW']=1
+
+minValues['VIRULENT_NEW_OMICRON_BA4']=.3
+maxValues['VIRULENT_NEW_OMICRON_BA4']=1
+
+minValues['VIRULENT_NEW_OMICRON_BA5']=.3
+maxValues['VIRULENT_NEW_OMICRON_BA5']=1
+
+minValues['VIRULENT_NEW_OMICRON_BA6']=.3
+maxValues['VIRULENT_NEW_OMICRON_BA6']=1
+
+minValues['VIRULENT_NEW_OMICRON_BA7']=.3
+maxValues['VIRULENT_NEW_OMICRON_BA7']=1
+
+minValues['VIRULENT_NEW_OMICRON_BA8']=.3
+maxValues['VIRULENT_NEW_OMICRON_BA8']=1
 #-----------------------------------------------------------------------------#
 
 #-----------Proportion of reinfections from different strains-----------------#
@@ -112,6 +142,22 @@ maxValues['FRACTION_NEW_OMICRON']=0.1
 
 minValues['FRACTION_NEW_OMICRON_NEW']=0.0001
 maxValues['FRACTION_NEW_OMICRON_NEW']=0.1
+
+minValues['FRACTION_NEW_OMICRON_BA4']=0.0001
+maxValues['FRACTION_NEW_OMICRON_BA4']=0.1
+
+minValues['FRACTION_NEW_OMICRON_BA5']=0.0001
+maxValues['FRACTION_NEW_OMICRON_BA5']=0.1
+
+minValues['FRACTION_NEW_OMICRON_BA6']=0.0001
+maxValues['FRACTION_NEW_OMICRON_BA6']=0.1
+
+minValues['FRACTION_NEW_OMICRON_BA7']=0.0001
+maxValues['FRACTION_NEW_OMICRON_BA7']=0.1
+
+minValues['FRACTION_NEW_OMICRON_BA8']=0.0001
+maxValues['FRACTION_NEW_OMICRON_BA8']=0.1
+
 #-----------------------------------------------------------------------------#
 
 #----------------Fraction of susceptibles-------------------------------------#
@@ -183,17 +229,43 @@ maxValues['DAYS_BEFORE_LOCKDOWN']=13
 #-----------------------------------------------------------------------------#
 
 #----------------Time of new variants-----------------------------------------#
-minValues['TIME_ALPHA']=(dt.date(2020,12,30)-dt.date(2020,3,1)).days-45
+# std::string TIME_ALPHA="1216";//30 december 2020
+#   std::string TIME_DELTA="1708";//2 May 2021
+#   std::string TIME_OMICRON="2564";//2 December 2021
+#   std::string TIME_OMICRON_NEW="2772";//23 January 2022
+#   std::string TIME_OMICRON_BA4="3192";//8 May 2022
+#   std::string TIME_OMICRON_BA5="3192";//8 May 2022
+#   std::string TIME_OMICRON_BA6="3472";//17 July 2022
+#   std::string TIME_OMICRON_BA7="3640";//28 August 2022  std::string TIME_OMICRON_BA4="3204";//11 May 2022
+#   std::string TIME_OMICRON_BA8="3660";//2 September 2022
+#   // std::string TIME_OMICRON_BA9="3308";//6 June 2022
+#   // std::string TIME_OMICRON_BA10="3308";//6 June 2022
+minValues['TIME_ALPHA']=(dt.date(2020,12,30)-dt.date(2020,3,1)).days-20
 maxValues['TIME_ALPHA']=(dt.date(2020,12,30)-dt.date(2020,3,1)).days+10
 
-minValues['TIME_DELTA']=(dt.date(2021,5,2)-dt.date(2020,3,1)).days-45
+minValues['TIME_DELTA']=(dt.date(2021,5,2)-dt.date(2020,3,1)).days-20
 maxValues['TIME_DELTA']=(dt.date(2021,5,2)-dt.date(2020,3,1)).days+10
 
-minValues['TIME_OMICRON']=(dt.date(2021,12,11)-dt.date(2020,3,1)).days-45
-maxValues['TIME_OMICRON']=(dt.date(2021,12,11)-dt.date(2020,3,1)).days+10
+minValues['TIME_OMICRON']=(dt.date(2021,12,2)-dt.date(2020,3,1)).days-20
+maxValues['TIME_OMICRON']=(dt.date(2021,12,2)-dt.date(2020,3,1)).days+10
 
-minValues['TIME_OMICRON_NEW']=(dt.date(2022,4,22)-dt.date(2020,3,1)).days-45
-maxValues['TIME_OMICRON_NEW']=(dt.date(2022,4,22)-dt.date(2020,3,1)).days+10
+minValues['TIME_OMICRON_NEW']=(dt.date(2022,1,23)-dt.date(2020,3,1)).days-20
+maxValues['TIME_OMICRON_NEW']=(dt.date(2022,1,23)-dt.date(2020,3,1)).days+10
+
+minValues['TIME_OMICRON_BA4']=(dt.date(2022,5,8)-dt.date(2020,3,1)).days-20
+maxValues['TIME_OMICRON_BA4']=(dt.date(2022,5,8)-dt.date(2020,3,1)).days+10
+
+minValues['TIME_OMICRON_BA5']=(dt.date(2022,5,8)-dt.date(2020,3,1)).days-20
+maxValues['TIME_OMICRON_BA5']=(dt.date(2022,5,8)-dt.date(2020,3,1)).days+10
+
+minValues['TIME_OMICRON_BA6']=(dt.date(2022,7,17)-dt.date(2020,3,1)).days-20
+maxValues['TIME_OMICRON_BA6']=(dt.date(2022,7,17)-dt.date(2020,3,1)).days+10
+
+minValues['TIME_OMICRON_BA7']=(dt.date(2022,8,28)-dt.date(2020,3,1)).days-20
+maxValues['TIME_OMICRON_BA7']=(dt.date(2022,8,28)-dt.date(2020,3,1)).days+10
+
+minValues['TIME_OMICRON_BA8']=(dt.date(2022,9,2)-dt.date(2020,3,1)).days-20
+maxValues['TIME_OMICRON_BA8']=(dt.date(2022,9,2)-dt.date(2020,3,1)).days+10
 #-----------------------------------------------------------------------------#
 
 # Change
