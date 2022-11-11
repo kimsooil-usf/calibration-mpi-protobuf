@@ -105,15 +105,18 @@ node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,
 	  node.infective = false;
 	  update_status.new_infection = true;
 	  bool infected_with_new_strain = false;
-	  double mPs,P_or,P_s[6]={node.lambda_higher1/node.lambda,node.lambda_higher2/node.lambda,node.lambda_higher3/node.lambda,node.lambda_higher4/node.lambda,node.lambda_higher5/node.lambda,node.lambda_higher6/node.lambda};
+	  double mPs,P_or,P_s[9]={node.lambda_higher1/node.lambda,node.lambda_higher2/node.lambda,
+	  node.lambda_higher3/node.lambda,node.lambda_higher4/node.lambda,node.lambda_higher5/node.lambda,
+	  node.lambda_higher6/node.lambda, node.lambda_higher7/node.lambda,node.lambda_higher8/node.lambda,
+	  node.lambda_higher9/node.lambda};
 
-	  P_or=std::accumulate(P_s, P_s+6, P_or);//calculates the sum of probabilities from all variants except the original.
+	  P_or=std::accumulate(P_s, P_s+9, P_or);//calculates the sum of probabilities from all variants except the original.
 	  P_or=1-P_or;
 	  int ds;
 
-	  ds=std::distance(P_s, std::max_element(P_s, P_s + 6));///identifies the variant
+	  ds=std::distance(P_s, std::max_element(P_s, P_s + 9));///identifies the variant
 	  ds+=1;
-	  mPs=*std::max_element(P_s, P_s + 6);//---calculates the probability of dominant variant
+	  mPs=*std::max_element(P_s, P_s + 9);//---calculates the probability of dominant variant
 	//   infected_with_new_strain[1-1] = bernoulli(node.lambda_higher1/node.lambda);
 	//   infected_with_new_strain[2-1] = bernoulli(node.lambda_higher2/node.lambda);
 	//   infected_with_new_strain[3-1] = bernoulli(node.lambda_higher3/node.lambda);
@@ -144,6 +147,18 @@ node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,
 	  }
 	  else if (infected_with_new_strain && P_or<1 && ds==6 ){//---Shakir:This could be improved to precisely get the neighbourhood based caclucations.
 		  node.new_strain = 6;//omicron_BA5 is 6
+		  node.infectiousness = node.infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA5;
+	  }
+	  else if (infected_with_new_strain && P_or<1 && ds==7 ){//---Shakir:This could be improved to precisely get the neighbourhood based caclucations.
+		  node.new_strain = 7;//omicron_BA6 is 7
+		  node.infectiousness = node.infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA6;
+	  }
+	  else if (infected_with_new_strain && P_or<1 && ds==8 ){//---Shakir:This could be improved to precisely get the neighbourhood based caclucations.
+		  node.new_strain = 8;//omicron_BA7 is 8
+		  node.infectiousness = node.infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA5;
+	  }
+	  else if (infected_with_new_strain && P_or<1 && ds==9 ){//---Shakir:This could be improved to precisely get the neighbourhood based caclucations.
+		  node.new_strain = 9;//omicron_BA8 is 9
 		  node.infectiousness = node.infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA5;
 	  }	  
 	}
@@ -223,6 +238,18 @@ node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,
 	else if(node.new_strain==6){
 		double probability_omicronBA5_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA5,0.33)*STATE_TRAN6[age_index][0]*STATE_TRAN_CoMorb6[node.comorbidity][0];
 	  transition = bernoulli(probability_omicronBA5_strain);
+	}
+	else if(node.new_strain==7){
+		double probability_omicronBA6_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA6,0.33)*STATE_TRAN7[age_index][0]*STATE_TRAN_CoMorb7[node.comorbidity][0];
+	  transition = bernoulli(probability_omicronBA6_strain);
+	}
+	else if(node.new_strain==8){
+		double probability_omicronBA7_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA7,0.33)*STATE_TRAN8[age_index][0]*STATE_TRAN_CoMorb8[node.comorbidity][0];
+	  transition = bernoulli(probability_omicronBA7_strain);
+	}
+	else if(node.new_strain==9){
+		double probability_omicronBA8_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA8,0.33)*STATE_TRAN9[age_index][0]*STATE_TRAN_CoMorb9[node.comorbidity][0];
+	  transition = bernoulli(probability_omicronBA8_strain);
 	}					
 	else {
 		transition = bernoulli(STATE_TRAN[age_index][0]*STATE_TRAN_CoMorb[node.comorbidity][0]);//----Shakir:Comorbidity enhances chances of hospitlaizations
@@ -291,6 +318,18 @@ node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,
 		double probability_omicronBA5_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA5,0.33)*STATE_TRAN6[age_index][1]*STATE_TRAN_CoMorb6[node.comorbidity][1];
 	  transition = bernoulli(probability_omicronBA5_strain);
 	}
+	else if(node.new_strain==7){
+		double probability_omicronBA6_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA6,0.33)*STATE_TRAN7[age_index][1]*STATE_TRAN_CoMorb7[node.comorbidity][1];
+	  transition = bernoulli(probability_omicronBA6_strain);
+	}
+	else if(node.new_strain==8){
+		double probability_omicronBA7_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA7,0.33)*STATE_TRAN8[age_index][1]*STATE_TRAN_CoMorb8[node.comorbidity][1];
+	  transition = bernoulli(probability_omicronBA7_strain);
+	}
+	else if(node.new_strain==9){
+		double probability_omicronBA8_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA8,0.33)*STATE_TRAN9[age_index][1]*STATE_TRAN_CoMorb9[node.comorbidity][1];
+	  transition = bernoulli(probability_omicronBA8_strain);
+	}
 	else{
 		transition=bernoulli(STATE_TRAN[age_index][1]*STATE_TRAN_CoMorb[node.comorbidity][1]);//---Shakir:comorbidity enhances chances for critical care
 	}
@@ -357,6 +396,18 @@ node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,
 	else if(node.new_strain==6){
 		double probability_omicronBA5_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA5,0.33)*STATE_TRAN6[age_index][2]*STATE_TRAN_CoMorb6[node.comorbidity][2];
 	  transition = bernoulli(probability_omicronBA5_strain);
+	}
+	else if(node.new_strain==7){
+		double probability_omicronBA6_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA6,0.33)*STATE_TRAN7[age_index][2]*STATE_TRAN_CoMorb7[node.comorbidity][2];
+	  transition = bernoulli(probability_omicronBA6_strain);
+	}
+	else if(node.new_strain==8){
+		double probability_omicronBA7_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA7,0.33)*STATE_TRAN8[age_index][2]*STATE_TRAN_CoMorb8[node.comorbidity][2];
+	  transition = bernoulli(probability_omicronBA7_strain);
+	}
+	else if(node.new_strain==9){
+		double probability_omicronBA8_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA8,0.33)*STATE_TRAN9[age_index][2]*STATE_TRAN_CoMorb9[node.comorbidity][2];
+	  transition = bernoulli(probability_omicronBA8_strain);
 	}
 	else {
 		transition = bernoulli(STATE_TRAN[age_index][2]*STATE_TRAN_CoMorb[node.comorbidity][2]);//----Shakir:Comorbidity enhances chances of death
@@ -580,7 +631,7 @@ void updated_lambda_project(const vector<agent>& nodes, workplace& workplace){
 	  double sum_value_project = 0;
 //	  double sum_value_project_higher=0,sum_alpha=0,sum_delta = 0,sum_omicron=0,sum_omicronnew=0,sum_omicronBA4=0,sum_omicronBA5=0;
 //-------lambda_incoming_higher for variants begins--shakir------//
-	  double sum_value_project_higher[6]={0};
+	  double sum_value_project_higher[9]={0};
 
 //------lambda_incoming_higher for variants ends--shakir------//  
 	  
@@ -604,6 +655,15 @@ void updated_lambda_project(const vector<agent>& nodes, workplace& workplace){
 		  if (nodes[workplace.projects[i].individuals[j]].new_strain==6){
 			  sum_value_project_higher[6-1] += nodes[workplace.projects[i].individuals[j]].lambda_w;  
 		  }
+		  if (nodes[workplace.projects[i].individuals[j]].new_strain==7){
+			  sum_value_project_higher[7-1] += nodes[workplace.projects[i].individuals[j]].lambda_w;  
+		  }
+		  if (nodes[workplace.projects[i].individuals[j]].new_strain==8){
+			  sum_value_project_higher[8-1] += nodes[workplace.projects[i].individuals[j]].lambda_w;  
+		  }
+		  if (nodes[workplace.projects[i].individuals[j]].new_strain==9){
+			  sum_value_project_higher[9-1] += nodes[workplace.projects[i].individuals[j]].lambda_w;  
+		  }
 		//   if (nodes[workplace.projects[i].individuals[j]].new_strain){
 		// 	  sum_value_project_higher += nodes[workplace.projects[i].individuals[j]].lambda_w;  
 		//   }	//----originally oly this condition was there	  		  		  		  		  
@@ -619,6 +679,9 @@ void updated_lambda_project(const vector<agent>& nodes, workplace& workplace){
 	  workplace.projects[i].age_independent_mixing_higher4 = workplace.projects[i].scale*sum_value_project_higher[4-1];
 	  workplace.projects[i].age_independent_mixing_higher5 = workplace.projects[i].scale*sum_value_project_higher[5-1];
 	  workplace.projects[i].age_independent_mixing_higher6 = workplace.projects[i].scale*sum_value_project_higher[6-1];
+	  workplace.projects[i].age_independent_mixing_higher7 = workplace.projects[i].scale*sum_value_project_higher[7-1];
+	  workplace.projects[i].age_independent_mixing_higher8 = workplace.projects[i].scale*sum_value_project_higher[8-1];
+	  workplace.projects[i].age_independent_mixing_higher9 = workplace.projects[i].scale*sum_value_project_higher[9-1];
 
 
 //------lambda_incoming_higher for variants ends--shakir------//  
@@ -727,7 +790,7 @@ void updated_lambda_w_age_independent(const vector<agent>& nodes, workplace& wor
   double sum_value = 0;
 //  double sum_value_higher = 0,sum_alpha=0,sum_delta=0,sum_omicron=0,sum_omicronnew=0,sum_omicronBA4=0,sum_omicronBA5=0;
 //-------lambda_incoming_higher for variants begins--shakir------//
-double sum_value_higher[6] = {0};  
+double sum_value_higher[9] = {0};  
 
 //------lambda_incoming_higher for variants ends--shakir------//  
 
@@ -751,7 +814,16 @@ double sum_value_higher[6] = {0};
 		  }
 		  if (nodes[workplace.individuals[i]].new_strain==6){
 			  sum_value_higher[6-1] += nodes[workplace.individuals[i]].lambda_w;  
+		  }
+		  if (nodes[workplace.individuals[i]].new_strain==7){
+			  sum_value_higher[7-1] += nodes[workplace.individuals[i]].lambda_w;  
 		  }	
+		  if (nodes[workplace.individuals[i]].new_strain==8){
+			  sum_value_higher[8-1] += nodes[workplace.individuals[i]].lambda_w;  
+		  }	
+		  if (nodes[workplace.individuals[i]].new_strain==9){
+			  sum_value_higher[9-1] += nodes[workplace.individuals[i]].lambda_w;  
+		  }		
 	// if (nodes[workplace.individuals[i]].new_strain){
 	// 	sum_value_higher += nodes[workplace.individuals[i]].lambda_w;//-----original new_strain blcoked by shakir
 	// }
@@ -767,7 +839,9 @@ double sum_value_higher[6] = {0};
   workplace.age_independent_mixing_higher4 = workplace.scale*sum_value_higher[4-1]; 
   workplace.age_independent_mixing_higher5 = workplace.scale*sum_value_higher[5-1]; 
   workplace.age_independent_mixing_higher6 = workplace.scale*sum_value_higher[6-1]; 
-
+  workplace.age_independent_mixing_higher7 = workplace.scale*sum_value_higher[7-1]; 
+  workplace.age_independent_mixing_higher8 = workplace.scale*sum_value_higher[8-1]; 
+  workplace.age_independent_mixing_higher9 = workplace.scale*sum_value_higher[9-1]; 
 
 //------lambda_incoming_higher for variants ends--shakir------//  
 
@@ -779,7 +853,7 @@ void updated_lambda_h_age_independent(const vector<agent>& nodes,  house& home){
 //  double sum_value_higher = 0,sum_alpha=0,sum_delta=0,sum_omicron=0,sum_omicronnew=0,sum_omicronBA4=0,sum_omicronBA5=0;
 //-------lambda_incoming_higher for variants begins--shakir------//
 
-double sum_value_higher[6] = {0};
+double sum_value_higher[9] = {0};
 //------lambda_incoming_higher for variants ends--shakir------//  
 
   for (count_type i=0; i<home.individuals.size(); ++i){
@@ -802,7 +876,16 @@ double sum_value_higher[6] = {0};
 		  }
 		  if (nodes[home.individuals[i]].new_strain==6){
 			  sum_value_higher[6-1] += nodes[home.individuals[i]].lambda_h;  
+		  }
+		  if (nodes[home.individuals[i]].new_strain==7){
+			  sum_value_higher[7-1] += nodes[home.individuals[i]].lambda_h;  
 		  }	
+		  if (nodes[home.individuals[i]].new_strain==8){
+			  sum_value_higher[8-1] += nodes[home.individuals[i]].lambda_h;  
+		  }	
+		  if (nodes[home.individuals[i]].new_strain==9){
+			  sum_value_higher[9-1] += nodes[home.individuals[i]].lambda_h;  
+		  }		
 	// if (nodes[home.individuals[i]].new_strain){
 	// 	sum_value_higher += nodes[home.individuals[i]].lambda_h;
 	// }///----original new_strain if condition blocked by shakir
@@ -820,6 +903,9 @@ double sum_value_higher[6] = {0};
   home.age_independent_mixing_higher4 =  home.scale*sum_value_higher[4-1];
   home.age_independent_mixing_higher5 =  home.scale*sum_value_higher[5-1];
   home.age_independent_mixing_higher6 =  home.scale*sum_value_higher[6-1];
+  home.age_independent_mixing_higher7 =  home.scale*sum_value_higher[7-1];
+  home.age_independent_mixing_higher8 =  home.scale*sum_value_higher[8-1];
+  home.age_independent_mixing_higher9 =  home.scale*sum_value_higher[9-1];
 
 
 //------lambda_incoming_higher for variants ends--shakir------//  
@@ -961,6 +1047,15 @@ double updated_travel_fraction(const vector<agent>& nodes, const int cur_time,co
 		  }
 		  if(nodes[i].new_strain==6){
 		infected_distance += nodes[i].commute_distance * mask_factor * GLOBAL.INFECTIOUSNESS_OMICRON_BA5;
+		  }
+		  if(nodes[i].new_strain==7){
+		infected_distance += nodes[i].commute_distance * mask_factor * GLOBAL.INFECTIOUSNESS_OMICRON_BA6;
+		  }
+		  if(nodes[i].new_strain==8){
+		infected_distance += nodes[i].commute_distance * mask_factor * GLOBAL.INFECTIOUSNESS_OMICRON_BA7;
+		  }
+		  if(nodes[i].new_strain==9){
+		infected_distance += nodes[i].commute_distance * mask_factor * GLOBAL.INFECTIOUSNESS_OMICRON_BA8;
 		  }		  		  		  		  
 		  else{
 			  infected_distance += nodes[i].commute_distance * mask_factor;
@@ -981,7 +1076,7 @@ vector<double>  updated_travel_fraction_higher(const vector<agent>& nodes, const
   //double infected_distance_higher, total_distance = 0;//---Blocked by shakir for new variants
 
   //-------lambda_incoming_higher for variants begins--shakir------//
-double infected_distance_higher[7] = {0},total_distance = 0;
+double infected_distance_higher[10] = {0},total_distance = 0;
 std::vector<double> zeros;
 std::vector<double> travel_fraction_higher;
 
@@ -992,6 +1087,10 @@ travel_fraction_higher.push_back(0);
 travel_fraction_higher.push_back(0);
 travel_fraction_higher.push_back(0);
 travel_fraction_higher.push_back(0);
+travel_fraction_higher.push_back(0);
+travel_fraction_higher.push_back(0);
+travel_fraction_higher.push_back(0);
+
 
 zeros.push_back(0);
 zeros.push_back(0);
@@ -1000,6 +1099,10 @@ zeros.push_back(0);
 zeros.push_back(0);
 zeros.push_back(0);
 zeros.push_back(0);
+zeros.push_back(0);
+zeros.push_back(0);
+zeros.push_back(0);
+
 //double travel_fraction_higher[7] ={0};
 //------lambda_incoming_higher for variants ends--shakir------//  
 
@@ -1044,13 +1147,23 @@ zeros.push_back(0);
 	  }
 	  if((nodes[i].infective)&&(nodes[i].new_strain==6)){//---new_strain replaced by shakir
 		infected_distance_higher[6-1] += nodes[i].commute_distance * mask_factor  * GLOBAL.INFECTIOUSNESS_OMICRON_BA5;
-	  }	  	  	  
+	  }
+	  if((nodes[i].infective)&&(nodes[i].new_strain==7)){//---new_strain replaced by shakir
+		infected_distance_higher[7-1] += nodes[i].commute_distance * mask_factor  * GLOBAL.INFECTIOUSNESS_OMICRON_BA6;
+	  }
+	  if((nodes[i].infective)&&(nodes[i].new_strain==8)){//---new_strain replaced by shakir
+		infected_distance_higher[8-1] += nodes[i].commute_distance * mask_factor  * GLOBAL.INFECTIOUSNESS_OMICRON_BA7;
+	  }
+	  if((nodes[i].infective)&&(nodes[i].new_strain==9)){//---new_strain replaced by shakir
+		infected_distance_higher[9-1] += nodes[i].commute_distance * mask_factor  * GLOBAL.INFECTIOUSNESS_OMICRON_BA8;
+	  }
+
 	}
   }
   if(total_distance == 0 || usual_travellers == 0){
 	  return zeros;//0;
   } else{
-	for(int i=1;i<=7;i++){
+	for(int i=1;i<=10;i++){
 		travel_fraction_higher[i-1]=infected_distance_higher[i-1]/total_distance 
 		* double(actual_travellers)/double(usual_travellers);
 	}
@@ -1073,7 +1186,9 @@ bool compliant=mask_wearing;
   node.lambda_incoming_higher4.set_zero();
   node.lambda_incoming_higher5.set_zero();
   node.lambda_incoming_higher6.set_zero();
-
+  node.lambda_incoming_higher7.set_zero();
+  node.lambda_incoming_higher8.set_zero();
+  node.lambda_incoming_higher9.set_zero();
 //-----------------------------------//
 
   //Contributions from home, workplace, community, and travel
@@ -1119,7 +1234,17 @@ bool compliant=mask_wearing;
 	node.lambda_incoming_higher6.home = node.kappa_H_incoming
 	  * homes[node.home].age_independent_mixing_higher6
 	  * node.hd_area_factor; 
-	  
+
+	node.lambda_incoming_higher7.home = node.kappa_H_incoming
+	  * homes[node.home].age_independent_mixing_higher7
+	  * node.hd_area_factor; 
+	node.lambda_incoming_higher8.home = node.kappa_H_incoming
+	  * homes[node.home].age_independent_mixing_higher8
+	  * node.hd_area_factor; 
+
+	node.lambda_incoming_higher9.home = node.kappa_H_incoming
+	  * homes[node.home].age_independent_mixing_higher9
+	  * node.hd_area_factor; 
 //------lambda_incoming_higher for variants ends--shakir------//
 
 	//If the agent lives in a high population density area, eg, a slum
@@ -1150,6 +1275,14 @@ bool compliant=mask_wearing;
 	  node.lambda_incoming_higher6.work = (node.attending?1.0:GLOBAL.ATTENDANCE_LEAKAGE)*node.kappa_W_incoming
 		* workplaces[node.workplace].age_independent_mixing_higher6;
 
+	  node.lambda_incoming_higher7.work = (node.attending?1.0:GLOBAL.ATTENDANCE_LEAKAGE)*node.kappa_W_incoming
+		* workplaces[node.workplace].age_independent_mixing_higher7;
+
+	  node.lambda_incoming_higher8.work = (node.attending?1.0:GLOBAL.ATTENDANCE_LEAKAGE)*node.kappa_W_incoming
+		* workplaces[node.workplace].age_independent_mixing_higher8;
+
+	  node.lambda_incoming_higher9.work = (node.attending?1.0:GLOBAL.ATTENDANCE_LEAKAGE)*node.kappa_W_incoming
+		* workplaces[node.workplace].age_independent_mixing_higher9;
 //------lambda_incoming_higher for variants ends--shakir------//
 
 	}
@@ -1178,6 +1311,14 @@ bool compliant=mask_wearing;
   node.lambda_incoming_higher6.project =  (node.attending?1.0:GLOBAL.ATTENDANCE_LEAKAGE)*node.kappa_W_incoming
 		* workplaces[node.workplace].projects[node.workplace_subnetwork].age_independent_mixing_higher6;
 
+  node.lambda_incoming_higher7.project =  (node.attending?1.0:GLOBAL.ATTENDANCE_LEAKAGE)*node.kappa_W_incoming
+		* workplaces[node.workplace].projects[node.workplace_subnetwork].age_independent_mixing_higher7;
+
+  node.lambda_incoming_higher8.project =  (node.attending?1.0:GLOBAL.ATTENDANCE_LEAKAGE)*node.kappa_W_incoming
+		* workplaces[node.workplace].projects[node.workplace_subnetwork].age_independent_mixing_higher8;
+
+  node.lambda_incoming_higher9.project =  (node.attending?1.0:GLOBAL.ATTENDANCE_LEAKAGE)*node.kappa_W_incoming
+		* workplaces[node.workplace].projects[node.workplace_subnetwork].age_independent_mixing_higher9;
 //------lambda_incoming_higher for variants ends--shakir------//  
   }
   // No null check for community as every node has a community.
@@ -1250,6 +1391,29 @@ bool compliant=mask_wearing;
 	* pow(communities[node.community].individuals.size(),
 		  node.hd_area_exponent);
 
+  node.lambda_incoming_higher7.community = node.kappa_C_incoming
+	* node.zeta_a
+	* node.funct_d_ck
+	* communities[node.community].lambda_community_global_higher7
+	* node.hd_area_factor
+	* pow(communities[node.community].individuals.size(),
+		  node.hd_area_exponent);
+
+  node.lambda_incoming_higher8.community = node.kappa_C_incoming
+	* node.zeta_a
+	* node.funct_d_ck
+	* communities[node.community].lambda_community_global_higher8
+	* node.hd_area_factor
+	* pow(communities[node.community].individuals.size(),
+		  node.hd_area_exponent);
+
+  node.lambda_incoming_higher9.community = node.kappa_C_incoming
+	* node.zeta_a
+	* node.funct_d_ck
+	* communities[node.community].lambda_community_global_higher9
+	* node.hd_area_factor
+	* pow(communities[node.community].individuals.size(),
+		  node.hd_area_exponent);
 //------lambda_incoming_higher for variants ends--shakir------//  
   
 
@@ -1301,7 +1465,24 @@ bool compliant=mask_wearing;
 	* node.funct_d_ck
 	* homes[node.home].random_households.lambda_random_community_higher6
 	* node.hd_area_factor;
-										
+
+   node.lambda_incoming_higher7.random_community = node.kappa_C_incoming
+	* node.zeta_a
+	* node.funct_d_ck
+	* homes[node.home].random_households.lambda_random_community_higher7
+	* node.hd_area_factor;
+
+   node.lambda_incoming_higher8.random_community = node.kappa_C_incoming
+	* node.zeta_a
+	* node.funct_d_ck
+	* homes[node.home].random_households.lambda_random_community_higher8
+	* node.hd_area_factor;
+
+   node.lambda_incoming_higher9.random_community = node.kappa_C_incoming
+	* node.zeta_a
+	* node.funct_d_ck
+	* homes[node.home].random_households.lambda_random_community_higher9
+	* node.hd_area_factor;										
 
 //------lambda_incoming_higher for variants ends--shakir------//  
 //std::cout<<"Neighbour size"<<"\t"<<nbr_cells.size()<<std::endl;
@@ -1348,7 +1529,21 @@ bool compliant=mask_wearing;
 	  * node.zeta_a
 	  * nbr_cells[homes[node.home].neighbourhood.cell_x][homes[node.home].neighbourhood.cell_y].lambda_nbr_higher6
 	  * node.hd_area_factor;
-      
+
+	node.lambda_incoming_higher7.nbr_cell = node.kappa_C_incoming
+	  * node.zeta_a
+	  * nbr_cells[homes[node.home].neighbourhood.cell_x][homes[node.home].neighbourhood.cell_y].lambda_nbr_higher7
+	  * node.hd_area_factor;
+
+	node.lambda_incoming_higher8.nbr_cell = node.kappa_C_incoming
+	  * node.zeta_a
+	  * nbr_cells[homes[node.home].neighbourhood.cell_x][homes[node.home].neighbourhood.cell_y].lambda_nbr_higher8
+	  * node.hd_area_factor;
+
+	node.lambda_incoming_higher9.nbr_cell = node.kappa_C_incoming
+	  * node.zeta_a
+	  * nbr_cells[homes[node.home].neighbourhood.cell_x][homes[node.home].neighbourhood.cell_y].lambda_nbr_higher9
+	  * node.hd_area_factor;      
 
 //------lambda_incoming_higher for variants ends--shakir------//  
 
@@ -1364,6 +1559,9 @@ bool compliant=mask_wearing;
 	node.lambda_incoming_higher4.nbr_cell = 0;
 	node.lambda_incoming_higher5.nbr_cell = 0;
 	node.lambda_incoming_higher6.nbr_cell = 0;
+	node.lambda_incoming_higher7.nbr_cell = 0;
+	node.lambda_incoming_higher8.nbr_cell = 0;
+	node.lambda_incoming_higher9.nbr_cell = 0;
 
 //------lambda_incoming_higher for variants ends--shakir------//  
 
@@ -1415,6 +1613,18 @@ forced_to_take_train
 	node.lambda_incoming_higher6.travel = GLOBAL.BETA_TRAVEL
 	  * node.commute_distance
 	  * travel_fraction_higher[6-1];
+
+	node.lambda_incoming_higher7.travel = GLOBAL.BETA_TRAVEL
+	  * node.commute_distance
+	  * travel_fraction_higher[7-1];
+
+	node.lambda_incoming_higher8.travel = GLOBAL.BETA_TRAVEL
+	  * node.commute_distance
+	  * travel_fraction_higher[8-1];
+
+	node.lambda_incoming_higher9.travel = GLOBAL.BETA_TRAVEL
+	  * node.commute_distance
+	  * travel_fraction_higher[9-1];
  // std::cout<<"travel force ends"<<node.lambda_incoming.travel<<std::endl;
 
 
@@ -1478,6 +1688,26 @@ forced_to_take_train
 	node.lambda_incoming_higher6.random_community *= GLOBAL.MASK_FACTOR;
 	node.lambda_incoming_higher6.nbr_cell *= GLOBAL.MASK_FACTOR;
 
+	node.lambda_incoming_higher7.work *= GLOBAL.MASK_FACTOR;
+	node.lambda_incoming_higher7.community *= GLOBAL.MASK_FACTOR;
+	node.lambda_incoming_higher7.travel *= GLOBAL.MASK_FACTOR;
+	node.lambda_incoming_higher7.project *= GLOBAL.MASK_FACTOR;
+	node.lambda_incoming_higher7.random_community *= GLOBAL.MASK_FACTOR;
+	node.lambda_incoming_higher7.nbr_cell *= GLOBAL.MASK_FACTOR;
+
+	node.lambda_incoming_higher8.work *= GLOBAL.MASK_FACTOR;
+	node.lambda_incoming_higher8.community *= GLOBAL.MASK_FACTOR;
+	node.lambda_incoming_higher8.travel *= GLOBAL.MASK_FACTOR;
+	node.lambda_incoming_higher8.project *= GLOBAL.MASK_FACTOR;
+	node.lambda_incoming_higher8.random_community *= GLOBAL.MASK_FACTOR;
+	node.lambda_incoming_higher8.nbr_cell *= GLOBAL.MASK_FACTOR;
+
+	node.lambda_incoming_higher9.work *= GLOBAL.MASK_FACTOR;
+	node.lambda_incoming_higher9.community *= GLOBAL.MASK_FACTOR;
+	node.lambda_incoming_higher9.travel *= GLOBAL.MASK_FACTOR;
+	node.lambda_incoming_higher9.project *= GLOBAL.MASK_FACTOR;
+	node.lambda_incoming_higher9.random_community *= GLOBAL.MASK_FACTOR;
+	node.lambda_incoming_higher9.nbr_cell *= GLOBAL.MASK_FACTOR;
 //------lambda_incoming_higher for variants ends--shakir------//  
 
   }
@@ -1491,6 +1721,9 @@ forced_to_take_train
   node.lambda_higher4 = node.lambda_incoming_higher4.sum();
   node.lambda_higher5 = node.lambda_incoming_higher5.sum();
   node.lambda_higher6 = node.lambda_incoming_higher6.sum();
+  node.lambda_higher7 = node.lambda_incoming_higher7.sum();
+  node.lambda_higher8 = node.lambda_incoming_higher8.sum();
+  node.lambda_higher9 = node.lambda_incoming_higher9.sum();
 
 //------lambda_incoming_higher for variants ends--shakir------//  
 
@@ -1524,7 +1757,7 @@ void updated_lambda_c_local(const vector<agent>& nodes, community& community){
   double sum_value = 0;
   //double sum_value_higher = 0,sum_alpha=0,sum_delta=0,sum_omicron=0,sum_omicronnew=0,sum_omicronBA4=0,sum_omicronBA5=0;
   //-------lambda_incoming_higher for variants begins--shakir------//
-double sum_value_higher[6]={0};
+double sum_value_higher[9]={0};
 
 //------lambda_incoming_higher for variants ends--shakir------//  
 
@@ -1572,6 +1805,24 @@ double sum_value_higher[6]={0};
 	if (nodes[community.individuals[i]].new_strain==6){			 
 	//sum_omicronBA5
 	  sum_value_higher[6-1]+= nodes[community.individuals[i]].lambda_c
+	  * std::min(community.w_c,
+				 nodes[community.individuals[i]].neighborhood_access_factor);
+	}
+	if (nodes[community.individuals[i]].new_strain==7){			 
+	//sum_omicronBA6
+	  sum_value_higher[7-1]+= nodes[community.individuals[i]].lambda_c
+	  * std::min(community.w_c,
+				 nodes[community.individuals[i]].neighborhood_access_factor);
+	}
+	if (nodes[community.individuals[i]].new_strain==8){			 
+	//sum_omicronBA7
+	  sum_value_higher[8-1]+= nodes[community.individuals[i]].lambda_c
+	  * std::min(community.w_c,
+				 nodes[community.individuals[i]].neighborhood_access_factor);
+	}
+	if (nodes[community.individuals[i]].new_strain==9){			 
+	//sum_omicronBA8
+	  sum_value_higher[9-1]+= nodes[community.individuals[i]].lambda_c
 	  * std::min(community.w_c,
 				 nodes[community.individuals[i]].neighborhood_access_factor);
 	}							 
@@ -1631,6 +1882,9 @@ double sum_value_higher[6]={0};
   community.lambda_community_higher4 = community.scale*sum_value_higher[4-1];
   community.lambda_community_higher5 = community.scale*sum_value_higher[5-1];
   community.lambda_community_higher6 = community.scale*sum_value_higher[6-1];  
+  community.lambda_community_higher7 = community.scale*sum_value_higher[7-1];  
+  community.lambda_community_higher8 = community.scale*sum_value_higher[8-1];  
+  community.lambda_community_higher9 = community.scale*sum_value_higher[9-1];  
 
 //------lambda_incoming_higher for variants ends--shakir------//  
 
@@ -1645,7 +1899,7 @@ void updated_lambda_c_local_random_community(const vector<agent>& nodes, const v
 //	double lambda_random_community_outgoing_higher = 0,sum_alpha=0,sum_delta=0,sum_omicron=0,sum_omicronnew=0,sum_omicronBA4=0,sum_omicronBA5=0;
 
 //-------lambda_incoming_higher for variants begins--shakir------//
-	double lambda_random_community_outgoing_higher[6] = {0};
+	double lambda_random_community_outgoing_higher[9] = {0};
 
 //------lambda_incoming_higher for variants ends--shakir------//  
 
@@ -1672,7 +1926,16 @@ void updated_lambda_c_local_random_community(const vector<agent>& nodes, const v
 	}
 	  if (nodes[indiv].new_strain==6){
 	     lambda_random_community_outgoing_higher[6-1] += nodes[indiv].lambda_c;  
-	  }		  		   	  	  	  
+	  }	
+	  if (nodes[indiv].new_strain==7){
+	     lambda_random_community_outgoing_higher[7-1] += nodes[indiv].lambda_c;  
+	  }		
+	  if (nodes[indiv].new_strain==8){
+	     lambda_random_community_outgoing_higher[8-1] += nodes[indiv].lambda_c;  
+	  }		
+	  if (nodes[indiv].new_strain==9){
+	     lambda_random_community_outgoing_higher[9-1] += nodes[indiv].lambda_c;  
+	  }			  		   	  	  	  
 	}
 
 
@@ -1725,6 +1988,9 @@ void updated_lambda_c_local_random_community(const vector<agent>& nodes, const v
 	houses[i].lambda_random_community_outgoing_higher4 = lambda_random_community_outgoing_higher[4-1];
 	houses[i].lambda_random_community_outgoing_higher5 = lambda_random_community_outgoing_higher[5-1];
 	houses[i].lambda_random_community_outgoing_higher6 = lambda_random_community_outgoing_higher[6-1];
+	houses[i].lambda_random_community_outgoing_higher7 = lambda_random_community_outgoing_higher[7-1];
+	houses[i].lambda_random_community_outgoing_higher8 = lambda_random_community_outgoing_higher[8-1];
+	houses[i].lambda_random_community_outgoing_higher9 = lambda_random_community_outgoing_higher[9-1];
 
 //------lambda_incoming_higher for variants ends--shakir------//  
 
@@ -1732,7 +1998,7 @@ void updated_lambda_c_local_random_community(const vector<agent>& nodes, const v
 #pragma omp parallel for default(none) shared(houses, communities)
   for(count_type i = 0; i < HOUSES_SIZE; ++i){
 	double sum_value_household = 0;
-	double sum_value_household_higher[6] = {0};
+	double sum_value_household_higher[9] = {0};
 	for(const auto& neighbouring_household: houses[i].random_households.households){
 	  sum_value_household += houses[neighbouring_household].lambda_random_community_outgoing;
 //	  sum_value_household_higher += houses[neighbouring_household].lambda_random_community_outgoing_higher;
@@ -1744,6 +2010,9 @@ void updated_lambda_c_local_random_community(const vector<agent>& nodes, const v
 	  sum_value_household_higher[4-1] += houses[neighbouring_household].lambda_random_community_outgoing_higher4;
 	  sum_value_household_higher[5-1] += houses[neighbouring_household].lambda_random_community_outgoing_higher5;
 	  sum_value_household_higher[6-1] += houses[neighbouring_household].lambda_random_community_outgoing_higher6;
+	  sum_value_household_higher[7-1] += houses[neighbouring_household].lambda_random_community_outgoing_higher7;
+	  sum_value_household_higher[8-1] += houses[neighbouring_household].lambda_random_community_outgoing_higher8;
+	  sum_value_household_higher[9-1] += houses[neighbouring_household].lambda_random_community_outgoing_higher9;
 
 
 //------lambda_incoming_higher for variants ends--shakir------//  
@@ -1780,6 +2049,18 @@ void updated_lambda_c_local_random_community(const vector<agent>& nodes, const v
 	houses[i].random_households.lambda_random_community_higher6 = houses[i].random_households.scale
 	  * sum_value_household_higher[6-1]
 	  * std::min(communities[houses[i].community].w_c, houses[i].neighborhood_access_factor);
+
+	houses[i].random_households.lambda_random_community_higher7 = houses[i].random_households.scale
+	  * sum_value_household_higher[7-1]
+	  * std::min(communities[houses[i].community].w_c, houses[i].neighborhood_access_factor);
+
+	houses[i].random_households.lambda_random_community_higher8 = houses[i].random_households.scale
+	  * sum_value_household_higher[8-1]
+	  * std::min(communities[houses[i].community].w_c, houses[i].neighborhood_access_factor);
+
+	houses[i].random_households.lambda_random_community_higher9 = houses[i].random_households.scale
+	  * sum_value_household_higher[9-1]
+	  * std::min(communities[houses[i].community].w_c, houses[i].neighborhood_access_factor);
 //------lambda_incoming_higher for variants ends--shakir------//  
     
   }
@@ -1792,7 +2073,7 @@ void update_lambda_nbr_cells(const vector<agent>& nodes, vector<vector<nbr_cell>
 //	  double sum_values_higher = 0,sum_alpha=0,sum_delta=0,sum_omicron=0,sum_omicronnew=0,sum_omicronBA4=0,sum_omicronBA5=0;
 
 //-------lambda_incoming_higher for variants begins--shakir------//
-	  double sum_values_higher[6] = {0};
+	  double sum_values_higher[9] = {0};
 //------lambda_incoming_higher for variants ends--shakir------//  
 
 #pragma omp parallel for default(none)					\
@@ -1848,6 +2129,27 @@ if (nodes[houses[house_index].individuals[k]].new_strain==6)
 			        * std::min(communities[houses[house_index].community].w_c,
 					   houses[house_index].neighborhood_access_factor);
 	  }
+if (nodes[houses[house_index].individuals[k]].new_strain==7)
+			{
+				//sum_omicronBA6
+				sum_values_higher[7-1] += nodes[houses[house_index].individuals[k]].lambda_nbr_cell
+			        * std::min(communities[houses[house_index].community].w_c,
+					   houses[house_index].neighborhood_access_factor);
+	  }
+if (nodes[houses[house_index].individuals[k]].new_strain==8)
+			{
+				//sum_omicronBA7
+				sum_values_higher[8-1] += nodes[houses[house_index].individuals[k]].lambda_nbr_cell
+			        * std::min(communities[houses[house_index].community].w_c,
+					   houses[house_index].neighborhood_access_factor);
+	  }
+if (nodes[houses[house_index].individuals[k]].new_strain==9)
+			{
+				//sum_omicronBA8
+				sum_values_higher[9-1] += nodes[houses[house_index].individuals[k]].lambda_nbr_cell
+			        * std::min(communities[houses[house_index].community].w_c,
+					   houses[house_index].neighborhood_access_factor);
+	  }
 		}
 	  }
 
@@ -1865,6 +2167,9 @@ if (nodes[houses[house_index].individuals[k]].new_strain==6)
 	  nbr_cells[i][j].lambda_nbr_higher4 = nbr_cells[i][j].scale*sum_values_higher[4-1];
 	  nbr_cells[i][j].lambda_nbr_higher5 = nbr_cells[i][j].scale*sum_values_higher[5-1];
 	  nbr_cells[i][j].lambda_nbr_higher6 = nbr_cells[i][j].scale*sum_values_higher[6-1];
+	  nbr_cells[i][j].lambda_nbr_higher7 = nbr_cells[i][j].scale*sum_values_higher[7-1];
+	  nbr_cells[i][j].lambda_nbr_higher8 = nbr_cells[i][j].scale*sum_values_higher[8-1];
+	  nbr_cells[i][j].lambda_nbr_higher9 = nbr_cells[i][j].scale*sum_values_higher[9-1];
 
 //------lambda_incoming_higher for variants ends--shakir------//  
 
@@ -1880,7 +2185,7 @@ void update_lambda_c_global(vector<community>& communities,
 	double num = 0;
 	//double num_higher = 0;
 //-------lambda_incoming_higher for variants begins--shakir------//
-	double num_higher[6] = {0};
+	double num_higher[9] = {0};
 
 
 //------lambda_incoming_higher for variants ends--shakir------//  
@@ -1898,6 +2203,9 @@ void update_lambda_c_global(vector<community>& communities,
 	  num_higher[4-1]+= fk_val * communities[c2].lambda_community_higher4;
 	  num_higher[5-1]+= fk_val * communities[c2].lambda_community_higher5;
 	  num_higher[6-1]+= fk_val * communities[c2].lambda_community_higher6;
+	  num_higher[7-1]+= fk_val * communities[c2].lambda_community_higher7;
+	  num_higher[8-1]+= fk_val * communities[c2].lambda_community_higher8;
+	  num_higher[9-1]+= fk_val * communities[c2].lambda_community_higher9;
 
 
 //------lambda_incoming_higher for variants ends--shakir------//  
@@ -1914,7 +2222,9 @@ void update_lambda_c_global(vector<community>& communities,
 		communities[c1].lambda_community_global_higher4 = 0;
 		communities[c1].lambda_community_global_higher5 = 0;
 		communities[c1].lambda_community_global_higher6 = 0;
-
+		communities[c1].lambda_community_global_higher7 = 0;
+		communities[c1].lambda_community_global_higher8 = 0;
+		communities[c1].lambda_community_global_higher9 = 0;
 //------lambda_incoming_higher for variants ends--shakir------//  
 
 	} else{		
@@ -1927,6 +2237,10 @@ void update_lambda_c_global(vector<community>& communities,
 		communities[c1].lambda_community_global_higher4 = communities[c1].w_c*num_higher[4-1]/denom;
 		communities[c1].lambda_community_global_higher5 = communities[c1].w_c*num_higher[5-1]/denom;
 		communities[c1].lambda_community_global_higher6 = communities[c1].w_c*num_higher[6-1]/denom;
+		communities[c1].lambda_community_global_higher7 = communities[c1].w_c*num_higher[7-1]/denom;
+		communities[c1].lambda_community_global_higher8 = communities[c1].w_c*num_higher[8-1]/denom;
+		communities[c1].lambda_community_global_higher9 = communities[c1].w_c*num_higher[9-1]/denom;
+
 
 //------lambda_incoming_higher for variants ends--shakir------//  
 

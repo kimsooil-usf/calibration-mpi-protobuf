@@ -94,10 +94,16 @@ struct defaults{
 
   std::string TIME_ALPHA="1216";//30 december 2020
   std::string TIME_DELTA="1708";//2 May 2021
-  std::string TIME_OMICRON="2600";//11 December 2021
-  std::string TIME_OMICRON_NEW="3128";//22 April 2022
-  std::string TIME_OMICRON_BA4="3204";//11 May 2022
-  std::string TIME_OMICRON_BA5="3308";//6 June 2022
+  std::string TIME_OMICRON="2564";//2 December 2021
+  std::string TIME_OMICRON_NEW="2772";//23 January 2022
+  std::string TIME_OMICRON_BA4="3192";//8 May 2022
+  std::string TIME_OMICRON_BA5="3192";//8 May 2022
+  std::string TIME_OMICRON_BA6="3472";//17 July 2022
+  std::string TIME_OMICRON_BA7="3640";//28 August 2022  std::string TIME_OMICRON_BA4="3204";//11 May 2022
+  std::string TIME_OMICRON_BA8="3660";//2 September 2022
+  // std::string TIME_OMICRON_BA9="3308";//6 June 2022
+  // std::string TIME_OMICRON_BA10="3308";//6 June 2022
+
 
   std::string INFECTIOUSNESS_ALPHA = "1.3";//---original 3 comment by Shakir
   std::string INFECTIOUSNESS_DELTA = "2.6";//---original 3 comment by Shakir
@@ -105,6 +111,11 @@ struct defaults{
   std::string INFECTIOUSNESS_OMICRON_NEW = "3";//---original 3 comment by Shakir
   std::string INFECTIOUSNESS_OMICRON_BA4 = "3";//---original 3 comment by Shakir
   std::string INFECTIOUSNESS_OMICRON_BA5 = "3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA6 = "3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA7 = "3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA8 = "3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA9 = "3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA10 = "3";//---original 3 comment by Shakir
 
   std::string VIRULENT_NEW_STRAIN = "1.3";//Governs the probability of hospitalizations and subsequent criticality and death stages
   std::string VIRULENT_NEW_ALPHA="1.3";
@@ -113,13 +124,25 @@ struct defaults{
   std::string VIRULENT_NEW_OMICRON_NEW=".8";
   std::string VIRULENT_NEW_OMICRON_BA4=".8";
   std::string VIRULENT_NEW_OMICRON_BA5=".8";
+  std::string VIRULENT_NEW_OMICRON_BA6=".8";
+  std::string VIRULENT_NEW_OMICRON_BA7=".8";
+  std::string VIRULENT_NEW_OMICRON_BA8=".8";
+  std::string VIRULENT_NEW_OMICRON_BA9=".8";
+  std::string VIRULENT_NEW_OMICRON_BA10=".8";
 
-  std::string REINFECTION_ALPHA="0.01";
-  std::string REINFECTION_DELTA="0.05";
-  std::string REINFECTION_OMICRON="0.1";  
-  std::string REINFECTION_OMICRON_NEW="0.2";
-  std::string REINFECTION_OMICRON_BA4="0.2";
-  std::string REINFECTION_OMICRON_BA5="0.2";
+  // std::string REINFECTION_ALPHA="0.01";
+  // std::string REINFECTION_DELTA="0.05";
+  // std::string REINFECTION_OMICRON="0.1";  
+  // std::string REINFECTION_OMICRON_NEW="0.2";
+  // std::string REINFECTION_OMICRON_BA4="0.2";
+  // std::string REINFECTION_OMICRON_BA5="0.2";
+  // std::string REINFECTION_OMICRON_BA6="0.2";
+  // std::string REINFECTION_OMICRON_BA7="0.2";
+  // std::string REINFECTION_OMICRON_BA8="0.2";
+  // std::string REINFECTION_OMICRON_BA9="0.2";
+  // std::string REINFECTION_OMICRON_BA10="0.2";
+  
+
 
   std::string FRACTION_NEW_STRAIN = "0.10";
   
@@ -129,14 +152,19 @@ struct defaults{
   std::string FRACTION_NEW_OMICRON_NEW = "0.30";
   std::string FRACTION_NEW_OMICRON_BA4 = "0.30";
   std::string FRACTION_NEW_OMICRON_BA5 = "0.30";
-  
+  std::string FRACTION_NEW_OMICRON_BA6 = "0.30";
+  std::string FRACTION_NEW_OMICRON_BA7 = "0.30";  
+  std::string FRACTION_NEW_OMICRON_BA8 = "0.30";
+  std::string FRACTION_NEW_OMICRON_BA9 = "0.30";
+  std::string FRACTION_NEW_OMICRON_BA10 = "0.30";
 
-  std::string FRACTION_SUSCEPTIBLE_ALPHA="1";
-  std::string FRACTION_SUSCEPTIBLE_DELTA="1";
-  std::string FRACTION_SUSCEPTIBLE_OMICRON="1";
-  std::string FRACTION_SUSCEPTIBLE_OMICRON_NEW="1";
-  std::string FRACTION_SUSCEPTIBLE_OMICRON_BA4="1";
-  std::string FRACTION_SUSCEPTIBLE_OMICRON_BA5="1";
+
+  // std::string FRACTION_SUSCEPTIBLE_ALPHA="1";
+  // std::string FRACTION_SUSCEPTIBLE_DELTA="1";
+  // std::string FRACTION_SUSCEPTIBLE_OMICRON="1";
+  // std::string FRACTION_SUSCEPTIBLE_OMICRON_NEW="1";
+  // std::string FRACTION_SUSCEPTIBLE_OMICRON_BA4="1";
+  // std::string FRACTION_SUSCEPTIBLE_OMICRON_BA5="1";
 
 } DEFAULTS;
 
