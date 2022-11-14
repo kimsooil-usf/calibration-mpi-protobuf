@@ -504,6 +504,7 @@ plot_data_struct run_simulation(){
 //std::cout << "Time_Step at "+std::to_string(time_step) << std::endl;
 
 int new_day=time_step%GLOBAL.SIM_STEPS_PER_DAY;
+int day=int(time_step/GLOBAL.SIM_STEPS_PER_DAY);
 double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance;//Shakir new mask and google trends informed compliance and risk reduction scheme....
 
 //----Time depdendent mask factor
@@ -513,7 +514,7 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 //GLOBAL.COMPLIANCE_PROBABILITY=0.;//mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance;
 
 //-----------Apply forecast scenarios here----//
-if(int(time_step/GLOBAL.SIM_STEPS_PER_DAY)==973 && new_day == 0 && GLOBAL.MEASURES>0 && GLOBAL.MEASURES<=5)
+if(day==973 && new_day == 0 && GLOBAL.MEASURES>0 && GLOBAL.MEASURES<=5)
   {
 	printf("measures is %d and time is %d %d \n",GLOBAL.MEASURES,time_step,(time_step/GLOBAL.SIM_STEPS_PER_DAY)-GLOBAL.START_DAY);
 	update_scales_Intv(homes,workplaces,communities,homes,nbr_cells);
