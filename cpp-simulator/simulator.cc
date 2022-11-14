@@ -511,6 +511,18 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 //GLOBAL.MASK_ACTIVE=bernoulli(mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance);//put the time dependent function here indicating mask active or not.
 
 //GLOBAL.COMPLIANCE_PROBABILITY=0.;//mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance;
+
+//-----------Apply forecast scenarios here----//
+if(int(time_step/GLOBAL.SIM_STEPS_PER_DAY)==973 && new_day == 0 && GLOBAL.MEASURES>0 && GLOBAL.MEASURES<=5)
+  {
+	printf("measures is %d and time is %d %d \n",GLOBAL.MEASURES,time_step,(time_step/GLOBAL.SIM_STEPS_PER_DAY)-GLOBAL.START_DAY);
+	update_scales_Intv(homes,workplaces,communities,homes,nbr_cells);
+ }
+//-----------Forecast scenarios end here--------//
+
+
+//***********Vaccination vectors***************//
+
 //-------------age group less than 20----------------------------//
 		new_vaccinated1_candidates_LE20.clear();
 	
