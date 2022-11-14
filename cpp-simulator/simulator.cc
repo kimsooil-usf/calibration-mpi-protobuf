@@ -518,12 +518,12 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
                         //The first wo scenarios change all betas while the later two scenarios change 
                         //all beta's except for home.
 
-if(day==973 && new_day == 0 && GLOBAL.MEASURES>0 && GLOBAL.MEASURES<=5)
-  {
-	printf("measures is %d and time is %d %d \n",GLOBAL.MEASURES,time_step,(time_step/GLOBAL.SIM_STEPS_PER_DAY)-GLOBAL.START_DAY);
-	update_scales_Intv(homes,workplaces,communities,homes,nbr_cells);
- }
-//-----------Forecast scenarios end here--------//
+// if(day==973 && new_day == 0 && GLOBAL.MEASURES>0 && GLOBAL.MEASURES<=5)
+//   {
+// 	printf("measures is %d and time is %d %d \n",GLOBAL.MEASURES,time_step,(time_step/GLOBAL.SIM_STEPS_PER_DAY)-GLOBAL.START_DAY);
+// 	update_scales_Intv(homes,workplaces,communities,homes,nbr_cells);
+//  }
+// //-----------Forecast scenarios end here--------//
 
 
 //***********Vaccination vectors***************//
