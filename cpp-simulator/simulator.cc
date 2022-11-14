@@ -514,6 +514,10 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 //GLOBAL.COMPLIANCE_PROBABILITY=0.;//mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance;
 
 //-----------Apply forecast scenarios here----//
+//GLOBAL.MEASURES take values 1,2,3,4,5---It reduces or increases beta's by 25 percent.
+                        //The first wo scenarios change all betas while the later two scenarios change 
+                        //all beta's except for home.
+
 if(day==973 && new_day == 0 && GLOBAL.MEASURES>0 && GLOBAL.MEASURES<=5)
   {
 	printf("measures is %d and time is %d %d \n",GLOBAL.MEASURES,time_step,(time_step/GLOBAL.SIM_STEPS_PER_DAY)-GLOBAL.START_DAY);
