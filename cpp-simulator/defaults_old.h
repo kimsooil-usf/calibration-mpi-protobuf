@@ -19,14 +19,12 @@ struct defaults{
   std::string COMPLIANCE_PROBABILITY = "1";
   std::string F_KERNEL_A = "10.751";
   std::string F_KERNEL_B = "5.384";
-  std::string MEASURES ="1";//1,2,3,4,5 ---Check simulator.cc for explanation. It reduces or increases beta's by 25 percent.
-                        //The first wo scenarios change all betas while the later two scenarios change 
-                        //all beta's except for home.
+  std::string MEASURES ="1";
   std::string REDUCTION_FACTOR="0.25";//Reduce or increase the betas by this factor to implement social measures
-  std::string BETA_H = "0.15";//---->Comment by 1.227
-  std::string BETA_W = "0.3";
+  std::string BETA_H = "0.2";//---->Comment by 1.227
+  std::string BETA_W = "0.4";
   std::string BETA_C = "0.2";
-  std::string BETA_S = "0.5";
+  std::string BETA_S = "0.6";
   std::string BETA_TRAVEL = "0.7";
   std::string HD_AREA_FACTOR = "1.5";
   std::string HD_AREA_EXPONENT = "0";
@@ -35,13 +33,13 @@ struct defaults{
   std::string output_dir = "outputs/test_output_timing";
   std::string input_base = "../simulator/input_files";
   std::string attendance_filename = "attendance.json";
-  std::string mask_filename = "maskwearing_November10_2022.json";//mask file
+  std::string mask_filename = "maskwearing_November14_2022_plus4wgoogle_1.json";//mask file
   std::string SEED_HD_AREA_POPULATION = "false";
   std::string SEED_ONLY_NON_COMMUTER = "false";
   std::string SEED_FIXED_NUMBER = "false";
   std::string IGNORE_ATTENDANCE_FILE = "true";
-  std::string CALIBRATION_DELAY = "13";
-  std::string DAYS_BEFORE_LOCKDOWN = "13";
+  std::string CALIBRATION_DELAY = "11";
+  std::string DAYS_BEFORE_LOCKDOWN = "10";
   std::string FIRST_PERIOD = "30";
   std::string SECOND_PERIOD = "30";
   std::string THIRD_PERIOD = "90";
@@ -53,7 +51,7 @@ struct defaults{
   std::string NEIGHBORHOOD_LOCK_THRESHOLD = "0.001";
   std::string MASK_ACTIVE = "true";
   std::string MASK_FACTOR = "0.8";
-  std::string MASK_START_DELAY = "0";
+  std::string MASK_START_DELAY = "40";
   std::string USE_AGE_DEPENDENT_MIXING = "false";
   std::string SIGNIFICANT_EIGEN_VALUES = "3.0";
   std::string NUM_AGE_GROUPS = "16";
@@ -108,7 +106,7 @@ struct defaults{
   // // std::string TIME_OMICRON_BA10="3308";//6 June 2022
 
   std::string TIME_ALPHA="1000";//30 december 2020
-  std::string TIME_DELTA="2004";//15 july 2021
+  std::string TIME_DELTA="1828";//1 June 2021
   std::string TIME_OMICRON="2564";//2 December 2021
   std::string TIME_OMICRON_NEW="2772";//23 January 2022
   std::string TIME_OMICRON_BA4="3192";//8 May 2022
@@ -119,30 +117,17 @@ struct defaults{
   // std::string TIME_OMICRON_BA9="3308";//6 June 2022
   // std::string TIME_OMICRON_BA10="3308";//6 June 2022
 
-
   std::string INFECTIOUSNESS_ALPHA = "1.3";//---original 3 comment by Shakir
   std::string INFECTIOUSNESS_DELTA = "2.2";//---original 3 comment by Shakir
   std::string INFECTIOUSNESS_OMICRON = "3";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_NEW = "3.2";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_BA4 = "3.2";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_BA5 = "3.3";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_BA6 = "3.3";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_BA7 = "3.4";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_BA8 = "3.3";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_BA9 = "3.3";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_BA10 = "3.3";//---original 3 comment by Shakir
-
-  // std::string INFECTIOUSNESS_ALPHA = "1.3";//---original 3 comment by Shakir
-  // std::string INFECTIOUSNESS_DELTA = "2.6";//---original 3 comment by Shakir
-  // std::string INFECTIOUSNESS_OMICRON = "3";//---original 3 comment by Shakir
-  // std::string INFECTIOUSNESS_OMICRON_NEW = "3";//---original 3 comment by Shakir
-  // std::string INFECTIOUSNESS_OMICRON_BA4 = "3";//---original 3 comment by Shakir
-  // std::string INFECTIOUSNESS_OMICRON_BA5 = "3";//---original 3 comment by Shakir
-  // std::string INFECTIOUSNESS_OMICRON_BA6 = "3";//---original 3 comment by Shakir
-  // std::string INFECTIOUSNESS_OMICRON_BA7 = "3";//---original 3 comment by Shakir
-  // std::string INFECTIOUSNESS_OMICRON_BA8 = "3";//---original 3 comment by Shakir
-  // std::string INFECTIOUSNESS_OMICRON_BA9 = "3";//---original 3 comment by Shakir
-  // std::string INFECTIOUSNESS_OMICRON_BA10 = "3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_NEW = "3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA4 = "3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA5 = "3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA6 = "3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA7 = "3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA8 = "3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA9 = "3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA10 = "3";//---original 3 comment by Shakir
 
   std::string VIRULENT_NEW_STRAIN = "1.3";//Governs the probability of hospitalizations and subsequent criticality and death stages
   std::string VIRULENT_NEW_ALPHA="1.3";
@@ -170,10 +155,11 @@ struct defaults{
   // std::string REINFECTION_OMICRON_BA10="0.2";
   
 
+
   std::string FRACTION_NEW_STRAIN = "0.10";
   
   std::string FRACTION_NEW_ALPHA = "0.3";
-  std::string FRACTION_NEW_DELTA = "1";
+  std::string FRACTION_NEW_DELTA = "0.70";
   std::string FRACTION_NEW_OMICRON = "0.40";
   std::string FRACTION_NEW_OMICRON_NEW = "0.30";
   std::string FRACTION_NEW_OMICRON_BA4 = "0.30";
@@ -183,20 +169,6 @@ struct defaults{
   std::string FRACTION_NEW_OMICRON_BA8 = "0.30";
   std::string FRACTION_NEW_OMICRON_BA9 = "0.30";
   std::string FRACTION_NEW_OMICRON_BA10 = "0.30";
-
-  // std::string FRACTION_NEW_STRAIN = "0.10";
-  
-  // std::string FRACTION_NEW_ALPHA = "0.01";
-  // std::string FRACTION_NEW_DELTA = "0.10";
-  // std::string FRACTION_NEW_OMICRON = "0.20";
-  // std::string FRACTION_NEW_OMICRON_NEW = "0.30";
-  // std::string FRACTION_NEW_OMICRON_BA4 = "0.30";
-  // std::string FRACTION_NEW_OMICRON_BA5 = "0.30";
-  // std::string FRACTION_NEW_OMICRON_BA6 = "0.30";
-  // std::string FRACTION_NEW_OMICRON_BA7 = "0.30";  
-  // std::string FRACTION_NEW_OMICRON_BA8 = "0.30";
-  // std::string FRACTION_NEW_OMICRON_BA9 = "0.30";
-  // std::string FRACTION_NEW_OMICRON_BA10 = "0.30";
 
 
   // std::string FRACTION_SUSCEPTIBLE_ALPHA="1";
