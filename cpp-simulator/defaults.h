@@ -38,8 +38,8 @@ struct defaults{
   std::string SEED_ONLY_NON_COMMUTER = "false";
   std::string SEED_FIXED_NUMBER = "false";
   std::string IGNORE_ATTENDANCE_FILE = "true";
-  std::string CALIBRATION_DELAY = "0";
-  std::string DAYS_BEFORE_LOCKDOWN = "0";
+  std::string CALIBRATION_DELAY = "11";
+  std::string DAYS_BEFORE_LOCKDOWN = "10";
   std::string FIRST_PERIOD = "30";
   std::string SECOND_PERIOD = "30";
   std::string THIRD_PERIOD = "90";
