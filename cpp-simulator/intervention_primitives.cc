@@ -72,7 +72,7 @@ void set_kappa_lockdown_node(agent& node, const int cur_time, const intervention
 void set_kappa_lockdown_hillsborugh_node(agent& node, const int cur_time, const intervention_hillsborough_params intv_params,double mask_scaling){
   node.kappa_T = kappa_T(node, cur_time);
   node.quarantined = true; //lockdown implies quarantined
-  if(cur_time<GLOBAL.FIRST_PERIOD*GLOBAL.SIM_STEPS_PER_DAY)
+  if(cur_time >GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS*GLOBAL.SIM_STEPS_PER_DAY && cur_time<(GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS+GLOBAL.FIRST_PERIOD*GLOBAL.SIM_STEPS_PER_DAY))
   {
   if(node.workplace_type==WorkplaceType::office){
     node.kappa_W = intv_params.lockdown_kappas_compliant.kappa_W/2.5;
@@ -96,7 +96,7 @@ void set_kappa_lockdown_hillsborugh_node(agent& node, const int cur_time, const 
   }
   }//First lockdown ends--Shakir
 
-   if(cur_time>GLOBAL.FIRST_PERIOD*GLOBAL.SIM_STEPS_PER_DAY && cur_time<(GLOBAL.FIRST_PERIOD+GLOBAL.SECOND_PERIOD)*GLOBAL.SIM_STEPS_PER_DAY)
+   if(cur_time>(GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS+GLOBAL.FIRST_PERIOD)*GLOBAL.SIM_STEPS_PER_DAY && cur_time<(GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS+GLOBAL.FIRST_PERIOD+GLOBAL.SECOND_PERIOD)*GLOBAL.SIM_STEPS_PER_DAY)
   {
     if(node.workplace_type==WorkplaceType::office){
     node.kappa_W = intv_params.lockdown_kappas_compliant.kappa_W*(1-mask_scaling);
@@ -121,7 +121,7 @@ void set_kappa_lockdown_hillsborugh_node(agent& node, const int cur_time, const 
   }
   }//second lockdown ends--Shakir
 
-   if(cur_time>(GLOBAL.FIRST_PERIOD+GLOBAL.SECOND_PERIOD)*GLOBAL.SIM_STEPS_PER_DAY && cur_time<(GLOBAL.FIRST_PERIOD+GLOBAL.SECOND_PERIOD+GLOBAL.THIRD_PERIOD)*GLOBAL.SIM_STEPS_PER_DAY)
+   if(cur_time>(GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS+GLOBAL.FIRST_PERIOD+GLOBAL.SECOND_PERIOD)*GLOBAL.SIM_STEPS_PER_DAY && cur_time<(GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS+GLOBAL.FIRST_PERIOD+GLOBAL.SECOND_PERIOD+GLOBAL.THIRD_PERIOD)*GLOBAL.SIM_STEPS_PER_DAY)
   {
     if(node.workplace_type==WorkplaceType::office){
     node.kappa_W = intv_params.lockdown_kappas_compliant.kappa_W*2*(1-mask_scaling);//(1-mask_scaling) is implemented using  because compliant people will see reduced beta
@@ -146,7 +146,7 @@ void set_kappa_lockdown_hillsborugh_node(agent& node, const int cur_time, const 
   }
   }//Third lockdown ends--Shakir
 
-     if(cur_time>(GLOBAL.FIRST_PERIOD+GLOBAL.SECOND_PERIOD+GLOBAL.THIRD_PERIOD)*GLOBAL.SIM_STEPS_PER_DAY && cur_time<(GLOBAL.FIRST_PERIOD+GLOBAL.SECOND_PERIOD+GLOBAL.THIRD_PERIOD+GLOBAL.FOURTH_PERIOD)*GLOBAL.SIM_STEPS_PER_DAY)
+     if(cur_time>(GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS+GLOBAL.FIRST_PERIOD+GLOBAL.SECOND_PERIOD+GLOBAL.THIRD_PERIOD)*GLOBAL.SIM_STEPS_PER_DAY && cur_time<(GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS+GLOBAL.FIRST_PERIOD+GLOBAL.SECOND_PERIOD+GLOBAL.THIRD_PERIOD+GLOBAL.FOURTH_PERIOD)*GLOBAL.SIM_STEPS_PER_DAY)
   {
     if(node.workplace_type==WorkplaceType::office){
     node.kappa_W = intv_params.lockdown_kappas_compliant.kappa_W*4*(1-mask_scaling);
@@ -171,7 +171,7 @@ void set_kappa_lockdown_hillsborugh_node(agent& node, const int cur_time, const 
   }
   }//Forth lockdown ends--Shakir
   //The lockdowns are restricting travel;//----Lift travel restriction after lockdowns.
-  if(cur_time>=(GLOBAL.FIRST_PERIOD+GLOBAL.SECOND_PERIOD+GLOBAL.THIRD_PERIOD+GLOBAL.FOURTH_PERIOD)*GLOBAL.SIM_STEPS_PER_DAY)
+  if(cur_time>=(GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS+GLOBAL.FIRST_PERIOD+GLOBAL.SECOND_PERIOD+GLOBAL.THIRD_PERIOD+GLOBAL.FOURTH_PERIOD)*GLOBAL.SIM_STEPS_PER_DAY)
   {
   node.quarantined=false;
   //printf("Quarantined or not %d at time %d \n",node.quarantined,cur_time);

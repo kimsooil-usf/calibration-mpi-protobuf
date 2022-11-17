@@ -144,10 +144,10 @@ plot_data_struct run_simulation(){
   plot_data.nums =
 	{
 	 {"num_infected", {}},
-//	 {"num_exposed", {}},
+	 {"num_exposed", {}},
 	 {"num_hospitalised", {}},
-//	 {"num_susceptible",{}},
-//	{"num_unvaccinated", {}},
+	 {"num_susceptible",{}},
+	{"num_unvaccinated", {}},
 		{"num_vaccinated1", {}},
 		{"num_vaccinated2", {}},
 		{"num_waning", {}},
@@ -261,78 +261,78 @@ plot_data_struct run_simulation(){
 	{"num_dead_gender_group_2", {}},
 	
 
-//	 {"num_symptomatic", {}},
+	 {"num_symptomatic", {}},
 	 {"num_critical", {}},
 	 {"num_fatalities", {}},
 	 {"num_recovered", {}},
-//	 {"num_affected", {}},
-//	 {"num_cases", {}},
-//	 {"num_cumulative_hospitalizations", {}},
-//	 {"num_cumulative_infective", {}}
+	 {"num_affected", {}},
+	 {"num_cases", {}},
+	 {"num_cumulative_hospitalizations", {}},
+	 {"num_cumulative_infective", {}}
 	};
   for(auto& elem: plot_data.nums){
 	elem.second.reserve(GLOBAL.START_DAY*GLOBAL.SIM_STEPS_PER_DAY+GLOBAL.NUM_TIMESTEPS);
   }
   plot_data.nums["csvContent"] = {};
   plot_data.nums["csvContent"].reserve((GLOBAL.START_DAY*GLOBAL.SIM_STEPS_PER_DAY+GLOBAL.NUM_TIMESTEPS) * GLOBAL.num_communities);
-/*-------Blocking some files for writing to speed up simulations--//
-//   plot_data.susceptible_lambdas =
-// 	{
-// 	 {"susceptible_lambda", {}},
-// 	 {"susceptible_lambda_H", {}},
-// 	 {"susceptible_lambda_W", {}},
-// 	 {"susceptible_lambda_C", {}},
-// 	 {"susceptible_lambda_T", {}},
-// 	 {"susceptible_lambda_PROJECT", {}},
-// 	 {"susceptible_lambda_NBR_CELL", {}},
-// 	 {"susceptible_lambda_RANDOM_COMMUNITY", {}}
-// 	};
+//-------Blocking some files for writing to speed up simulations--//
+  plot_data.susceptible_lambdas =
+	{
+	 {"susceptible_lambda", {}},
+	 {"susceptible_lambda_H", {}},
+	 {"susceptible_lambda_W", {}},
+	 {"susceptible_lambda_C", {}},
+	 {"susceptible_lambda_T", {}},
+	 {"susceptible_lambda_PROJECT", {}},
+	 {"susceptible_lambda_NBR_CELL", {}},
+	 {"susceptible_lambda_RANDOM_COMMUNITY", {}}
+	};
 
-//   plot_data.total_lambda_fractions =
-// 	{
-// 	 {"total_fraction_lambda_H", {}},
-// 	 {"total_fraction_lambda_W", {}},
-// 	 {"total_fraction_lambda_C", {}},
-// 	 {"total_fraction_lambda_T", {}},
-// 	 {"total_fraction_lambda_PROJECT", {}},
-// 	 {"total_fraction_lambda_NBR_CELL", {}},
-// 	 {"total_fraction_lambda_RANDOM_COMMUNITY", {}}
-// 	};
+  plot_data.total_lambda_fractions =
+	{
+	 {"total_fraction_lambda_H", {}},
+	 {"total_fraction_lambda_W", {}},
+	 {"total_fraction_lambda_C", {}},
+	 {"total_fraction_lambda_T", {}},
+	 {"total_fraction_lambda_PROJECT", {}},
+	 {"total_fraction_lambda_NBR_CELL", {}},
+	 {"total_fraction_lambda_RANDOM_COMMUNITY", {}}
+	};
 
-//   plot_data.mean_lambda_fractions =
-// 	{
-// 	 {"mean_fraction_lambda_H", {}},
-// 	 {"mean_fraction_lambda_W", {}},
-// 	 {"mean_fraction_lambda_C", {}},
-// 	 {"mean_fraction_lambda_T", {}},
-// 	 {"mean_fraction_lambda_PROJECT", {}},
-// 	 {"mean_fraction_lambda_NBR_CELL", {}},
-// 	 {"mean_fraction_lambda_RANDOM_COMMUNITY", {}}
-// 	};
+  plot_data.mean_lambda_fractions =
+	{
+	 {"mean_fraction_lambda_H", {}},
+	 {"mean_fraction_lambda_W", {}},
+	 {"mean_fraction_lambda_C", {}},
+	 {"mean_fraction_lambda_T", {}},
+	 {"mean_fraction_lambda_PROJECT", {}},
+	 {"mean_fraction_lambda_NBR_CELL", {}},
+	 {"mean_fraction_lambda_RANDOM_COMMUNITY", {}}
+	};
 
-//   plot_data.cumulative_mean_lambda_fractions = 
-// 	{
-// 	 {"cumulative_mean_fraction_lambda_H", {}},
-// 	 {"cumulative_mean_fraction_lambda_W", {}},
-// 	 {"cumulative_mean_fraction_lambda_C", {}},
-// 	 {"cumulative_mean_fraction_lambda_T", {}},
-// 	 {"cumulative_mean_fraction_lambda_PROJECT", {}},
-// 	 {"cumulative_mean_fraction_lambda_NBR_CELL", {}},
-// 	 {"cumulative_mean_fraction_lambda_RANDOM_COMMUNITY", {}}
-// 	};
+  plot_data.cumulative_mean_lambda_fractions = 
+	{
+	 {"cumulative_mean_fraction_lambda_H", {}},
+	 {"cumulative_mean_fraction_lambda_W", {}},
+	 {"cumulative_mean_fraction_lambda_C", {}},
+	 {"cumulative_mean_fraction_lambda_T", {}},
+	 {"cumulative_mean_fraction_lambda_PROJECT", {}},
+	 {"cumulative_mean_fraction_lambda_NBR_CELL", {}},
+	 {"cumulative_mean_fraction_lambda_RANDOM_COMMUNITY", {}}
+	};
 
-//   plot_data.quarantined_stats =
-// 	{
-// 	 {"quarantined_stats", {}},
-// 	 {"curtailment_stats", {}}
-// 	};
+  plot_data.quarantined_stats =
+	{
+	 {"quarantined_stats", {}},
+	 {"curtailment_stats", {}}
+	};
 	   
-//   plot_data.disease_label_stats = 
-// 	{
-// 		{"disease_label_stats", {}},
-// 	};
+  plot_data.disease_label_stats = 
+	{
+		{"disease_label_stats", {}},
+	};
 
-*/
+//--------------------------------//
   for(auto& elem: plot_data.susceptible_lambdas){
 	elem.second.reserve(GLOBAL.START_DAY*GLOBAL.SIM_STEPS_PER_DAY+GLOBAL.NUM_TIMESTEPS);
   }
@@ -387,11 +387,11 @@ plot_data_struct run_simulation(){
   new_boosted_candidates_LE20.reserve(GLOBAL.num_people);
 
   std::vector<count_type> new_waning2_candidates_LE20;
-  new_waning_candidates_LE20.reserve(GLOBAL.num_people);
+  new_waning2_candidates_LE20.reserve(GLOBAL.num_people);
 
 
   std::vector<count_type> new_boosted2_candidates_LE20;
-  new_boosted_candidates_LE20.reserve(GLOBAL.num_people);
+  new_boosted2_candidates_LE20.reserve(GLOBAL.num_people);
 
 
 //age group between 30 and 60
@@ -410,11 +410,11 @@ plot_data_struct run_simulation(){
   new_boosted_candidates_30_to_60.reserve(GLOBAL.num_people);
 
   std::vector<count_type> new_waning2_candidates_30_to_60;
-  new_waning_candidates_30_to_60.reserve(GLOBAL.num_people);
+  new_waning2_candidates_30_to_60.reserve(GLOBAL.num_people);
 
 
   std::vector<count_type> new_boosted2_candidates_30_to_60;
-  new_boosted_candidates_30_to_60.reserve(GLOBAL.num_people);
+  new_boosted2_candidates_30_to_60.reserve(GLOBAL.num_people);
 
 //age group above 60
   std::vector<count_type> new_vaccinated1_candidates_GT60;
@@ -432,11 +432,11 @@ plot_data_struct run_simulation(){
   new_boosted_candidates_GT60.reserve(GLOBAL.num_people);
 
   std::vector<count_type> new_waning2_candidates_GT60;
-  new_waning_candidates_GT60.reserve(GLOBAL.num_people);
+  new_waning2_candidates_GT60.reserve(GLOBAL.num_people);
 
 
   std::vector<count_type> new_boosted2_candidates_GT60;
-  new_boosted_candidates_GT60.reserve(GLOBAL.num_people);
+  new_boosted2_candidates_GT60.reserve(GLOBAL.num_people);
 
   //----------------Age group wise vaccination variable declared
 
@@ -575,7 +575,7 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 	total_lambda_fraction_data.set_zero();
 	mean_lambda_fraction_data.set_zero();
 
-	count_type num_new_infections = 0;
+	count_type num_new_infections = 0,num_new_symptomatic=0;
 	count_type num_new_strain0_infections = 0,num_new_strain1_infections = 0,
 	num_new_strain2_infections = 0,num_new_strain3_infections = 0,
 	num_new_strain4_infections = 0,num_new_strain5_infections = 0,
@@ -882,7 +882,7 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 
                  bool is_new_strain = bernoulli(GLOBAL.FRACTION_NEW_ALPHA);
                    if(is_new_strain){
-                    nodes[j].new_strain = 1;//0,1,2,3,4
+                    nodes[j].new_strain = 1;//0,1,2,3,4,5,6,7,8,9
 		    nodes[j].infectiousness = nodes[j].infectiousness_original* GLOBAL.INFECTIOUSNESS_ALPHA;
 			
                                   }
@@ -1156,9 +1156,9 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 // 	  }
 
 
-	  if(node_update_status.new_infection){
-		++num_new_infections;
-		++num_total_infections;
+
+	  if(node_update_status.new_symptomatic){
+		++num_new_symptomatic;
 		if (nodes[j].new_strain==0){
 		++num_new_strain0_infections;//this needs to be taken care of to count number of original and alpha deta omicron cases
 		}
@@ -1190,7 +1190,41 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 		++num_new_strain9_infections;//this needs to be taken care of to count number of original and alpha deta omicron cases
 		}		  
 		// update the mean fractions with the new data point normalized_lambda
-		  
+	  }
+	  if(node_update_status.new_infection){
+		++num_new_infections;
+		++num_total_infections;
+		// if (nodes[j].new_strain==0){
+		// ++num_new_strain0_infections;//this needs to be taken care of to count number of original and alpha deta omicron cases
+		// }
+		// if (nodes[j].new_strain==1){
+		// ++num_new_strain1_infections;//this needs to be taken care of to count number of original and alpha deta omicron cases
+		// }
+		// if (nodes[j].new_strain==2){
+		// ++num_new_strain2_infections;//this needs to be taken care of to count number of original and alpha deta omicron cases
+		// }
+		// if (nodes[j].new_strain==3){
+		// ++num_new_strain3_infections;//this needs to be taken care of to count number of original and alpha deta omicron cases
+		// }
+		// if (nodes[j].new_strain==4){
+		// ++num_new_strain4_infections;//this needs to be taken care of to count number of original and alpha deta omicron cases
+		// }
+		// if (nodes[j].new_strain==5){
+		// ++num_new_strain5_infections;//this needs to be taken care of to count number of original and alpha deta omicron cases
+		// }
+		// if (nodes[j].new_strain==6){
+		// ++num_new_strain6_infections;//this needs to be taken care of to count number of original and alpha deta omicron cases
+		// }
+		// if (nodes[j].new_strain==7){
+		// ++num_new_strain7_infections;//this needs to be taken care of to count number of original and alpha deta omicron cases
+		// }
+		// if (nodes[j].new_strain==8){
+		// ++num_new_strain8_infections;//this needs to be taken care of to count number of original and alpha deta omicron cases
+		// }
+		// if (nodes[j].new_strain==9){
+		// ++num_new_strain9_infections;//this needs to be taken care of to count number of original and alpha deta omicron cases
+		// }		  
+		// update the mean fractions with the new data point normalized_lambda
 		{
 		  total_lambda_fraction_data += nodes[j].lambda_incoming;
 		  auto normalized_lambda = (nodes[j].lambda_incoming / nodes[j].lambda);
@@ -1305,72 +1339,19 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 	for (count_type c = 0; c < GLOBAL.num_communities; ++c){
 	  auto temp_stats = get_infected_community(nodes, communities[c]);
 	  //let row = [time_step/SIM_STEPS_PER_DAY,c,temp_stats[0],temp_stats[1],temp_stats[2],temp_stats[3],temp_stats[4]].join(",");
-	//   plot_data.nums["csvContent"].push_back({time_step, {
-	// 	  c,
-	// 	  temp_stats.affected,
-	// 	  temp_stats.susceptible,
-	// 	  temp_stats.unvaccinated,
-	// 	  temp_stats.vaccinated1,
-	// 	  temp_stats.vaccinated2,
-	// 	  temp_stats.waning,
-	// 	  temp_stats.boosted,
-	// 	  temp_stats.boosted2,
-	// 	  temp_stats.exposed,
-	// 	  temp_stats.infective,
-	// 	  temp_stats.symptomatic,
-	// 	  temp_stats.hospitalised,
-	// 	  temp_stats.critical,
-	// 	  temp_stats.dead,
-	// 	  temp_stats.recovered,
-	// 	  temp_stats.infected_age_group_1,temp_stats.infected_age_group_2,temp_stats.infected_age_group_3,temp_stats.infected_age_group_4,temp_stats.infected_age_group_5,temp_stats.infected_age_group_6,temp_stats.infected_age_group_7,temp_stats.infected_age_group_8,temp_stats.infected_age_group_9,temp_stats.infected_age_group_10,\
-	// 	  temp_stats.hospitalised_age_group_1,temp_stats.hospitalised_age_group_2,temp_stats.hospitalised_age_group_3,temp_stats.hospitalised_age_group_4,temp_stats.hospitalised_age_group_5,temp_stats.hospitalised_age_group_6,temp_stats.hospitalised_age_group_7,temp_stats.hospitalised_age_group_8,temp_stats.hospitalised_age_group_9,temp_stats.hospitalised_age_group_10,\
-    //       temp_stats.dead_age_group_1,temp_stats.dead_age_group_2,temp_stats.dead_age_group_3,temp_stats.dead_age_group_4,temp_stats.dead_age_group_5,temp_stats.dead_age_group_6,temp_stats.dead_age_group_7,temp_stats.dead_age_group_8,temp_stats.dead_age_group_9,temp_stats.dead_age_group_10,\
-	// 	  temp_stats.infected_race_group_1,temp_stats.infected_race_group_2,temp_stats.infected_race_group_3,temp_stats.infected_race_group_4,temp_stats.infected_race_group_5,temp_stats.infected_race_group_6,temp_stats.infected_race_group_7,\
-	// 	  temp_stats.hospitalised_race_group_1,temp_stats.hospitalised_race_group_2,temp_stats.hospitalised_race_group_3,temp_stats.hospitalised_race_group_4,temp_stats.hospitalised_race_group_5,temp_stats.hospitalised_race_group_6,temp_stats.hospitalised_race_group_7,\
-    //       temp_stats.dead_race_group_1,temp_stats.dead_race_group_2,temp_stats.dead_race_group_3,temp_stats.dead_race_group_4,temp_stats.dead_race_group_5,temp_stats.dead_race_group_6,temp_stats.dead_race_group_7,\
-	// 	  temp_stats.infected_income_group_1,temp_stats.infected_income_group_2,temp_stats.infected_income_group_3,temp_stats.infected_income_group_4,temp_stats.infected_income_group_5,temp_stats.infected_income_group_6,temp_stats.infected_income_group_7,temp_stats.infected_income_group_8,\
-	// 	  temp_stats.hospitalised_income_group_1,temp_stats.hospitalised_income_group_2,temp_stats.hospitalised_income_group_3,temp_stats.hospitalised_income_group_4,temp_stats.hospitalised_income_group_5,temp_stats.hospitalised_income_group_6,temp_stats.hospitalised_income_group_7,temp_stats.hospitalised_income_group_8,\
-    //       temp_stats.dead_income_group_1,temp_stats.dead_income_group_2,temp_stats.dead_income_group_3,temp_stats.dead_income_group_4,temp_stats.dead_income_group_5,temp_stats.dead_income_group_6,temp_stats.dead_income_group_7,temp_stats.dead_income_group_8,\
-	// 	  temp_stats.infected_ethnicity_group_1,temp_stats.infected_ethnicity_group_2,\
-	// 	  temp_stats.hospitalised_ethnicity_group_1,temp_stats.hospitalised_ethnicity_group_2,\
-    //       temp_stats.dead_ethnicity_group_1,temp_stats.dead_ethnicity_group_2,\
-	// 	  temp_stats.infected_gender_group_1,temp_stats.infected_gender_group_2,\
-	// 	  temp_stats.hospitalised_gender_group_1,temp_stats.hospitalised_gender_group_2,\
-    //       temp_stats.dead_gender_group_1,temp_stats.dead_gender_group_2,\		  		  
-	// 	  temp_stats.recovered_from_infective,
-	// 	  temp_stats.recovered_from_symptomatic,
-	// 	  temp_stats.recovered_from_hospitalised,
-	// 	  temp_stats.recovered_from_critical,
-	// 	  temp_stats.hd_area_affected,
-	// 	  temp_stats.hd_area_susceptible,
-	// 	  temp_stats.hd_area_exposed,
-    //       temp_stats.hd_area_infective,
-	// 	  temp_stats.hd_area_symptomatic,
-    //       temp_stats.hd_area_hospitalised,
-    //       temp_stats.hd_area_critical,
-    //       temp_stats.hd_area_dead,
-	// 	  temp_stats.hd_area_recovered,
-	// 	  temp_stats.hd_area_recovered_from_infective,
-	// 	  temp_stats.hd_area_recovered_from_symptomatic,
-	// 	  temp_stats.hd_area_recovered_from_hospitalised,
-	// 	  temp_stats.hd_area_recovered_from_critical
-	// 	  }});
-
-//-------------------Reducing number of outputs for saving in csvcontent file---------------------------//
-
 	  plot_data.nums["csvContent"].push_back({time_step, {
 		  c,
 		  temp_stats.affected,
 		  temp_stats.susceptible,
-//		  temp_stats.unvaccinated,
+		  temp_stats.unvaccinated,
 		  temp_stats.vaccinated1,
 		  temp_stats.vaccinated2,
 		  temp_stats.waning,
 		  temp_stats.boosted,
 		  temp_stats.boosted2,
-//		  temp_stats.exposed,
-//		  temp_stats.infective,
-//		  temp_stats.symptomatic,
+		  temp_stats.exposed,
+		  temp_stats.infective,
+		  temp_stats.symptomatic,
 		  temp_stats.hospitalised,
 		  temp_stats.critical,
 		  temp_stats.dead,
@@ -1389,25 +1370,78 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
           temp_stats.dead_ethnicity_group_1,temp_stats.dead_ethnicity_group_2,\
 		  temp_stats.infected_gender_group_1,temp_stats.infected_gender_group_2,\
 		  temp_stats.hospitalised_gender_group_1,temp_stats.hospitalised_gender_group_2,\
-          temp_stats.dead_gender_group_1,temp_stats.dead_gender_group_2//,\		  		  
-//		  temp_stats.recovered_from_infective,
-//		  temp_stats.recovered_from_symptomatic,
-//		  temp_stats.recovered_from_hospitalised,
-//		  temp_stats.recovered_from_critical,
-		//   temp_stats.hd_area_affected,
-		//   temp_stats.hd_area_susceptible,
-		//   temp_stats.hd_area_exposed,
-        //   temp_stats.hd_area_infective,
-		//   temp_stats.hd_area_symptomatic,
-        //   temp_stats.hd_area_hospitalised,
-        //   temp_stats.hd_area_critical,
-        //   temp_stats.hd_area_dead,
-		//   temp_stats.hd_area_recovered,
-		//   temp_stats.hd_area_recovered_from_infective,
-		//   temp_stats.hd_area_recovered_from_symptomatic,
-		//   temp_stats.hd_area_recovered_from_hospitalised,
-		//   temp_stats.hd_area_recovered_from_critical
+          temp_stats.dead_gender_group_1,temp_stats.dead_gender_group_2,\		  		  
+		  temp_stats.recovered_from_infective,
+		  temp_stats.recovered_from_symptomatic,
+		  temp_stats.recovered_from_hospitalised,
+		  temp_stats.recovered_from_critical,
+		  temp_stats.hd_area_affected,
+		  temp_stats.hd_area_susceptible,
+		  temp_stats.hd_area_exposed,
+          temp_stats.hd_area_infective,
+		  temp_stats.hd_area_symptomatic,
+          temp_stats.hd_area_hospitalised,
+          temp_stats.hd_area_critical,
+          temp_stats.hd_area_dead,
+		  temp_stats.hd_area_recovered,
+		  temp_stats.hd_area_recovered_from_infective,
+		  temp_stats.hd_area_recovered_from_symptomatic,
+		  temp_stats.hd_area_recovered_from_hospitalised,
+		  temp_stats.hd_area_recovered_from_critical
 		  }});
+
+//-------------------Reducing number of outputs for saving in csvcontent file---------------------------//
+
+// 	  plot_data.nums["csvContent"].push_back({time_step, {
+// 		  c,
+// 		  temp_stats.affected,
+// 		  temp_stats.susceptible,
+// //		  temp_stats.unvaccinated,
+// 		  temp_stats.vaccinated1,
+// 		  temp_stats.vaccinated2,
+// 		  temp_stats.waning,
+// 		  temp_stats.boosted,
+// 		  temp_stats.boosted2,
+// //		  temp_stats.exposed,
+// //		  temp_stats.infective,
+// //		  temp_stats.symptomatic,
+// 		  temp_stats.hospitalised,
+// 		  temp_stats.critical,
+// 		  temp_stats.dead,
+// 		  temp_stats.recovered,
+// 		  temp_stats.infected_age_group_1,temp_stats.infected_age_group_2,temp_stats.infected_age_group_3,temp_stats.infected_age_group_4,temp_stats.infected_age_group_5,temp_stats.infected_age_group_6,temp_stats.infected_age_group_7,temp_stats.infected_age_group_8,temp_stats.infected_age_group_9,temp_stats.infected_age_group_10,\
+// 		  temp_stats.hospitalised_age_group_1,temp_stats.hospitalised_age_group_2,temp_stats.hospitalised_age_group_3,temp_stats.hospitalised_age_group_4,temp_stats.hospitalised_age_group_5,temp_stats.hospitalised_age_group_6,temp_stats.hospitalised_age_group_7,temp_stats.hospitalised_age_group_8,temp_stats.hospitalised_age_group_9,temp_stats.hospitalised_age_group_10,\
+//           temp_stats.dead_age_group_1,temp_stats.dead_age_group_2,temp_stats.dead_age_group_3,temp_stats.dead_age_group_4,temp_stats.dead_age_group_5,temp_stats.dead_age_group_6,temp_stats.dead_age_group_7,temp_stats.dead_age_group_8,temp_stats.dead_age_group_9,temp_stats.dead_age_group_10,\
+// 		  temp_stats.infected_race_group_1,temp_stats.infected_race_group_2,temp_stats.infected_race_group_3,temp_stats.infected_race_group_4,temp_stats.infected_race_group_5,temp_stats.infected_race_group_6,temp_stats.infected_race_group_7,\
+// 		  temp_stats.hospitalised_race_group_1,temp_stats.hospitalised_race_group_2,temp_stats.hospitalised_race_group_3,temp_stats.hospitalised_race_group_4,temp_stats.hospitalised_race_group_5,temp_stats.hospitalised_race_group_6,temp_stats.hospitalised_race_group_7,\
+//           temp_stats.dead_race_group_1,temp_stats.dead_race_group_2,temp_stats.dead_race_group_3,temp_stats.dead_race_group_4,temp_stats.dead_race_group_5,temp_stats.dead_race_group_6,temp_stats.dead_race_group_7,\
+// 		  temp_stats.infected_income_group_1,temp_stats.infected_income_group_2,temp_stats.infected_income_group_3,temp_stats.infected_income_group_4,temp_stats.infected_income_group_5,temp_stats.infected_income_group_6,temp_stats.infected_income_group_7,temp_stats.infected_income_group_8,\
+// 		  temp_stats.hospitalised_income_group_1,temp_stats.hospitalised_income_group_2,temp_stats.hospitalised_income_group_3,temp_stats.hospitalised_income_group_4,temp_stats.hospitalised_income_group_5,temp_stats.hospitalised_income_group_6,temp_stats.hospitalised_income_group_7,temp_stats.hospitalised_income_group_8,\
+//           temp_stats.dead_income_group_1,temp_stats.dead_income_group_2,temp_stats.dead_income_group_3,temp_stats.dead_income_group_4,temp_stats.dead_income_group_5,temp_stats.dead_income_group_6,temp_stats.dead_income_group_7,temp_stats.dead_income_group_8,\
+// 		  temp_stats.infected_ethnicity_group_1,temp_stats.infected_ethnicity_group_2,\
+// 		  temp_stats.hospitalised_ethnicity_group_1,temp_stats.hospitalised_ethnicity_group_2,\
+//           temp_stats.dead_ethnicity_group_1,temp_stats.dead_ethnicity_group_2,\
+// 		  temp_stats.infected_gender_group_1,temp_stats.infected_gender_group_2,\
+// 		  temp_stats.hospitalised_gender_group_1,temp_stats.hospitalised_gender_group_2,\
+//           temp_stats.dead_gender_group_1,temp_stats.dead_gender_group_2//,\		  		  
+// //		  temp_stats.recovered_from_infective,
+// //		  temp_stats.recovered_from_symptomatic,
+// //		  temp_stats.recovered_from_hospitalised,
+// //		  temp_stats.recovered_from_critical,
+// 		//   temp_stats.hd_area_affected,
+// 		//   temp_stats.hd_area_susceptible,
+// 		//   temp_stats.hd_area_exposed,
+//         //   temp_stats.hd_area_infective,
+// 		//   temp_stats.hd_area_symptomatic,
+//         //   temp_stats.hd_area_hospitalised,
+//         //   temp_stats.hd_area_critical,
+//         //   temp_stats.hd_area_dead,
+// 		//   temp_stats.hd_area_recovered,
+// 		//   temp_stats.hd_area_recovered_from_infective,
+// 		//   temp_stats.hd_area_recovered_from_symptomatic,
+// 		//   temp_stats.hd_area_recovered_from_hospitalised,
+// 		//   temp_stats.hd_area_recovered_from_critical
+// 		  }});
 
 
 
@@ -2230,11 +2264,11 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 	}
 
 	plot_data.nums["num_infected"].push_back({time_step, {n_infected}});
-//	plot_data.nums["num_exposed"].push_back({time_step, {n_exposed}});
+	plot_data.nums["num_exposed"].push_back({time_step, {n_exposed}});
 	plot_data.nums["num_hospitalised"].push_back({time_step, {n_hospitalised}});
 	plot_data.nums["num_susceptible"].push_back({time_step, {n_susceptible}});
 
-//	plot_data.nums["num_unvaccinated"].push_back({time_step, {n_unvaccinated}});
+	plot_data.nums["num_unvaccinated"].push_back({time_step, {n_unvaccinated}});
 	plot_data.nums["num_vaccinated1"].push_back({time_step, {n_vaccinated1}});
 	plot_data.nums["num_vaccinated2"].push_back({time_step, {n_vaccinated2}});
 	plot_data.nums["num_waning"].push_back({time_step, {n_waning}});
@@ -2348,75 +2382,88 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 	plot_data.nums["num_dead_gender_group_2"].push_back({time_step,{n_dead_gender_group_2}});
 
 
-//	plot_data.nums["num_symptomatic"].push_back({time_step, {n_symptomatic}});
+	plot_data.nums["num_symptomatic"].push_back({time_step, {n_symptomatic}});
 	plot_data.nums["num_critical"].push_back({time_step, {n_critical}});
 	plot_data.nums["num_fatalities"].push_back({time_step, {n_fatalities}});
 	plot_data.nums["num_recovered"].push_back({time_step, {n_recovered}});
-//	plot_data.nums["num_affected"].push_back({time_step, {n_affected}});
-//	plot_data.nums["num_cases"].push_back({time_step, {num_cases}});
+	plot_data.nums["num_affected"].push_back({time_step, {n_affected}});
+	plot_data.nums["num_cases"].push_back({time_step, {num_cases}});
 	plot_data.nums["num_cumulative_hospitalizations"].push_back({time_step, {num_cumulative_hospitalizations}});
-//	plot_data.nums["num_cumulative_infective"].push_back({time_step, {num_cumulative_infective}});
+	plot_data.nums["num_cumulative_infective"].push_back({time_step, {num_cumulative_infective}});
 
-	// plot_data.susceptible_lambdas["susceptible_lambda"].push_back({time_step, {susceptible_lambda}});
-	// plot_data.susceptible_lambdas["susceptible_lambda_H"].push_back({time_step, {susceptible_lambda_H}});
-	// plot_data.susceptible_lambdas["susceptible_lambda_W"].push_back({time_step, {susceptible_lambda_W}});
-	// plot_data.susceptible_lambdas["susceptible_lambda_C"].push_back({time_step, {susceptible_lambda_C}});
-	// plot_data.susceptible_lambdas["susceptible_lambda_T"].push_back({time_step, {susceptible_lambda_T}});
-	// plot_data.susceptible_lambdas["susceptible_lambda_PROJECT"].push_back({time_step, {susceptible_lambda_PROJECT}});
-	// plot_data.susceptible_lambdas["susceptible_lambda_NBR_CELL"].push_back({time_step, {susceptible_lambda_NBR_CELL}});
-	// plot_data.susceptible_lambdas["susceptible_lambda_RANDOM_COMMUNITY"].push_back({time_step, {susceptible_lambda_RANDOM_COMMUNITY}});
+	plot_data.susceptible_lambdas["susceptible_lambda"].push_back({time_step, {susceptible_lambda}});
+	plot_data.susceptible_lambdas["susceptible_lambda_H"].push_back({time_step, {susceptible_lambda_H}});
+	plot_data.susceptible_lambdas["susceptible_lambda_W"].push_back({time_step, {susceptible_lambda_W}});
+	plot_data.susceptible_lambdas["susceptible_lambda_C"].push_back({time_step, {susceptible_lambda_C}});
+	plot_data.susceptible_lambdas["susceptible_lambda_T"].push_back({time_step, {susceptible_lambda_T}});
+	plot_data.susceptible_lambdas["susceptible_lambda_PROJECT"].push_back({time_step, {susceptible_lambda_PROJECT}});
+	plot_data.susceptible_lambdas["susceptible_lambda_NBR_CELL"].push_back({time_step, {susceptible_lambda_NBR_CELL}});
+	plot_data.susceptible_lambdas["susceptible_lambda_RANDOM_COMMUNITY"].push_back({time_step, {susceptible_lambda_RANDOM_COMMUNITY}});
 
-	// disease label stats
-	// plot_data.disease_label_stats["disease_label_stats"].push_back({time_step, {n_primary_contact,
-	// 						n_mild_symptomatic_tested, n_moderate_symptomatic_tested, 
-	// 						n_severe_symptomatic_tested, n_icu, n_requested_tests, n_tested_positive}});
+//	disease label stats
+	plot_data.disease_label_stats["disease_label_stats"].push_back({time_step, {n_primary_contact,
+							n_mild_symptomatic_tested, n_moderate_symptomatic_tested, 
+							n_severe_symptomatic_tested, n_icu, n_requested_tests, n_tested_positive}});
 
 	//Convert to fraction
 	auto total_lambda_fraction_data_sum = total_lambda_fraction_data.sum();
 	total_lambda_fraction_data /= total_lambda_fraction_data_sum;
 
 
-	// plot_data.total_lambda_fractions["total_fraction_lambda_H"].push_back({time_step, {total_lambda_fraction_data.home}});
-	// plot_data.total_lambda_fractions["total_fraction_lambda_W"].push_back({time_step, {total_lambda_fraction_data.work}});
-	// plot_data.total_lambda_fractions["total_fraction_lambda_C"].push_back({time_step, {total_lambda_fraction_data.community}});
-	// plot_data.total_lambda_fractions["total_fraction_lambda_T"].push_back({time_step, {total_lambda_fraction_data.travel}});
-	// plot_data.total_lambda_fractions["total_fraction_lambda_PROJECT"].push_back({time_step, {total_lambda_fraction_data.project}});
-	// plot_data.total_lambda_fractions["total_fraction_lambda_NBR_CELL"].push_back({time_step, {total_lambda_fraction_data.nbr_cell}});
-	// plot_data.total_lambda_fractions["total_fraction_lambda_RANDOM_COMMUNITY"].push_back({time_step, {total_lambda_fraction_data.random_community}});
+	plot_data.total_lambda_fractions["total_fraction_lambda_H"].push_back({time_step, {total_lambda_fraction_data.home}});
+	plot_data.total_lambda_fractions["total_fraction_lambda_W"].push_back({time_step, {total_lambda_fraction_data.work}});
+	plot_data.total_lambda_fractions["total_fraction_lambda_C"].push_back({time_step, {total_lambda_fraction_data.community}});
+	plot_data.total_lambda_fractions["total_fraction_lambda_T"].push_back({time_step, {total_lambda_fraction_data.travel}});
+	plot_data.total_lambda_fractions["total_fraction_lambda_PROJECT"].push_back({time_step, {total_lambda_fraction_data.project}});
+	plot_data.total_lambda_fractions["total_fraction_lambda_NBR_CELL"].push_back({time_step, {total_lambda_fraction_data.nbr_cell}});
+	plot_data.total_lambda_fractions["total_fraction_lambda_RANDOM_COMMUNITY"].push_back({time_step, {total_lambda_fraction_data.random_community}});
 
-	// plot_data.mean_lambda_fractions["mean_fraction_lambda_H"].push_back({time_step, {mean_lambda_fraction_data.home}});
-	// plot_data.mean_lambda_fractions["mean_fraction_lambda_W"].push_back({time_step, {mean_lambda_fraction_data.work}});
-	// plot_data.mean_lambda_fractions["mean_fraction_lambda_C"].push_back({time_step, {mean_lambda_fraction_data.community}});
-	// plot_data.mean_lambda_fractions["mean_fraction_lambda_T"].push_back({time_step, {mean_lambda_fraction_data.travel}});
-	// plot_data.mean_lambda_fractions["mean_fraction_lambda_PROJECT"].push_back({time_step, {mean_lambda_fraction_data.project}});
-	// plot_data.mean_lambda_fractions["mean_fraction_lambda_NBR_CELL"].push_back({time_step, {mean_lambda_fraction_data.nbr_cell}});
-	// plot_data.mean_lambda_fractions["mean_fraction_lambda_RANDOM_COMMUNITY"].push_back({time_step, {mean_lambda_fraction_data.random_community}});
+	plot_data.mean_lambda_fractions["mean_fraction_lambda_H"].push_back({time_step, {mean_lambda_fraction_data.home}});
+	plot_data.mean_lambda_fractions["mean_fraction_lambda_W"].push_back({time_step, {mean_lambda_fraction_data.work}});
+	plot_data.mean_lambda_fractions["mean_fraction_lambda_C"].push_back({time_step, {mean_lambda_fraction_data.community}});
+	plot_data.mean_lambda_fractions["mean_fraction_lambda_T"].push_back({time_step, {mean_lambda_fraction_data.travel}});
+	plot_data.mean_lambda_fractions["mean_fraction_lambda_PROJECT"].push_back({time_step, {mean_lambda_fraction_data.project}});
+	plot_data.mean_lambda_fractions["mean_fraction_lambda_NBR_CELL"].push_back({time_step, {mean_lambda_fraction_data.nbr_cell}});
+	plot_data.mean_lambda_fractions["mean_fraction_lambda_RANDOM_COMMUNITY"].push_back({time_step, {mean_lambda_fraction_data.random_community}});
 
-	// plot_data.cumulative_mean_lambda_fractions["cumulative_mean_fraction_lambda_H"].push_back({time_step,
-	// 																						   {cumulative_mean_lambda_fraction_data.home}});
-	// plot_data.cumulative_mean_lambda_fractions["cumulative_mean_fraction_lambda_W"].push_back({time_step,
-	// 																						   {cumulative_mean_lambda_fraction_data.work}});
-	// plot_data.cumulative_mean_lambda_fractions["cumulative_mean_fraction_lambda_C"].push_back({time_step,
-	// 																						   {cumulative_mean_lambda_fraction_data.community}});
-	// plot_data.cumulative_mean_lambda_fractions["cumulative_mean_fraction_lambda_T"].push_back({time_step,
-	// 																						   {cumulative_mean_lambda_fraction_data.travel}});
-	// plot_data.cumulative_mean_lambda_fractions["cumulative_mean_fraction_lambda_PROJECT"].push_back({time_step,
-	// 																						   {cumulative_mean_lambda_fraction_data.project}});
-	// plot_data.cumulative_mean_lambda_fractions["cumulative_mean_fraction_lambda_NBR_CELL"].push_back({time_step,
-	// 																						   {cumulative_mean_lambda_fraction_data.nbr_cell}});
-	// plot_data.cumulative_mean_lambda_fractions["cumulative_mean_fraction_lambda_RANDOM_COMMUNITY"].push_back({time_step,
-	// 																						   {cumulative_mean_lambda_fraction_data.random_community}});
-	// plot_data.quarantined_stats["quarantined_stats"].push_back({time_step, {
-    //              quarantined_individuals,
-	// 			 quarantined_infectious,
-	// 			 quarantined_num_cases
-    //               }});
-	// plot_data.curtailment_stats["curtailment_stats"].push_back({time_step, {
-	// 			 normal_interaction,
-	// 			 curtailed_interaction
-    //               }});
+	plot_data.cumulative_mean_lambda_fractions["cumulative_mean_fraction_lambda_H"].push_back({time_step,
+																							   {cumulative_mean_lambda_fraction_data.home}});
+	plot_data.cumulative_mean_lambda_fractions["cumulative_mean_fraction_lambda_W"].push_back({time_step,
+																							   {cumulative_mean_lambda_fraction_data.work}});
+	plot_data.cumulative_mean_lambda_fractions["cumulative_mean_fraction_lambda_C"].push_back({time_step,
+																							   {cumulative_mean_lambda_fraction_data.community}});
+	plot_data.cumulative_mean_lambda_fractions["cumulative_mean_fraction_lambda_T"].push_back({time_step,
+																							   {cumulative_mean_lambda_fraction_data.travel}});
+	plot_data.cumulative_mean_lambda_fractions["cumulative_mean_fraction_lambda_PROJECT"].push_back({time_step,
+																							   {cumulative_mean_lambda_fraction_data.project}});
+	plot_data.cumulative_mean_lambda_fractions["cumulative_mean_fraction_lambda_NBR_CELL"].push_back({time_step,
+																							   {cumulative_mean_lambda_fraction_data.nbr_cell}});
+	plot_data.cumulative_mean_lambda_fractions["cumulative_mean_fraction_lambda_RANDOM_COMMUNITY"].push_back({time_step,
+																							   {cumulative_mean_lambda_fraction_data.random_community}});
+	plot_data.quarantined_stats["quarantined_stats"].push_back({time_step, {
+                 quarantined_individuals,
+				 quarantined_infectious,
+				 quarantined_num_cases
+                  }});
+	plot_data.curtailment_stats["curtailment_stats"].push_back({time_step, {
+				 normal_interaction,
+				 curtailed_interaction
+                  }});
 				  
-	logging1 = std::to_string(time_step)+","+std::to_string(num_new_infections)
+	// logging1 = std::to_string(time_step)+","+std::to_string(num_new_infections)
+	// +","+std::to_string(num_new_strain0_infections)+","+std::to_string(num_new_strain1_infections)
+	// +","+std::to_string(num_new_strain2_infections)+","+std::to_string(num_new_strain3_infections)
+	// +","+std::to_string(num_new_strain4_infections)+","+std::to_string(num_new_strain5_infections)
+	// +","+std::to_string(num_new_strain6_infections)+","+std::to_string(num_new_strain7_infections)
+	// +","+std::to_string(num_new_strain8_infections)+","+std::to_string(num_new_strain9_infections)
+	// +","+std::to_string(num_active_infections)
+	// +","+std::to_string(num_active_infections_new_strain0)+","+std::to_string(num_active_infections_new_strain1)
+	// +","+","+std::to_string(num_active_infections_new_strain2)+","+std::to_string(num_active_infections_new_strain3)
+	// +","+std::to_string(num_active_infections_new_strain4)+","+std::to_string(num_active_infections_new_strain5)
+	// +","+std::to_string(num_active_infections_new_strain6);
+    // logger1.push_back(logging1);
+
+	logging1 = std::to_string(time_step)+","+std::to_string(num_new_symptomatic)
 	+","+std::to_string(num_new_strain0_infections)+","+std::to_string(num_new_strain1_infections)
 	+","+std::to_string(num_new_strain2_infections)+","+std::to_string(num_new_strain3_infections)
 	+","+std::to_string(num_new_strain4_infections)+","+std::to_string(num_new_strain5_infections)

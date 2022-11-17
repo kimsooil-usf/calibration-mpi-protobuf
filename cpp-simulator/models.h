@@ -640,6 +640,7 @@ struct global_params{
   //Input and output
   std::string input_base;
   std::string attendance_filename;
+  std::string mask_filename;
   std::string output_path; // sk
   std::string agent_load_file; // sk
 
@@ -1238,6 +1239,12 @@ struct agent{
   bool new_boosted=false;
   bool new_waning2=false;
   bool new_boosted2=false;
+
+//-----counting new cases, deaths, hospitalizaed at ward level:Shakir testing
+  bool new_symptomatic=false;
+  bool new_dead=false;
+  bool new_hospitalized=false;
+//--------------------------------------------//
 
   double lambda_h = 0;
   //individuals contribution to his home cluster

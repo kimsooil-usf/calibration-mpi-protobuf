@@ -155,11 +155,11 @@ node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,
 	  }
 	  else if (infected_with_new_strain && P_or<1 && ds==8 ){//---Shakir:This could be improved to precisely get the neighbourhood based caclucations.
 		  node.new_strain = 8;//omicron_BA7 is 8
-		  node.infectiousness = node.infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA5;
+		  node.infectiousness = node.infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA7;
 	  }
 	  else if (infected_with_new_strain && P_or<1 && ds==9 ){//---Shakir:This could be improved to precisely get the neighbourhood based caclucations.
 		  node.new_strain = 9;//omicron_BA8 is 9
-		  node.infectiousness = node.infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA5;
+		  node.infectiousness = node.infectiousness_original*GLOBAL.INFECTIOUSNESS_OMICRON_BA8;
 	  }	  
 	}
   }
@@ -184,6 +184,7 @@ node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,
 	  node.infective = true;
 	  update_status.new_symptomatic = true;
 	  node.entered_symptomatic_state = true;
+	  node.new_symptomatic=true;
 	}
 	else {
 	  node.state_before_recovery = node.infection_status;
@@ -260,6 +261,7 @@ node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,
 	  node.infective = false;
 	  update_status.new_hospitalization = true;
 	  node.entered_hospitalised_state = true;
+	  node.new_hospitalized=true;
 	}
 	else {
 	  node.state_before_recovery = node.infection_status;
@@ -416,6 +418,7 @@ node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,
 	if(transition){
 	  node.infection_status = Progression::dead;//move to dead
 	  node.infective = false;
+	  node.new_dead = true;
 	}
 	else {
 	  node.state_before_recovery = node.infection_status;
@@ -1573,11 +1576,12 @@ forced_to_take_train
 	  && has_to_travel && attending
 	  && !((quarantined && compliant)
 *///---These variable need to be true for travel to happen for the individual.
-  //Travel only happens at "odd" times, twice a day
-  if(cur_time>=GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS && node.forced_to_take_train)
+
+//  if(cur_time>=GLOBAL.NUM_DAYS_BEFORE_INTERVENTIONS && node.forced_to_take_train)
 //std::cout<<"curr time, cur_time%2,forced_to_take_train, has to travel, attending, compliant, and quarantined, (!(node.quarantined && node.compliant)),  node.travels()\n"<<cur_time<<"\t"<<cur_time%2<<"\t"<<node.forced_to_take_train<<"\t"<<node.has_to_travel<<"\t"<<node.has_to_travel<<"\t"<<node.attending<<"\t"<<node.compliant<<"\t"<<node.quarantined<<"\t"<<(!(node.quarantined && node.compliant))<<"\t"<<node.travels()<<std::endl;
 //std::cout<<"UPDATING node is forced to take train at time"<<"\t"<<node.forced_to_take_train<<"\t"<<cur_time<<"\t"<<node.travels()<<std::endl;
-
+  
+  //Travel only happens at "odd" times, twice a day
   if((cur_time % 2) && node.travels()){
 	node.lambda_incoming.travel = GLOBAL.BETA_TRAVEL
 	  * node.commute_distance
