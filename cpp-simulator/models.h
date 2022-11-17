@@ -641,6 +641,7 @@ struct global_params{
   std::string input_base;
   std::string attendance_filename;
   std::string mask_filename;
+  std::string mask_folder;
   std::string output_path; // sk
   std::string agent_load_file; // sk
 

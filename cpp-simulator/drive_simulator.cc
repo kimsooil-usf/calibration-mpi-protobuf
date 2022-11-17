@@ -174,6 +174,8 @@ int main(int argc, char** argv){
      cxxopts::value<bool>()->default_value(DEFAULTS.IGNORE_ATTENDANCE_FILE))
     ("attendance_filename", "attendance json filename, relative to input_directory",
      cxxopts::value<std::string>()->default_value(DEFAULTS.attendance_filename))
+   ("mask_folder", "mask folder name, relative to input_directory",
+     cxxopts::value<std::string>()->default_value(DEFAULTS.mask_folder))
    ("mask_filename", "mask json filename, relative to input_directory",
      cxxopts::value<std::string>()->default_value(DEFAULTS.mask_filename))
     ("intervention_filename", "intervention json filename, relative to input_directory",
@@ -435,8 +437,8 @@ int main(int argc, char** argv){
     GLOBAL.IGNORE_ATTENDANCE_FILE = false;
   }
   //GLOBAL.IGNORE_ATTENDANCE_FILE = optvals["IGNORE_ATTENDANCE_FILE"].count();
-
-  GLOBAL.mask_filename = "/maskensembles/"+optvals["mask_filename"].as<std::string>();//reading mask from file--Shakir
+  GLOBAL.mask_folder=optvals["mask_folder"].as<std::string>();
+  GLOBAL.mask_filename = "/"+GLOBAL.mask_folder+"/"+optvals["mask_filename"].as<std::string>();//reading mask from file--Shakir
 
   GLOBAL.USE_AGE_DEPENDENT_MIXING = optvals["USE_AGE_DEPENDENT_MIXING"].count();
   GLOBAL.SIGNIFICANT_EIGEN_VALUES = optvals["SIGNIFICANT_EIGEN_VALUES"].as<double>();

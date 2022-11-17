@@ -36,6 +36,8 @@ struct defaults{
   std::string input_base = "../simulator/input_files";
   std::string attendance_filename = "attendance.json";
   std::string mask_filename = "maskwearing_November10_2022.json";//mask file
+  std::string mask_folder = "maskensembles";//mask file
+
   std::string SEED_HD_AREA_POPULATION = "false";
   std::string SEED_ONLY_NON_COMMUTER = "false";
   std::string SEED_FIXED_NUMBER = "false";
