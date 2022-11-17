@@ -33,7 +33,7 @@ struct defaults{
   std::string output_dir = "outputs/test_output_timing";
   std::string input_base = "../simulator/input_files";
   std::string attendance_filename = "attendance.json";
-  std::string mask_filename = "/maskensembles/maskwearing_November14_2022_plus4wgoogle_1.json";//mask file
+  std::string mask_filename = "maskwearing_November14_2022_plus4wgoogle_1.json";//mask file
   std::string SEED_HD_AREA_POPULATION = "false";
   std::string SEED_ONLY_NON_COMMUTER = "false";
   std::string SEED_FIXED_NUMBER = "false";
