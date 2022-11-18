@@ -872,6 +872,7 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 //--------Alternative new strain introduction under development: Shakir//
 
 
+
 	  if(time_step==GLOBAL.TIME_ALPHA){
                if((nodes[j].infection_status == Progression::exposed)
 			   ||(nodes[j].infection_status == Progression::infective)
@@ -894,10 +895,12 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 			   ||(nodes[j].infection_status == Progression::infective)
 			   ||(nodes[j].infection_status == Progression::symptomatic)
 			   ||(nodes[j].infection_status == Progression::hospitalised)
-			   ||(nodes[j].infection_status == Progression::critical && nodes[j].new_strain!=2)){
+			   ||(nodes[j].infection_status == Progression::critical && nodes[j].new_strain!=2 
+			   && nodes[j].new_strain!=0 )){
 
-                 bool is_new_strain = bernoulli(GLOBAL.FRACTION_NEW_DELTA);
-                   if(is_new_strain){
+                  bool is_new_strain = bernoulli(0.5);//(GLOBAL.FRACTION_NEW_DELTA);
+                    if(is_new_strain)
+				   {
                     nodes[j].new_strain = 2;
 		    nodes[j].infectiousness = nodes[j].infectiousness_original* GLOBAL.INFECTIOUSNESS_DELTA;
 

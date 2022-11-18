@@ -25,9 +25,9 @@ struct defaults{
   std::string REDUCTION_FACTOR="0.25";//Reduce or increase the betas by this factor to implement social measures
   std::string BETA_H = "0.15";//---->Comment by 1.227
   std::string BETA_W = "0.3";
-  std::string BETA_C = "0.15";
+  std::string BETA_C = "0.2";
   std::string BETA_S = "0.5";
-  std::string BETA_TRAVEL = "0.6";
+  std::string BETA_TRAVEL = "0.7";
   std::string HD_AREA_FACTOR = "1.5";
   std::string HD_AREA_EXPONENT = "0";
   std::string INTERVENTION = "0";
@@ -37,6 +37,7 @@ struct defaults{
   std::string attendance_filename = "attendance.json";
   std::string mask_filename = "maskwearing_November10_2022.json";//mask file
   std::string mask_folder = "maskensembles";//mask file
+
   std::string SEED_HD_AREA_POPULATION = "false";
   std::string SEED_ONLY_NON_COMMUTER = "false";
   std::string SEED_FIXED_NUMBER = "false";
@@ -109,7 +110,7 @@ struct defaults{
   // // std::string TIME_OMICRON_BA10="3308";//6 June 2022
 
   std::string TIME_ALPHA="1000";//30 december 2020
-  std::string TIME_DELTA="1828";//1 june 2021
+  std::string TIME_DELTA="2004";//15 july 2021
   std::string TIME_OMICRON="2564";//2 December 2021
   std::string TIME_OMICRON_NEW="2772";//23 January 2022
   std::string TIME_OMICRON_BA4="3192";//8 May 2022
@@ -121,9 +122,9 @@ struct defaults{
   // std::string TIME_OMICRON_BA10="3308";//6 June 2022
 
 
-  std::string INFECTIOUSNESS_ALPHA = "1.2";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_DELTA = "1.8";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON = "4";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_ALPHA = "1.3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_DELTA = "2.2";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON = "3";//---original 3 comment by Shakir
   std::string INFECTIOUSNESS_OMICRON_NEW = "3.2";//---original 3 comment by Shakir
   std::string INFECTIOUSNESS_OMICRON_BA4 = "3.2";//---original 3 comment by Shakir
   std::string INFECTIOUSNESS_OMICRON_BA5 = "3.3";//---original 3 comment by Shakir
@@ -146,17 +147,17 @@ struct defaults{
   // std::string INFECTIOUSNESS_OMICRON_BA10 = "3";//---original 3 comment by Shakir
 
   std::string VIRULENT_NEW_STRAIN = "1.3";//Governs the probability of hospitalizations and subsequent criticality and death stages
-  std::string VIRULENT_NEW_ALPHA="1.2";
-  std::string VIRULENT_NEW_DELTA="1.8";
-  std::string VIRULENT_NEW_OMICRON=".3";
-  std::string VIRULENT_NEW_OMICRON_NEW=".2";
-  std::string VIRULENT_NEW_OMICRON_BA4=".2";
-  std::string VIRULENT_NEW_OMICRON_BA5=".2";
-  std::string VIRULENT_NEW_OMICRON_BA6=".2";
-  std::string VIRULENT_NEW_OMICRON_BA7=".2";
-  std::string VIRULENT_NEW_OMICRON_BA8=".2";
-  std::string VIRULENT_NEW_OMICRON_BA9=".2";
-  std::string VIRULENT_NEW_OMICRON_BA10=".2";
+  std::string VIRULENT_NEW_ALPHA="1.3";
+  std::string VIRULENT_NEW_DELTA="3";
+  std::string VIRULENT_NEW_OMICRON=".8";
+  std::string VIRULENT_NEW_OMICRON_NEW=".8";
+  std::string VIRULENT_NEW_OMICRON_BA4=".8";
+  std::string VIRULENT_NEW_OMICRON_BA5=".8";
+  std::string VIRULENT_NEW_OMICRON_BA6=".8";
+  std::string VIRULENT_NEW_OMICRON_BA7=".8";
+  std::string VIRULENT_NEW_OMICRON_BA8=".8";
+  std::string VIRULENT_NEW_OMICRON_BA9=".8";
+  std::string VIRULENT_NEW_OMICRON_BA10=".8";
 
   // std::string REINFECTION_ALPHA="0.01";
   // std::string REINFECTION_DELTA="0.05";
