@@ -372,26 +372,26 @@ plot_data_struct run_simulation(){
 
 
 //----age group less than 20
-  std::vector<count_type> new_vaccinated1_candidates_LE20;
-  new_vaccinated1_candidates_LE20.reserve(GLOBAL.num_people);
+  std::vector<count_type> new_vaccinated1_candidates_GT10_LE30;
+  new_vaccinated1_candidates_GT10_LE30.reserve(GLOBAL.num_people);
 
-  std::vector<count_type> new_vaccinated2_candidates_LE20;
-  new_vaccinated2_candidates_LE20.reserve(GLOBAL.num_people);
+  std::vector<count_type> new_vaccinated2_candidates_GT10_LE30;
+  new_vaccinated2_candidates_GT10_LE30.reserve(GLOBAL.num_people);
   
 
-  std::vector<count_type> new_waning_candidates_LE20;
-  new_waning_candidates_LE20.reserve(GLOBAL.num_people);
+  std::vector<count_type> new_waning_candidates_GT10_LE30;
+  new_waning_candidates_GT10_LE30.reserve(GLOBAL.num_people);
 
 
-  std::vector<count_type> new_boosted_candidates_LE20;
-  new_boosted_candidates_LE20.reserve(GLOBAL.num_people);
+  std::vector<count_type> new_boosted_candidates_GT10_LE30;
+  new_boosted_candidates_GT10_LE30.reserve(GLOBAL.num_people);
 
-  std::vector<count_type> new_waning2_candidates_LE20;
-  new_waning2_candidates_LE20.reserve(GLOBAL.num_people);
+  std::vector<count_type> new_waning2_candidates_GT10_LE30;
+  new_waning2_candidates_GT10_LE30.reserve(GLOBAL.num_people);
 
 
-  std::vector<count_type> new_boosted2_candidates_LE20;
-  new_boosted2_candidates_LE20.reserve(GLOBAL.num_people);
+  std::vector<count_type> new_boosted2_candidates_GT10_LE30;
+  new_boosted2_candidates_GT10_LE30.reserve(GLOBAL.num_people);
 
 
 //age group between 30 and 60
@@ -452,8 +452,10 @@ plot_data_struct run_simulation(){
 	double nboosted2=200;//---->these numbers need to be  fixed after discussion with Ken.
 	double vaccFn,vaccFn2,vaccFn3,vaccFn4,Time_VaccStart,TimeVacc2Start,TimeBoostStart,TimeVaccConst,TimeVacc2Const;
 	double TimeBoostStart1,TimeBoostConst,TimeBoost2Start,TimeBoost2Const;
-	double TIME_MARCH21=395*GLOBAL.SIM_STEPS_PER_DAY, TIME_JANUARY22=671*GLOBAL.SIM_STEPS_PER_DAY;
-
+	double TIME_MARCH21=383*GLOBAL.SIM_STEPS_PER_DAY;
+	double TIME_APRIL21=400*GLOBAL.SIM_STEPS_PER_DAY;
+	double TIME_DECEMBER21=670*GLOBAL.SIM_STEPS_PER_DAY;
+	double TIME_JANUARY22=671*GLOBAL.SIM_STEPS_PER_DAY;
 
 	Time_VaccStart=306*GLOBAL.SIM_STEPS_PER_DAY;//Jan 1 2021 is 306 days away from March 1, 2020.
 	TimeVacc2Start=(12+306)*GLOBAL.SIM_STEPS_PER_DAY;//Jan 1 2021 is 12+ 306 days away from March 1, 2020.
@@ -530,17 +532,17 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 //***********Vaccination vectors***************//
 
 //-------------age group less than 20----------------------------//
-		new_vaccinated1_candidates_LE20.clear();
+		new_vaccinated1_candidates_GT10_LE30.clear();
 	
-		new_vaccinated2_candidates_LE20.clear();
+		new_vaccinated2_candidates_GT10_LE30.clear();
 
-		new_waning_candidates_LE20.clear();
+		new_waning_candidates_GT10_LE30.clear();
 
-		new_boosted_candidates_LE20.clear();
+		new_boosted_candidates_GT10_LE30.clear();
 
-		new_waning2_candidates_LE20.clear();
+		new_waning2_candidates_GT10_LE30.clear();
 
-		new_boosted2_candidates_LE20.clear();
+		new_boosted2_candidates_GT10_LE30.clear();
 //-------------age group 30 to 60--------------------------------//
 		new_vaccinated1_candidates_30_to_60.clear();
 	
@@ -740,13 +742,13 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 		if (time_step>=Time_VaccStart  && new_day==0)// && nodes[j].vaccinated1==false)//when start date is 1st March 2020 and vaccination start is 1 Jan 2021.
 		{
 
-         if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery != Progression::vaccinated1) )){//----->age between 1 and 10
+         if(age_index>=1 && age_index<=2 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery != Progression::vaccinated1) )){//----->age between 1 and 10
 		
-				new_vaccinated1_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+				new_vaccinated1_candidates_GT10_LE30.push_back(j);//j-th individula is vaccinated. Choose age distribution here
 
 
 			}
-		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery != Progression::vaccinated1) )){//----->age between 1 and 10
+		    if(age_index>=3 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery != Progression::vaccinated1) )){//----->age between 1 and 10
 	
 	
 					new_vaccinated1_candidates_30_to_60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
@@ -762,14 +764,13 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 					
 			}
 //-------------------New Vaccinated2----------------------------------------------------//
-		if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine1>=DAY_84 )){//----->age between 1 and 10
-	\	
-				new_vaccinated2_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+		if(age_index>=1 && age_index<=2 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine1>=DAY_84 )){//----->age between 1 and 10	
+				new_vaccinated2_candidates_GT10_LE30.push_back(j);//j-th individula is vaccinated. Choose age distribution here
 
 			
 
 			}
-		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine1>=DAY_84)){//----->age between 1 and 10
+		    if(age_index>=3 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated1) && time_step-nodes[j].time_at_vaccine1>=DAY_84)){//----->age between 1 and 10
 	
 					new_vaccinated2_candidates_30_to_60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
 					
@@ -787,19 +788,19 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 
 		if((nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=FIVE_MONTH )){//----->age between 1 and 10
 		
-				new_waning_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+				new_waning_candidates_GT10_LE30.push_back(j);//j-th individula is vaccinated. Choose age distribution here
 			
 			}
 
 //------------------Boosted candidates--------------------------------------------//
 
-		if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=SIX_MONTH )){//----->age between 1 and 10
+		if(age_index>=1 && age_index<=2 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=SIX_MONTH )){//----->age between 1 and 10
 		
-				new_boosted_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+				new_boosted_candidates_GT10_LE30.push_back(j);//j-th individula is vaccinated. Choose age distribution here
 
 
 			}
-		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=SIX_MONTH)){//----->age between 1 and 10
+		    if(age_index>=3 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::vaccinated2) && time_step-nodes[j].time_at_vaccine2>=SIX_MONTH)){//----->age between 1 and 10
 	
 					new_boosted_candidates_30_to_60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
 
@@ -819,19 +820,19 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 
 		if((nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=FIVE_MONTH )){//----->age between 1 and 10
 		
-				new_waning2_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+				new_waning2_candidates_GT10_LE30.push_back(j);//j-th individula is vaccinated. Choose age distribution here
 
 			}
 
 //------------------Boosted2 candidates--------------------------------------------//
 
-		if(age_index<=1 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=SIX_MONTH )){//----->age between 1 and 10
+		if(age_index>=1 && age_index<=2 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=SIX_MONTH )){//----->age between 1 and 10
 
-				new_boosted2_candidates_LE20.push_back(j);//j-th individula is vaccinated. Choose age distribution here
+				new_boosted2_candidates_GT10_LE30.push_back(j);//j-th individula is vaccinated. Choose age distribution here
 
 
 			}
-		    if(age_index>=2 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=SIX_MONTH)){//----->age between 1 and 10
+		    if(age_index>=3 && age_index<=5 && (nodes[j].infection_status==Progression::susceptible || (nodes[j].infection_status==Progression::recovered &&nodes[j].state_before_recovery == Progression::boosted) && time_step-nodes[j].time_at_boosted>=SIX_MONTH)){//----->age between 1 and 10
 		
 					new_boosted2_candidates_30_to_60.push_back(j);//j-th individula is vaccinated. Choose age distribution here
 
@@ -1255,28 +1256,27 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 
 	    //    if ((time_step >= Time_VaccStart && new_day==0)){
 
-		// 		vaccinate_firstdose(nodes, new_vaccinated1_candidates_LE20, vaccFn*0.2*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT10_LE30, vaccFn*0.2*(NUM_PEOPLE/1450000.0), time_step);
 		// 		vaccinate_firstdose(nodes, new_vaccinated1_candidates_30_to_60, vaccFn*0.3*(NUM_PEOPLE/1450000.0), time_step);
 		// 		vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*0.5*(NUM_PEOPLE/1450000.0), time_step);
 
-		// 		vaccinate_second_dose(nodes, new_vaccinated2_candidates_LE20, vaccFn2*0.2*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT10_LE30, vaccFn2*0.2*(NUM_PEOPLE/1450000.0), time_step);
 		// 		vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.3*(NUM_PEOPLE/1450000.0), time_step);
 		// 		vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.5*(NUM_PEOPLE/1450000.0), time_step);
 
-		// 		vaccinate_waning_candidates(nodes, new_waning_candidates_LE20, vaccFn2*0.2*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_waning_candidates(nodes, new_waning_candidates_GT10_LE30, vaccFn2*0.2*(NUM_PEOPLE/1450000.0), time_step);
 
 		// 		vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3*(NUM_PEOPLE/1450000.0), time_step);
 		// 		vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3*(NUM_PEOPLE/1450000.0), time_step);
 		// 		vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.5*(NUM_PEOPLE/1450000.0), time_step);
 
-		// 		vaccinate_waning2_candidates(nodes, new_waning2_candidates_LE20, vaccFn3*0.2*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_waning2_candidates(nodes, new_waning2_candidates_GT10_LE30, vaccFn3*0.2*(NUM_PEOPLE/1450000.0), time_step);
 
 		// 		vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3*(NUM_PEOPLE/1450000.0), time_step);
 		// 		vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3*(NUM_PEOPLE/1450000.0), time_step);
 		// 		vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT60, vaccFn4*0.5*(NUM_PEOPLE/1450000.0), time_step);
 
 		//    }
-
 	       if ((time_step >= Time_VaccStart && time_step <=TIME_MARCH21 && new_day==0)){
 				vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*(NUM_PEOPLE/1450039.0), time_step);
 				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*(NUM_PEOPLE/1450039.0), time_step);
@@ -1285,47 +1285,73 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 		   }
 
 
-	       if ((time_step >= TIME_MARCH21 && time_step<=TIME_JANUARY22 &&new_day==0)){
+	       if ((time_step >= TIME_MARCH21 && time_step<=TIME_APRIL21 &&new_day==0)){
 
-				vaccinate_firstdose(nodes, new_vaccinated1_candidates_30_to_60, vaccFn*0.5*(NUM_PEOPLE/1450039.0), time_step);
-				vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*0.5*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_30_to_60, vaccFn*0.34*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*0.66*(NUM_PEOPLE/1450039.0), time_step);
 
-				vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.5*(NUM_PEOPLE/1450039.0), time_step);
-				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.5*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.34*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.66*(NUM_PEOPLE/1450039.0), time_step);
 
-				vaccinate_waning_candidates(nodes, new_waning_candidates_LE20, vaccFn2*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_waning_candidates(nodes, new_waning_candidates_GT10_LE30, vaccFn2*(NUM_PEOPLE/1450039.0), time_step);
 
-				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.5*(NUM_PEOPLE/1450039.0), time_step);
-				vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.5*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.34*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.66*(NUM_PEOPLE/1450039.0), time_step);
 
-				vaccinate_waning2_candidates(nodes, new_waning2_candidates_LE20, vaccFn3*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_waning2_candidates(nodes, new_waning2_candidates_GT10_LE30, vaccFn3*(NUM_PEOPLE/1450039.0), time_step);
 
-				vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.5*(NUM_PEOPLE/1450039.0), time_step);
-				vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT60, vaccFn4*0.5*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.34*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT60, vaccFn4*0.66*(NUM_PEOPLE/1450039.0), time_step);
 
 		   }
 
-		if ((time_step >= TIME_JANUARY22 &&new_day==0)){
+		if ((time_step >= time_step<=TIME_APRIL21  && time_step<= TIME_DECEMBER21 &&new_day==0)){
 
-				vaccinate_firstdose(nodes, new_vaccinated1_candidates_LE20, vaccFn*0.4*(NUM_PEOPLE/1450039.0), time_step);
-				vaccinate_firstdose(nodes, new_vaccinated1_candidates_30_to_60, vaccFn*0.3*(NUM_PEOPLE/1450039.0), time_step);
-				vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*0.3*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT10_LE30, vaccFn*0.33*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_30_to_60, vaccFn*0.33*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*0.34*(NUM_PEOPLE/1450039.0), time_step);
 
-				vaccinate_second_dose(nodes, new_vaccinated2_candidates_LE20, vaccFn2*04*(NUM_PEOPLE/1450039.0), time_step);
-				vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.3*(NUM_PEOPLE/1450039.0), time_step);
-				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.3*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT10_LE30, vaccFn2*0.33*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.33*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.34*(NUM_PEOPLE/1450039.0), time_step);
 
-				vaccinate_waning_candidates(nodes, new_waning_candidates_LE20, vaccFn2*0.2*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_waning_candidates(nodes, new_waning_candidates_GT10_LE30, vaccFn2*(NUM_PEOPLE/1450039.0), time_step);
 
-				vaccinate_booster_dose(nodes, new_boosted_candidates_LE20, vaccFn3*0.4*(NUM_PEOPLE/1450039.0), time_step);
-				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3*(NUM_PEOPLE/1450039.0), time_step);
-				vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.3*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_GT10_LE30, vaccFn3*0.33*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.33*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.34*(NUM_PEOPLE/1450039.0), time_step);
 
-				vaccinate_waning2_candidates(nodes, new_waning2_candidates_LE20, vaccFn3*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_waning2_candidates(nodes, new_waning2_candidates_GT10_LE30, vaccFn3*(NUM_PEOPLE/1450039.0), time_step);
 
-				vaccinate_booster2_dose(nodes, new_boosted2_candidates_LE20, vaccFn4*0.2*(NUM_PEOPLE/1450039.0), time_step);
-				vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3*(NUM_PEOPLE/1450039.0), time_step);
-				vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT60, vaccFn4*0.5*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT10_LE30, vaccFn4*0.33*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.33*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT60, vaccFn4*0.34*(NUM_PEOPLE/1450039.0), time_step);
+
+		   }
+
+
+		if ((time_step>=TIME_JANUARY22 &&new_day==0)){
+
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT10_LE30, vaccFn*0.5*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_30_to_60, vaccFn*0.25*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*0.25*(NUM_PEOPLE/1450039.0), time_step);
+
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT10_LE30, vaccFn2*0.50*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.25*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.25*(NUM_PEOPLE/1450039.0), time_step);
+
+				vaccinate_waning_candidates(nodes, new_waning_candidates_GT10_LE30, vaccFn2*(NUM_PEOPLE/1450039.0), time_step);
+
+				vaccinate_booster_dose(nodes, new_boosted_candidates_GT10_LE30, vaccFn3*0.50*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.25*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.25*(NUM_PEOPLE/1450039.0), time_step);
+
+				vaccinate_waning2_candidates(nodes, new_waning2_candidates_GT10_LE30, vaccFn3*(NUM_PEOPLE/1450039.0), time_step);
+
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT10_LE30, vaccFn4*0.50*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.25*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT60, vaccFn4*0.25*(NUM_PEOPLE/1450039.0), time_step);
+
 		   }
 
 //--------Alternative new strain introduction under development: Shakir//

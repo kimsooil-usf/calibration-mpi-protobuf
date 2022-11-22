@@ -27,7 +27,7 @@ struct defaults{
   std::string BETA_W = "0.3";
   std::string BETA_C = "0.15";
   std::string BETA_S = "0.5";
-  std::string BETA_TRAVEL = "0.6";
+  std::string BETA_TRAVEL = "0.1";
   std::string HD_AREA_FACTOR = "1.5";
   std::string HD_AREA_EXPONENT = "0";
   std::string INTERVENTION = "0";
@@ -121,8 +121,8 @@ struct defaults{
   // std::string TIME_OMICRON_BA10="3308";//6 June 2022
 
 
-  std::string INFECTIOUSNESS_ALPHA = "1.2";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_DELTA = "1.8";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_ALPHA = "1.35";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_DELTA = "2";//---original 3 comment by Shakir
   std::string INFECTIOUSNESS_OMICRON = "4";//---original 3 comment by Shakir
   std::string INFECTIOUSNESS_OMICRON_NEW = "3.2";//---original 3 comment by Shakir
   std::string INFECTIOUSNESS_OMICRON_BA4 = "3.2";//---original 3 comment by Shakir
@@ -146,8 +146,8 @@ struct defaults{
   // std::string INFECTIOUSNESS_OMICRON_BA10 = "3";//---original 3 comment by Shakir
 
   std::string VIRULENT_NEW_STRAIN = "1.3";//Governs the probability of hospitalizations and subsequent criticality and death stages
-  std::string VIRULENT_NEW_ALPHA="1.2";
-  std::string VIRULENT_NEW_DELTA="1.8";
+  std::string VIRULENT_NEW_ALPHA="1.35";
+  std::string VIRULENT_NEW_DELTA="2";
   std::string VIRULENT_NEW_OMICRON=".3";
   std::string VIRULENT_NEW_OMICRON_NEW=".2";
   std::string VIRULENT_NEW_OMICRON_BA4=".2";
