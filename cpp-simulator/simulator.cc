@@ -452,6 +452,7 @@ plot_data_struct run_simulation(){
 	double nboosted2=200;//---->these numbers need to be  fixed after discussion with Ken.
 	double vaccFn,vaccFn2,vaccFn3,vaccFn4,Time_VaccStart,TimeVacc2Start,TimeBoostStart,TimeVaccConst,TimeVacc2Const;
 	double TimeBoostStart1,TimeBoostConst,TimeBoost2Start,TimeBoost2Const;
+	double TIME_MARCH21=395*GLOBAL.SIM_STEPS_PER_DAY, TIME_JANUARY22=671*GLOBAL.SIM_STEPS_PER_DAY;
 
 
 	Time_VaccStart=306*GLOBAL.SIM_STEPS_PER_DAY;//Jan 1 2021 is 306 days away from March 1, 2020.
@@ -1252,28 +1253,79 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 	//----------Selecting individuals to be vaccinated based on number of doseses delivered, This is is given by the variables 'vaccFn',"vaccFn2","vaccFn3","vaccFn4"----------------------------//
 
 
-	       if ((time_step >= Time_VaccStart && new_day==0)){
+	    //    if ((time_step >= Time_VaccStart && new_day==0)){
 
-				vaccinate_firstdose(nodes, new_vaccinated1_candidates_LE20, vaccFn*0.2*(NUM_PEOPLE/1450000.0), time_step);
-				vaccinate_firstdose(nodes, new_vaccinated1_candidates_30_to_60, vaccFn*0.3*(NUM_PEOPLE/1450000.0), time_step);
-				vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*0.5*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_firstdose(nodes, new_vaccinated1_candidates_LE20, vaccFn*0.2*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_firstdose(nodes, new_vaccinated1_candidates_30_to_60, vaccFn*0.3*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*0.5*(NUM_PEOPLE/1450000.0), time_step);
 
-				vaccinate_second_dose(nodes, new_vaccinated2_candidates_LE20, vaccFn2*0.2*(NUM_PEOPLE/1450000.0), time_step);
-				vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.3*(NUM_PEOPLE/1450000.0), time_step);
-				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.5*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_second_dose(nodes, new_vaccinated2_candidates_LE20, vaccFn2*0.2*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.3*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.5*(NUM_PEOPLE/1450000.0), time_step);
 
-				vaccinate_waning_candidates(nodes, new_waning_candidates_LE20, vaccFn2*0.2*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_waning_candidates(nodes, new_waning_candidates_LE20, vaccFn2*0.2*(NUM_PEOPLE/1450000.0), time_step);
 
-				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3*(NUM_PEOPLE/1450000.0), time_step);
-				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3*(NUM_PEOPLE/1450000.0), time_step);
-				vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.5*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.5*(NUM_PEOPLE/1450000.0), time_step);
 
-				vaccinate_waning2_candidates(nodes, new_waning2_candidates_LE20, vaccFn3*0.2*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_waning2_candidates(nodes, new_waning2_candidates_LE20, vaccFn3*0.2*(NUM_PEOPLE/1450000.0), time_step);
 
-				vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3*(NUM_PEOPLE/1450000.0), time_step);
-				vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3*(NUM_PEOPLE/1450000.0), time_step);
-				vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT60, vaccFn4*0.5*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3*(NUM_PEOPLE/1450000.0), time_step);
+		// 		vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT60, vaccFn4*0.5*(NUM_PEOPLE/1450000.0), time_step);
 
+		//    }
+
+	       if ((time_step >= Time_VaccStart && time_step <=TIME_MARCH21 && new_day==0)){
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT60, vaccFn4*(NUM_PEOPLE/1450039.0), time_step);
+		   }
+
+
+	       if ((time_step >= TIME_MARCH21 && time_step<=TIME_JANUARY22 &&new_day==0)){
+
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_30_to_60, vaccFn*0.5*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*0.5*(NUM_PEOPLE/1450039.0), time_step);
+
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.5*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.5*(NUM_PEOPLE/1450039.0), time_step);
+
+				vaccinate_waning_candidates(nodes, new_waning_candidates_LE20, vaccFn2*(NUM_PEOPLE/1450039.0), time_step);
+
+				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.5*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.5*(NUM_PEOPLE/1450039.0), time_step);
+
+				vaccinate_waning2_candidates(nodes, new_waning2_candidates_LE20, vaccFn3*(NUM_PEOPLE/1450039.0), time_step);
+
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.5*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT60, vaccFn4*0.5*(NUM_PEOPLE/1450039.0), time_step);
+
+		   }
+
+		if ((time_step >= TIME_JANUARY22 &&new_day==0)){
+
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_LE20, vaccFn*0.4*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_30_to_60, vaccFn*0.3*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_firstdose(nodes, new_vaccinated1_candidates_GT60, vaccFn*0.3*(NUM_PEOPLE/1450039.0), time_step);
+
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_LE20, vaccFn2*04*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_30_to_60, vaccFn2*0.3*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_second_dose(nodes, new_vaccinated2_candidates_GT60, vaccFn2*0.3*(NUM_PEOPLE/1450039.0), time_step);
+
+				vaccinate_waning_candidates(nodes, new_waning_candidates_LE20, vaccFn2*0.2*(NUM_PEOPLE/1450039.0), time_step);
+
+				vaccinate_booster_dose(nodes, new_boosted_candidates_LE20, vaccFn3*0.4*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_30_to_60, vaccFn3*0.3*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster_dose(nodes, new_boosted_candidates_GT60, vaccFn3*0.3*(NUM_PEOPLE/1450039.0), time_step);
+
+				vaccinate_waning2_candidates(nodes, new_waning2_candidates_LE20, vaccFn3*(NUM_PEOPLE/1450039.0), time_step);
+
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_LE20, vaccFn4*0.2*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_30_to_60, vaccFn4*0.3*(NUM_PEOPLE/1450039.0), time_step);
+				vaccinate_booster2_dose(nodes, new_boosted2_candidates_GT60, vaccFn4*0.5*(NUM_PEOPLE/1450039.0), time_step);
 		   }
 
 //--------Alternative new strain introduction under development: Shakir//
