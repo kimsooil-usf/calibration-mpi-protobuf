@@ -108,8 +108,8 @@ struct defaults{
   // // std::string TIME_OMICRON_BA9="3308";//6 June 2022
   // // std::string TIME_OMICRON_BA10="3308";//6 June 2022
 
-  std::string TIME_ALPHA="1000";//30 december 2020
-  std::string TIME_DELTA="1828";//1 june 2021
+  std::string TIME_ALPHA="1108";//3December 2020//"1000";//30 december 2020
+  std::string TIME_DELTA="1680";//25 April 2021//"1828";//1 june 2021
   std::string TIME_OMICRON="2564";//2 December 2021
   std::string TIME_OMICRON_NEW="2772";//23 January 2022
   std::string TIME_OMICRON_BA4="3192";//8 May 2022
@@ -121,8 +121,8 @@ struct defaults{
   // std::string TIME_OMICRON_BA10="3308";//6 June 2022
 
 
-  std::string INFECTIOUSNESS_ALPHA = "1.35";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_DELTA = "2";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_ALPHA = "1.2";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_DELTA = "1.5";//---original 3 comment by Shakir
   std::string INFECTIOUSNESS_OMICRON = "4";//---original 3 comment by Shakir
   std::string INFECTIOUSNESS_OMICRON_NEW = "3.2";//---original 3 comment by Shakir
   std::string INFECTIOUSNESS_OMICRON_BA4 = "3.2";//---original 3 comment by Shakir
