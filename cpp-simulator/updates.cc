@@ -216,45 +216,85 @@ node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,
 				 + node.symptomatic_period))){
 	//#pragma omp critical
 	{
+	// if(node.new_strain==1){//--->Changed fron new_strain to alpha delta etc by shakir
+	// 	double probability_alpha_strain=pow(GLOBAL.VIRULENT_NEW_ALPHA,0.33)*STATE_TRAN1[age_index][0]*STATE_TRAN_CoMorb1[node.comorbidity][0];
+	//   transition = bernoulli(probability_alpha_strain);
+	// }
+	// else if(node.new_strain==2){
+	// 	double probability_delta_strain=pow(GLOBAL.VIRULENT_NEW_DELTA,0.33)*STATE_TRAN2[age_index][0]*STATE_TRAN_CoMorb2[node.comorbidity][0];
+	//   transition = bernoulli(probability_delta_strain);
+	// }	
+	// else if(node.new_strain==3){
+	// 	double probability_omicron_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON,0.33)*STATE_TRAN3[age_index][0]*STATE_TRAN_CoMorb3[node.comorbidity][0];
+	//   transition = bernoulli(probability_omicron_strain);
+	// }		
+	// else if(node.new_strain==4){
+	// 	double probability_omicronNew_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_NEW,0.33)*STATE_TRAN4[age_index][0]*STATE_TRAN_CoMorb4[node.comorbidity][0];
+	//   transition = bernoulli(probability_omicronNew_strain);
+	// }			
+	// else if(node.new_strain==5){
+	// 	double probability_omicronBA4_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA4,0.33)*STATE_TRAN5[age_index][0]*STATE_TRAN_CoMorb5[node.comorbidity][0];
+	//   transition = bernoulli(probability_omicronBA4_strain);
+	// }
+	// else if(node.new_strain==6){
+	// 	double probability_omicronBA5_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA5,0.33)*STATE_TRAN6[age_index][0]*STATE_TRAN_CoMorb6[node.comorbidity][0];
+	//   transition = bernoulli(probability_omicronBA5_strain);
+	// }
+	// else if(node.new_strain==7){
+	// 	double probability_omicronBA6_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA6,0.33)*STATE_TRAN7[age_index][0]*STATE_TRAN_CoMorb7[node.comorbidity][0];
+	//   transition = bernoulli(probability_omicronBA6_strain);
+	// }
+	// else if(node.new_strain==8){
+	// 	double probability_omicronBA7_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA7,0.33)*STATE_TRAN8[age_index][0]*STATE_TRAN_CoMorb8[node.comorbidity][0];
+	//   transition = bernoulli(probability_omicronBA7_strain);
+	// }
+	// else if(node.new_strain==9){
+	// 	double probability_omicronBA8_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA8,0.33)*STATE_TRAN9[age_index][0]*STATE_TRAN_CoMorb9[node.comorbidity][0];
+	//   transition = bernoulli(probability_omicronBA8_strain);
+	// }					
+	// else {
+	// 	transition = bernoulli(STATE_TRAN[age_index][0]*STATE_TRAN_CoMorb[node.comorbidity][0]);//----Shakir:Comorbidity enhances chances of hospitlaizations
+	// }
 	if(node.new_strain==1){//--->Changed fron new_strain to alpha delta etc by shakir
-		double probability_alpha_strain=pow(GLOBAL.VIRULENT_NEW_ALPHA,0.33)*STATE_TRAN1[age_index][0]*STATE_TRAN_CoMorb1[node.comorbidity][0];
+		double probability_alpha_strain=pow(GLOBAL.VIRULENT_NEW_ALPHA,0.33)*GLOBAL.RELATIVE_HOSPITALIZATION_ALPHA*STATE_TRAN1[age_index][0]*STATE_TRAN_CoMorb1[node.comorbidity][0];
 	  transition = bernoulli(probability_alpha_strain);
 	}
 	else if(node.new_strain==2){
-		double probability_delta_strain=pow(GLOBAL.VIRULENT_NEW_DELTA,0.33)*STATE_TRAN2[age_index][0]*STATE_TRAN_CoMorb2[node.comorbidity][0];
+		double probability_delta_strain=pow(GLOBAL.VIRULENT_NEW_DELTA,0.33)*GLOBAL.RELATIVE_HOSPITALIZATION_DELTA*STATE_TRAN2[age_index][0]*STATE_TRAN_CoMorb2[node.comorbidity][0];
 	  transition = bernoulli(probability_delta_strain);
 	}	
 	else if(node.new_strain==3){
-		double probability_omicron_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON,0.33)*STATE_TRAN3[age_index][0]*STATE_TRAN_CoMorb3[node.comorbidity][0];
+		double probability_omicron_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON,0.33)*GLOBAL.RELATIVE_HOSPITALIZATION_OMICRON*STATE_TRAN3[age_index][0]*STATE_TRAN_CoMorb3[node.comorbidity][0];
 	  transition = bernoulli(probability_omicron_strain);
 	}		
 	else if(node.new_strain==4){
-		double probability_omicronNew_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_NEW,0.33)*STATE_TRAN4[age_index][0]*STATE_TRAN_CoMorb4[node.comorbidity][0];
+		double probability_omicronNew_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_NEW,0.33)*GLOBAL.RELATIVE_HOSPITALIZATION_OMICRON_NEW*STATE_TRAN4[age_index][0]*STATE_TRAN_CoMorb4[node.comorbidity][0];
 	  transition = bernoulli(probability_omicronNew_strain);
 	}			
 	else if(node.new_strain==5){
-		double probability_omicronBA4_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA4,0.33)*STATE_TRAN5[age_index][0]*STATE_TRAN_CoMorb5[node.comorbidity][0];
+		double probability_omicronBA4_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA4,0.33)*GLOBAL.RELATIVE_HOSPITALIZATION_OMICRON_BA4*STATE_TRAN5[age_index][0]*STATE_TRAN_CoMorb5[node.comorbidity][0];
 	  transition = bernoulli(probability_omicronBA4_strain);
 	}
 	else if(node.new_strain==6){
-		double probability_omicronBA5_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA5,0.33)*STATE_TRAN6[age_index][0]*STATE_TRAN_CoMorb6[node.comorbidity][0];
+		double probability_omicronBA5_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA5,0.33)*GLOBAL.RELATIVE_HOSPITALIZATION_OMICRON_BA5*STATE_TRAN6[age_index][0]*STATE_TRAN_CoMorb6[node.comorbidity][0];
 	  transition = bernoulli(probability_omicronBA5_strain);
 	}
 	else if(node.new_strain==7){
-		double probability_omicronBA6_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA6,0.33)*STATE_TRAN7[age_index][0]*STATE_TRAN_CoMorb7[node.comorbidity][0];
+		double probability_omicronBA6_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA6,0.33)*GLOBAL.RELATIVE_HOSPITALIZATION_OMICRON_BA6*STATE_TRAN7[age_index][0]*STATE_TRAN_CoMorb7[node.comorbidity][0];
 	  transition = bernoulli(probability_omicronBA6_strain);
 	}
 	else if(node.new_strain==8){
-		double probability_omicronBA7_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA7,0.33)*STATE_TRAN8[age_index][0]*STATE_TRAN_CoMorb8[node.comorbidity][0];
+		double probability_omicronBA7_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA7,0.33)*GLOBAL.RELATIVE_HOSPITALIZATION_OMICRON_BA7*STATE_TRAN8[age_index][0]*STATE_TRAN_CoMorb8[node.comorbidity][0];
 	  transition = bernoulli(probability_omicronBA7_strain);
 	}
 	else if(node.new_strain==9){
-		double probability_omicronBA8_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA8,0.33)*STATE_TRAN9[age_index][0]*STATE_TRAN_CoMorb9[node.comorbidity][0];
+		double probability_omicronBA8_strain=pow(GLOBAL.VIRULENT_NEW_OMICRON_BA8,0.33)*GLOBAL.RELATIVE_HOSPITALIZATION_OMICRON_BA8*STATE_TRAN9[age_index][0]*STATE_TRAN_CoMorb9[node.comorbidity][0];
 	  transition = bernoulli(probability_omicronBA8_strain);
 	}					
 	else {
 		transition = bernoulli(STATE_TRAN[age_index][0]*STATE_TRAN_CoMorb[node.comorbidity][0]);//----Shakir:Comorbidity enhances chances of hospitlaizations
 	}
+
 	}
 	if(transition){
 	  node.infection_status = Progression::hospitalised; //move to hospitalisation
@@ -419,6 +459,8 @@ node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,
 	  node.infection_status = Progression::dead;//move to dead
 	  node.infective = false;
 	  node.new_dead = true;
+	  update_status.new_dead = true;
+
 	}
 	else {
 	  node.state_before_recovery = node.infection_status;
@@ -2319,6 +2361,1299 @@ void update_test_status(vector<agent>& nodes, count_type current_time){
     }
   }
 }
+// casualty_stats get_infected_community(const vector<agent>& nodes, const community& community){
+//   count_type affected = 0;
+//   count_type hd_area_affected = 0;
+//   count_type susceptible = 0;
+
+//   count_type unvaccinated = 0;
+//   count_type vaccinated1=0;
+//   count_type vaccinated2=0;
+//   count_type waning=0;
+//   count_type boosted=0;
+//   count_type waning2=0;
+//   count_type boosted2=0;
+
+//   count_type hd_area_susceptible = 0;
+//   count_type exposed = 0;
+//   count_type hd_area_exposed = 0;
+//   count_type infective = 0;
+//   count_type hd_area_infective = 0;
+//   count_type symptomatic = 0;
+//   count_type hd_area_symptomatic = 0;
+//   count_type hospitalised = 0;
+//   count_type hd_area_hospitalised = 0;
+//   count_type critical = 0;
+//   count_type hd_area_critical = 0;
+//   count_type dead = 0;
+//   count_type hd_area_dead = 0;
+//   count_type recovered = 0;
+//   count_type hd_area_recovered = 0;
+//   count_type recovered_from_infective = 0;
+//   count_type recovered_from_symptomatic = 0;
+//   count_type recovered_from_hospitalised = 0;
+//   count_type recovered_from_critical = 0;
+//   count_type recovered_from_vaccination=0;
+//   count_type hd_area_recovered_from_infective = 0;
+//   count_type hd_area_recovered_from_symptomatic = 0;
+//   count_type hd_area_recovered_from_hospitalised = 0;
+//   count_type hd_area_recovered_from_critical = 0;
+//   count_type hd_area_recovered_from_vaccination=0;
+
+//   count_type errors = 0;
+  
+//   //---Age index counts----/Introduced by Shakir 0n May 4, 2022.
+//   count_type  infected_age_group_1 = 0;
+//   count_type  infected_age_group_2 = 0;
+//   count_type  infected_age_group_3 = 0;
+//   count_type  infected_age_group_4 = 0;//infected=exposed + infective + symptomatic+ hospitalised + critical+dead
+//   count_type  infected_age_group_5 = 0;
+//   count_type  infected_age_group_6 = 0;
+//   count_type  infected_age_group_7 = 0;
+//   count_type  infected_age_group_8 = 0;
+//   count_type  infected_age_group_9 = 0;
+//   count_type  infected_age_group_10 = 0;
+
+
+//   count_type  hospitalised_age_group_1 = 0;
+//   count_type  hospitalised_age_group_2 = 0;
+//   count_type  hospitalised_age_group_3 = 0;
+//   count_type  hospitalised_age_group_4 = 0;
+//   count_type  hospitalised_age_group_5 = 0;
+//   count_type  hospitalised_age_group_6 = 0;
+//   count_type  hospitalised_age_group_7 = 0;
+//   count_type  hospitalised_age_group_8 = 0;
+//   count_type  hospitalised_age_group_9 = 0;
+//   count_type  hospitalised_age_group_10 = 0;
+
+//   count_type  dead_age_group_1 = 0;
+//   count_type  dead_age_group_2 = 0;
+//   count_type  dead_age_group_3 = 0;
+//   count_type  dead_age_group_4 = 0;
+//   count_type  dead_age_group_5 = 0;
+//   count_type  dead_age_group_6 = 0;
+//   count_type  dead_age_group_7 = 0;
+//   count_type  dead_age_group_8 = 0;
+//   count_type  dead_age_group_9 = 0;
+//   count_type  dead_age_group_10 = 0;
+
+//   //---income index counts----/Introduced by Shakir 0n May 4, 2022.
+//   count_type  infected_income_group_1 = 0;
+//   count_type  infected_income_group_2 = 0;
+//   count_type  infected_income_group_3 = 0;
+//   count_type  infected_income_group_4 = 0;//infected=exposed + infective + symptomatic+ hospitalised + critical+dead
+//   count_type  infected_income_group_5 = 0;
+//   count_type  infected_income_group_6 = 0;
+//   count_type  infected_income_group_7 = 0;
+//   count_type  infected_income_group_8 = 0;
+
+
+//   count_type  hospitalised_income_group_1 = 0;
+//   count_type  hospitalised_income_group_2 = 0;
+//   count_type  hospitalised_income_group_3 = 0;
+//   count_type  hospitalised_income_group_4 = 0;
+//   count_type  hospitalised_income_group_5 = 0;
+//   count_type  hospitalised_income_group_6 = 0;
+//   count_type  hospitalised_income_group_7 = 0;
+//   count_type  hospitalised_income_group_8 = 0;
+
+
+//   count_type  dead_income_group_1 = 0;
+//   count_type  dead_income_group_2 = 0;
+//   count_type  dead_income_group_3 = 0;
+//   count_type  dead_income_group_4 = 0;
+//   count_type  dead_income_group_5 = 0;
+//   count_type  dead_income_group_6 = 0;
+//   count_type  dead_income_group_7 = 0;
+//   count_type  dead_income_group_8 = 0;
+
+//   //---race index counts----/Introduced by Shakir 0n May 4, 2022.
+//   count_type  infected_race_group_1 = 0;
+//   count_type  infected_race_group_2 = 0;
+//   count_type  infected_race_group_3 = 0;
+//   count_type  infected_race_group_4 = 0;//infected=exposed + infective + symptomatic+ hospitalised + critical+dead
+//   count_type  infected_race_group_5 = 0;
+//   count_type  infected_race_group_6 = 0;
+//   count_type  infected_race_group_7 = 0;
+
+//   count_type  hospitalised_race_group_1 = 0;
+//   count_type  hospitalised_race_group_2 = 0;
+//   count_type  hospitalised_race_group_3 = 0;
+//   count_type  hospitalised_race_group_4 = 0;
+//   count_type  hospitalised_race_group_5 = 0;
+//   count_type  hospitalised_race_group_6 = 0;
+//   count_type  hospitalised_race_group_7 = 0;
+
+//   count_type  dead_race_group_1 = 0;
+//   count_type  dead_race_group_2 = 0;
+//   count_type  dead_race_group_3 = 0;
+//   count_type  dead_race_group_4 = 0;
+//   count_type  dead_race_group_5 = 0;
+//   count_type  dead_race_group_6 = 0;
+//   count_type  dead_race_group_7 = 0;
+
+//   //---ethnicity index counts----/Introduced by Shakir 0n May 4, 2022.
+//   count_type  infected_ethnicity_group_1 = 0;
+//   count_type  infected_ethnicity_group_2 = 0;
+
+//   count_type  hospitalised_ethnicity_group_1 = 0;
+//   count_type  hospitalised_ethnicity_group_2 = 0;
+
+//   count_type  dead_ethnicity_group_1 = 0;
+//   count_type  dead_ethnicity_group_2 = 0;
+
+//     //---gender index counts----/Introduced by Shakir 0n May 4, 2022.
+//   count_type  infected_gender_group_1 = 0;
+//   count_type  infected_gender_group_2 = 0;
+
+//   count_type  hospitalised_gender_group_1 = 0;
+//   count_type  hospitalised_gender_group_2 = 0;
+
+//   count_type  dead_gender_group_1 = 0;
+//   count_type  dead_gender_group_2 = 0;
+
+//   const auto SIZE = community.individuals.size(); 
+
+// #pragma omp parallel for default(none) shared(nodes, community, SIZE)			\
+//   reduction(+: errors,													\
+// 			susceptible,unvaccinated,vaccinated1,vaccinated2,waning,boosted,waning2,boosted2, hd_area_susceptible,							\
+// 			exposed, hd_area_exposed,									\
+// 			infective, hd_area_infective,								\
+// 			symptomatic, hd_area_symptomatic,							\
+// 			hospitalised, hd_area_hospitalised,							\
+// 			critical, hd_area_critical,									\
+// 			dead, hd_area_dead,											\
+// 			recovered, hd_area_recovered,								\
+// 			recovered_from_infective, recovered_from_symptomatic,		\
+// 			recovered_from_hospitalised, recovered_from_critical,		\
+// 			recovered_from_vaccination,                                  \
+// 			hd_area_recovered_from_infective,							\
+// 			hd_area_recovered_from_symptomatic,							\
+// 			hd_area_recovered_from_hospitalised,						\
+// 			hd_area_recovered_from_critical,                            \
+// 			infected_age_group_1,infected_age_group_2,infected_age_group_3,infected_age_group_4,infected_age_group_5,		\   
+// 			infected_age_group_6,infected_age_group_7,infected_age_group_8,infected_age_group_9,infected_age_group_10,      \
+// 			hospitalised_age_group_1,hospitalised_age_group_2,hospitalised_age_group_3,hospitalised_age_group_4,hospitalised_age_group_5,	\   
+// 			hospitalised_age_group_6,hospitalised_age_group_7,hospitalised_age_group_8,hospitalised_age_group_9,hospitalised_age_group_10,	\
+// 			dead_age_group_1,dead_age_group_2,dead_age_group_3,dead_age_group_4,dead_age_group_5,		\   
+// 			dead_age_group_6,dead_age_group_7,dead_age_group_8,dead_age_group_9,dead_age_group_10,      \	
+// 			infected_race_group_1,infected_race_group_2,infected_race_group_3,infected_race_group_4,infected_race_group_5,		\   
+// 			infected_race_group_6,infected_race_group_7,    \
+// 			hospitalised_race_group_1,hospitalised_race_group_2,hospitalised_race_group_3,hospitalised_race_group_4,hospitalised_race_group_5,	\   
+// 			hospitalised_race_group_6,hospitalised_race_group_7,	\
+// 			dead_race_group_1,dead_race_group_2,dead_race_group_3,dead_race_group_4,dead_race_group_5,		\   
+// 			dead_race_group_6,dead_race_group_7,    \				
+// 			infected_income_group_1,infected_income_group_2,infected_income_group_3,infected_income_group_4,infected_income_group_5,		\   
+// 			infected_income_group_6,infected_income_group_7,infected_income_group_8,     \
+// 			hospitalised_income_group_1,hospitalised_income_group_2,hospitalised_income_group_3,hospitalised_income_group_4,hospitalised_income_group_5,	\   
+// 			hospitalised_income_group_6,hospitalised_income_group_7,hospitalised_income_group_8,	\
+// 			dead_income_group_1,dead_income_group_2,dead_income_group_3,dead_income_group_4,dead_income_group_5,		\   
+// 			dead_income_group_6,dead_income_group_7,dead_income_group_8,    \
+// 			infected_ethnicity_group_1,infected_ethnicity_group_2,  \
+// 			hospitalised_ethnicity_group_1,hospitalised_ethnicity_group_2,	\
+// 			dead_ethnicity_group_1,dead_ethnicity_group_2,\
+// 			infected_gender_group_1,infected_gender_group_2,  \
+// 			hospitalised_gender_group_1,hospitalised_gender_group_2,	\
+// 			dead_gender_group_1,dead_gender_group_2,\												
+// 			hd_area_recovered_from_vaccination)//added age_group_1-10, and also added unvaccinated group for outputs Shakir May 4
+//   for (count_type i=0; i<SIZE; ++i){
+// 	bool hd_area_resident = nodes[community.individuals[i]].hd_area_resident;
+// 	auto infection_status = nodes[community.individuals[i]].infection_status;
+//     int age_index = nodes[community.individuals[i]].age_index;
+// 	int race =nodes[community.individuals[i]].race;
+// 	int income =nodes[community.individuals[i]].income;
+// 	int ethnicity =nodes[community.individuals[i]].ethnicity;
+// 	int gender=	nodes[community.individuals[i]].gender;
+
+
+// 	if (infection_status == Progression::susceptible){
+// 	  susceptible += 1;
+// 	  if(hd_area_resident){
+// 		hd_area_susceptible += 1;
+// 	  }
+// 	}
+// 	if (infection_status == Progression::exposed) {
+// 	  exposed +=1;
+// 	  if(hd_area_resident){
+//         hd_area_exposed += 1;
+//       }
+// 	  	 	if(age_index==0){//----------------age group----
+// 				  infected_age_group_1+=1;
+// 	  			}
+// 			if(age_index==1){
+// 				  infected_age_group_2+=1;
+// 	  			}
+// 	 		 if(age_index==2){
+// 				  infected_age_group_3+=1;
+// 	  			}
+// 			if(age_index==3){
+// 				  infected_age_group_4+=1;
+// 	  			}
+// 	 		 if(age_index==4){
+// 				  infected_age_group_5+=1;
+// 	  			}
+// 			if(age_index==5){
+// 				  infected_age_group_6+=1;
+// 	  			}
+// 	 		 if(age_index==6){
+// 				  infected_age_group_7+=1;
+// 	  			}
+// 			if(age_index==7){
+// 				  infected_age_group_8+=1;
+// 	  			}
+// 	 		 if(age_index==8){
+// 				  infected_age_group_9+=1;
+// 	  			}
+// 			if(age_index==9){
+// 				  infected_age_group_10+=1;
+// 	  			}
+// 		//----------------race group----
+
+// 			if(race==1){
+// 				  infected_race_group_1+=1;
+// 	  			}
+// 	 		 if(race==2){
+// 				  infected_race_group_2+=1;
+// 	  			}
+// 			if(race==3){
+// 				  infected_race_group_3+=1;
+// 	  			}
+// 	 		 if(race==4){
+// 				  infected_race_group_4+=1;
+// 	  			}
+// 			if(race==5){
+// 				  infected_race_group_5+=1;
+// 	  			}
+// 	 		 if(race==6){
+// 				  infected_race_group_6+=1;
+// 	  			}
+// 			if(race==7){
+// 				  infected_race_group_7+=1;
+// 	  			}
+
+// 		//----------------income group----
+
+// 			if(income==1){
+// 				  infected_income_group_1+=1;
+// 	  			}
+// 	 		 if(income==2){
+// 				  infected_income_group_2+=1;
+// 	  			}
+// 			if(income==3){
+// 				  infected_income_group_3+=1;
+// 	  			}
+// 	 		 if(income==4){
+// 				  infected_income_group_4+=1;
+// 	  			}
+// 			if(income==5){
+// 				  infected_income_group_5+=1;
+// 	  			}
+// 	 		 if(income==6){
+// 				  infected_income_group_6+=1;
+// 	  			}
+// 			if(income==7){
+// 				  infected_income_group_7+=1;
+// 	  			}
+// 	 		 if(income==8){
+// 				  infected_income_group_8+=1;
+// 	  			}
+
+
+// 		//----------------ethnicity group----
+
+// 			if(ethnicity==1){
+// 				  infected_ethnicity_group_1+=1;
+// 	  			}
+// 	 		 if(ethnicity==2){
+// 				  infected_ethnicity_group_2+=1;
+// 	  			}
+
+// 		//----------------gender group----
+
+// 			if(gender==1){
+// 				  infected_gender_group_1+=1;
+// 	  			}
+// 	 		 if(gender==2){
+// 				  infected_gender_group_2+=1;
+//              }
+// 	}
+// 	if (infection_status == Progression::infective) {
+// 	  infective +=1;
+// 	  if(hd_area_resident){
+//         hd_area_infective += 1;
+//       }
+
+// 	  	 	if(age_index==0){
+// 				  infected_age_group_1+=1;
+// 	  			}
+// 			if(age_index==1){
+// 				  infected_age_group_2+=1;
+// 	  			}
+// 	 		 if(age_index==2){
+// 				  infected_age_group_3+=1;
+// 	  			}
+// 			if(age_index==3){
+// 				  infected_age_group_4+=1;
+// 	  			}
+// 	 		 if(age_index==4){
+// 				  infected_age_group_5+=1;
+// 	  			}
+// 			if(age_index==5){
+// 				  infected_age_group_6+=1;
+// 	  			}
+// 	 		 if(age_index==6){
+// 				  infected_age_group_7+=1;
+// 	  			}
+// 			if(age_index==7){
+// 				  infected_age_group_8+=1;
+// 	  			}
+// 	 		 if(age_index==8){
+// 				  infected_age_group_9+=1;
+// 	  			}
+// 			if(age_index==9){
+// 				  infected_age_group_10+=1;
+// 	  			}
+// 		//----------------race group----
+
+// 			if(race==1){
+// 				  infected_race_group_1+=1;
+// 	  			}
+// 	 		 if(race==2){
+// 				  infected_race_group_2+=1;
+// 	  			}
+// 			if(race==3){
+// 				  infected_race_group_3+=1;
+// 	  			}
+// 	 		 if(race==4){
+// 				  infected_race_group_4+=1;
+// 	  			}
+// 			if(race==5){
+// 				  infected_race_group_5+=1;
+// 	  			}
+// 	 		 if(race==6){
+// 				  infected_race_group_6+=1;
+// 	  			}
+// 			if(race==7){
+// 				  infected_race_group_7+=1;
+// 	  			}
+
+// 		//----------------income group----
+
+// 			if(income==1){
+// 				  infected_income_group_1+=1;
+// 	  			}
+// 	 		 if(income==2){
+// 				  infected_income_group_2+=1;
+// 	  			}
+// 			if(income==3){
+// 				  infected_income_group_3+=1;
+// 	  			}
+// 	 		 if(income==4){
+// 				  infected_income_group_4+=1;
+// 	  			}
+// 			if(income==5){
+// 				  infected_income_group_5+=1;
+// 	  			}
+// 	 		 if(income==6){
+// 				  infected_income_group_6+=1;
+// 	  			}
+// 			if(income==7){
+// 				  infected_income_group_7+=1;
+// 	  			}
+// 	 		 if(income==8){
+// 				  infected_income_group_8+=1;
+// 	  			}
+
+
+// 		//----------------ethnicity group----
+
+// 			if(ethnicity==1){
+// 				  infected_ethnicity_group_1+=1;
+// 	  			}
+// 	 		 if(ethnicity==2){
+// 				  infected_ethnicity_group_2+=1;
+// 	  			}
+
+// 		//----------------gender group----
+
+// 			if(gender==1){
+// 				  infected_gender_group_1+=1;
+// 	  			}
+// 	 		 if(gender==2){
+// 				  infected_gender_group_2+=1;
+//              }
+// 	}
+// 	if (infection_status == Progression::symptomatic) {
+// 	  symptomatic += 1;
+//       if(hd_area_resident){
+//         hd_area_symptomatic += 1;
+//       }
+
+// 	  	 	if(age_index==0){
+// 				  infected_age_group_1+=1;
+// 	  			}
+// 			if(age_index==1){
+// 				  infected_age_group_2+=1;
+// 	  			}
+// 	 		 if(age_index==2){
+// 				  infected_age_group_3+=1;
+// 	  			}
+// 			if(age_index==3){
+// 				  infected_age_group_4+=1;
+// 	  			}
+// 	 		 if(age_index==4){
+// 				  infected_age_group_5+=1;
+// 	  			}
+// 			if(age_index==5){
+// 				  infected_age_group_6+=1;
+// 	  			}
+// 	 		 if(age_index==6){
+// 				  infected_age_group_7+=1;
+// 	  			}
+// 			if(age_index==7){
+// 				  infected_age_group_8+=1;
+// 	  			}
+// 	 		 if(age_index==8){
+// 				  infected_age_group_9+=1;
+// 	  			}
+// 			if(age_index==9){
+// 				  infected_age_group_10+=1;
+// 	  			}
+// 		//----------------race group----
+
+// 			if(race==1){
+// 				  infected_race_group_1+=1;
+// 	  			}
+// 	 		 if(race==2){
+// 				  infected_race_group_2+=1;
+// 	  			}
+// 			if(race==3){
+// 				  infected_race_group_3+=1;
+// 	  			}
+// 	 		 if(race==4){
+// 				  infected_race_group_4+=1;
+// 	  			}
+// 			if(race==5){
+// 				  infected_race_group_5+=1;
+// 	  			}
+// 	 		 if(race==6){
+// 				  infected_race_group_6+=1;
+// 	  			}
+// 			if(race==7){
+// 				  infected_race_group_7+=1;
+// 	  			}
+
+// 		//----------------income group----
+
+// 			if(income==1){
+// 				  infected_income_group_1+=1;
+// 	  			}
+// 	 		 if(income==2){
+// 				  infected_income_group_2+=1;
+// 	  			}
+// 			if(income==3){
+// 				  infected_income_group_3+=1;
+// 	  			}
+// 	 		 if(income==4){
+// 				  infected_income_group_4+=1;
+// 	  			}
+// 			if(income==5){
+// 				  infected_income_group_5+=1;
+// 	  			}
+// 	 		 if(income==6){
+// 				  infected_income_group_6+=1;
+// 	  			}
+// 			if(income==7){
+// 				  infected_income_group_7+=1;
+// 	  			}
+// 	 		 if(income==8){
+// 				  infected_income_group_8+=1;
+// 	  			}
+
+
+// 		//----------------ethnicity group----
+
+// 			if(ethnicity==1){
+// 				  infected_ethnicity_group_1+=1;
+// 	  			}
+// 	 		 if(ethnicity==2){
+// 				  infected_ethnicity_group_2+=1;
+// 	  			}
+
+// 		//----------------gender group----
+
+// 			if(gender==1){
+// 				  infected_gender_group_1+=1;
+// 	  			}
+// 	 		 if(gender==2){
+// 				  infected_gender_group_2+=1;
+//              }
+// 	}
+// 	if (infection_status == Progression::recovered) {
+// 	  recovered += 1;
+// 	  if(hd_area_resident){
+//         hd_area_recovered += 1;
+//       }
+// 	  auto state_before_recovery
+// 		= nodes[community.individuals[i]].state_before_recovery;
+// 	  switch(state_before_recovery){
+// 	  case Progression::infective:
+// 		recovered_from_infective += 1;
+// 		if(hd_area_resident){
+// 		  hd_area_recovered_from_infective += 1;
+// 		}
+// 		break;
+// 	  case Progression::symptomatic:
+// 		recovered_from_symptomatic += 1;
+// 		if(hd_area_resident){
+// 		  hd_area_recovered_from_symptomatic += 1;
+// 		}
+// 		break;
+// 	  case Progression::hospitalised:
+// 		recovered_from_hospitalised += 1;
+// 		if(hd_area_resident){
+// 		  hd_area_recovered_from_hospitalised += 1;
+// 		}
+// 		break;
+// 	  case Progression::critical:
+// 		recovered_from_critical += 1;
+// 		if(hd_area_resident){
+// 		  hd_area_recovered_from_critical += 1;
+// 		}
+// 		break;
+// 	  case Progression::vaccinated1:
+// 		recovered_from_vaccination += 1;
+// 		if(hd_area_resident){
+// 		  hd_area_recovered_from_vaccination += 1;
+// 		}
+// 	  case Progression::vaccinated2:
+// 		recovered_from_vaccination += 1;
+// 		if(hd_area_resident){
+// 		  hd_area_recovered_from_vaccination += 1;
+// 		}
+// 	   case Progression::waning:
+// 		recovered_from_vaccination += 1;
+// 		if(hd_area_resident){
+// 		  hd_area_recovered_from_vaccination += 1;
+// 		}
+// 	   case Progression::boosted:
+// 		recovered_from_vaccination += 1;
+// 		if(hd_area_resident){
+// 		  hd_area_recovered_from_vaccination += 1;
+// 		}
+// 	   case Progression::waning2:
+// 		recovered_from_vaccination += 1;
+// 		if(hd_area_resident){
+// 		  hd_area_recovered_from_vaccination += 1;
+// 		}
+// 	   case Progression::boosted2:
+// 		recovered_from_vaccination += 1;
+// 		if(hd_area_resident){
+// 		  hd_area_recovered_from_vaccination += 1;
+// 		}
+// 		break;
+		
+// 	  default:
+// 		errors += 1; //errors state_before_recovery
+// 		break;
+// 	  }
+// 	}
+// 	if (infection_status == Progression::hospitalised) {
+// 	  hospitalised += 1;
+//       if(hd_area_resident){
+//         hd_area_hospitalised += 1;
+//       }
+// 	 		 if(age_index==0){
+// 				  hospitalised_age_group_1+=1;
+// 	  			}
+// 			if(age_index==1){
+// 				  hospitalised_age_group_2+=1;
+// 	  			}
+// 	 		 if(age_index==2){
+// 				  hospitalised_age_group_3+=1;
+// 	  			}
+// 			if(age_index==3){
+// 				  hospitalised_age_group_4+=1;
+// 	  			}
+// 	 		 if(age_index==4){
+// 				  hospitalised_age_group_5+=1;
+// 	  			}
+// 			if(age_index==5){
+// 				  hospitalised_age_group_6+=1;
+// 	  			}
+// 	 		 if(age_index==6){
+// 				  hospitalised_age_group_7+=1;
+// 	  			}
+// 			if(age_index==7){
+// 				  hospitalised_age_group_8+=1;
+// 	  			}
+// 	 		 if(age_index==8){
+// 				  hospitalised_age_group_9+=1;
+// 	  			}
+// 			if(age_index==9){
+// 				  hospitalised_age_group_10+=1;
+// 	  			}
+// 		//----------------race group----
+
+// 			if(race==1){
+// 				  hospitalised_race_group_1+=1;
+// 	  			}
+// 	 		 if(race==2){
+// 				  hospitalised_race_group_2+=1;
+// 	  			}
+// 			if(race==3){
+// 				  hospitalised_race_group_3+=1;
+// 	  			}
+// 	 		 if(race==4){
+// 				  hospitalised_race_group_4+=1;
+// 	  			}
+// 			if(race==5){
+// 				  hospitalised_race_group_5+=1;
+// 	  			}
+// 	 		 if(race==6){
+// 				  hospitalised_race_group_6+=1;
+// 	  			}
+// 			if(race==7){
+// 				  hospitalised_race_group_7+=1;
+// 	  			}
+
+// 		//----------------income group----
+
+// 			if(income==1){
+// 				  hospitalised_income_group_1+=1;
+// 	  			}
+// 	 		 if(income==2){
+// 				  hospitalised_income_group_2+=1;
+// 	  			}
+// 			if(income==3){
+// 				  hospitalised_income_group_3+=1;
+// 	  			}
+// 	 		 if(income==4){
+// 				  hospitalised_income_group_4+=1;
+// 	  			}
+// 			if(income==5){
+// 				  hospitalised_income_group_5+=1;
+// 	  			}
+// 	 		 if(income==6){
+// 				  hospitalised_income_group_6+=1;
+// 	  			}
+// 			if(income==7){
+// 				  hospitalised_income_group_7+=1;
+// 	  			}
+// 	 		 if(income==8){
+// 				  hospitalised_income_group_8+=1;
+// 	  			}
+
+
+// 		//----------------ethnicity group----
+
+// 			if(ethnicity==1){
+// 				  hospitalised_ethnicity_group_1+=1;
+// 	  			}
+// 	 		 if(ethnicity==2){
+// 				  hospitalised_ethnicity_group_2+=1;
+// 	  			}
+
+// 		//----------------gender group----
+
+// 			if(gender==1){
+// 				  hospitalised_gender_group_1+=1;
+// 	  			}
+// 	 		 if(gender==2){
+// 				  hospitalised_gender_group_2+=1;
+//              }
+// //-----------infected because hospitalized------
+// 	  	 	if(age_index==0){
+// 				  infected_age_group_1+=1;
+// 	  			}
+// 			if(age_index==1){
+// 				  infected_age_group_2+=1;
+// 	  			}
+// 	 		 if(age_index==2){
+// 				  infected_age_group_3+=1;
+// 	  			}
+// 			if(age_index==3){
+// 				  infected_age_group_4+=1;
+// 	  			}
+// 	 		 if(age_index==4){
+// 				  infected_age_group_5+=1;
+// 	  			}
+// 			if(age_index==5){
+// 				  infected_age_group_6+=1;
+// 	  			}
+// 	 		 if(age_index==6){
+// 				  infected_age_group_7+=1;
+// 	  			}
+// 			if(age_index==7){
+// 				  infected_age_group_8+=1;
+// 	  			}
+// 	 		 if(age_index==8){
+// 				  infected_age_group_9+=1;
+// 	  			}
+// 			if(age_index==9){
+// 				  infected_age_group_10+=1;
+// 	  			}
+// 		//----------------race group----
+
+// 			if(race==1){
+// 				  infected_race_group_1+=1;
+// 	  			}
+// 	 		 if(race==2){
+// 				  infected_race_group_2+=1;
+// 	  			}
+// 			if(race==3){
+// 				  infected_race_group_3+=1;
+// 	  			}
+// 	 		 if(race==4){
+// 				  infected_race_group_4+=1;
+// 	  			}
+// 			if(race==5){
+// 				  infected_race_group_5+=1;
+// 	  			}
+// 	 		 if(race==6){
+// 				  infected_race_group_6+=1;
+// 	  			}
+// 			if(race==7){
+// 				  infected_race_group_7+=1;
+// 	  			}
+
+// 		//----------------income group----
+
+// 			if(income==1){
+// 				  infected_income_group_1+=1;
+// 	  			}
+// 	 		 if(income==2){
+// 				  infected_income_group_2+=1;
+// 	  			}
+// 			if(income==3){
+// 				  infected_income_group_3+=1;
+// 	  			}
+// 	 		 if(income==4){
+// 				  infected_income_group_4+=1;
+// 	  			}
+// 			if(income==5){
+// 				  infected_income_group_5+=1;
+// 	  			}
+// 	 		 if(income==6){
+// 				  infected_income_group_6+=1;
+// 	  			}
+// 			if(income==7){
+// 				  infected_income_group_7+=1;
+// 	  			}
+// 	 		 if(income==8){
+// 				  infected_income_group_8+=1;
+// 	  			}
+
+
+// 		//----------------ethnicity group----
+
+// 			if(ethnicity==1){
+// 				  infected_ethnicity_group_1+=1;
+// 	  			}
+// 	 		 if(ethnicity==2){
+// 				  infected_ethnicity_group_2+=1;
+// 	  			}
+
+// 		//----------------gender group----
+
+// 			if(gender==1){
+// 				  infected_gender_group_1+=1;
+// 	  			}
+// 	 		 if(gender==2){
+// 				  infected_gender_group_2+=1;
+//              }
+// 	}
+// 	if (infection_status == Progression::critical) {
+// 	  critical += 1;
+//       if(hd_area_resident){
+//         hd_area_critical += 1;
+//       }
+// 	  	 	if(age_index==0){
+// 				  infected_age_group_1+=1;
+// 	  			}
+// 			if(age_index==1){
+// 				  infected_age_group_2+=1;
+// 	  			}
+// 	 		 if(age_index==2){
+// 				  infected_age_group_3+=1;
+// 	  			}
+// 			if(age_index==3){
+// 				  infected_age_group_4+=1;
+// 	  			}
+// 	 		 if(age_index==4){
+// 				  infected_age_group_5+=1;
+// 	  			}
+// 			if(age_index==5){
+// 				  infected_age_group_6+=1;
+// 	  			}
+// 	 		 if(age_index==6){
+// 				  infected_age_group_7+=1;
+// 	  			}
+// 			if(age_index==7){
+// 				  infected_age_group_8+=1;
+// 	  			}
+// 	 		 if(age_index==8){
+// 				  infected_age_group_9+=1;
+// 	  			}
+// 			if(age_index==9){
+// 				  infected_age_group_10+=1;
+// 	  			}
+// 		//----------------race group----
+
+// 			if(race==1){
+// 				  infected_race_group_1+=1;
+// 	  			}
+// 	 		 if(race==2){
+// 				  infected_race_group_2+=1;
+// 	  			}
+// 			if(race==3){
+// 				  infected_race_group_3+=1;
+// 	  			}
+// 	 		 if(race==4){
+// 				  infected_race_group_4+=1;
+// 	  			}
+// 			if(race==5){
+// 				  infected_race_group_5+=1;
+// 	  			}
+// 	 		 if(race==6){
+// 				  infected_race_group_6+=1;
+// 	  			}
+// 			if(race==7){
+// 				  infected_race_group_7+=1;
+// 	  			}
+
+// 		//----------------income group----
+
+// 			if(income==1){
+// 				  infected_income_group_1+=1;
+// 	  			}
+// 	 		 if(income==2){
+// 				  infected_income_group_2+=1;
+// 	  			}
+// 			if(income==3){
+// 				  infected_income_group_3+=1;
+// 	  			}
+// 	 		 if(income==4){
+// 				  infected_income_group_4+=1;
+// 	  			}
+// 			if(income==5){
+// 				  infected_income_group_5+=1;
+// 	  			}
+// 	 		 if(income==6){
+// 				  infected_income_group_6+=1;
+// 	  			}
+// 			if(income==7){
+// 				  infected_income_group_7+=1;
+// 	  			}
+// 	 		 if(income==8){
+// 				  infected_income_group_8+=1;
+// 	  			}
+
+
+// 		//----------------ethnicity group----
+
+// 			if(ethnicity==1){
+// 				  infected_ethnicity_group_1+=1;
+// 	  			}
+// 	 		 if(ethnicity==2){
+// 				  infected_ethnicity_group_2+=1;
+// 	  			}
+
+// 		//----------------gender group----
+
+// 			if(gender==1){
+// 				  infected_gender_group_1+=1;
+// 	  			}
+// 	 		 if(gender==2){
+// 				  infected_gender_group_2+=1;
+//              }					  	  	  
+// 	}
+// 	if (infection_status == Progression::dead) {
+// 	  dead += 1;
+// 	  if(hd_area_resident){
+//         hd_area_dead += 1;
+//       }
+// 	 		 if(age_index==0){
+// 				  dead_age_group_1+=1;
+// 	  			}
+// 			if(age_index==1){
+// 				  dead_age_group_2+=1;
+// 	  			}
+// 	 		 if(age_index==2){
+// 				  dead_age_group_3+=1;
+// 	  			}
+// 			if(age_index==3){
+// 				  dead_age_group_4+=1;
+// 	  			}
+// 	 		 if(age_index==4){
+// 				  dead_age_group_5+=1;
+// 	  			}
+// 			if(age_index==5){
+// 				  dead_age_group_6+=1;
+// 	  			}
+// 	 		 if(age_index==6){
+// 				  dead_age_group_7+=1;
+// 	  			}
+// 			if(age_index==7){
+// 				  dead_age_group_8+=1;
+// 	  			}
+// 	 		 if(age_index==8){
+// 				  dead_age_group_9+=1;
+// 	  			}
+// 			if(age_index==9){
+// 				  dead_age_group_10+=1;
+// 	  			}
+
+// 		//----------------race group----
+
+// 			if(race==1){
+// 				  dead_race_group_1+=1;
+// 	  			}
+// 	 		 if(race==2){
+// 				  dead_race_group_2+=1;
+// 	  			}
+// 			if(race==3){
+// 				  dead_race_group_3+=1;
+// 	  			}
+// 	 		 if(race==4){
+// 				  dead_race_group_4+=1;
+// 	  			}
+// 			if(race==5){
+// 				  dead_race_group_5+=1;
+// 	  			}
+// 	 		 if(race==6){
+// 				  dead_race_group_6+=1;
+// 	  			}
+// 			if(race==7){
+// 				  dead_race_group_7+=1;
+// 	  			}
+
+// 		//----------------income group----
+
+// 			if(income==1){
+// 				  dead_income_group_1+=1;
+// 	  			}
+// 	 		 if(income==2){
+// 				  dead_income_group_2+=1;
+// 	  			}
+// 			if(income==3){
+// 				  dead_income_group_3+=1;
+// 	  			}
+// 	 		 if(income==4){
+// 				  dead_income_group_4+=1;
+// 	  			}
+// 			if(income==5){
+// 				  dead_income_group_5+=1;
+// 	  			}
+// 	 		 if(income==6){
+// 				  dead_income_group_6+=1;
+// 	  			}
+// 			if(income==7){
+// 				  dead_income_group_7+=1;
+// 	  			}
+// 	 		 if(income==8){
+// 				  dead_income_group_8+=1;
+// 	  			}
+
+
+// 		//----------------ethnicity group----
+
+// 			if(ethnicity==1){
+// 				  dead_ethnicity_group_1+=1;
+// 	  			}
+// 	 		 if(ethnicity==2){
+// 				  dead_ethnicity_group_2+=1;
+// 	  			}
+
+// 		//----------------gender group----
+
+// 			if(gender==1){
+// 				  dead_gender_group_1+=1;
+// 	  			}
+// 	 		 if(gender==2){
+// 				  dead_gender_group_2+=1;
+//              }				
+// //--------------counted in infected because dead------------------//
+
+// 	  	//  	if(age_index==0){
+// 		// 		  infected_age_group_1+=1;
+// 	  	// 		}
+// 		// 	if(age_index==1){
+// 		// 		  infected_age_group_2+=1;
+// 	  	// 		}
+// 	 	// 	 if(age_index==2){
+// 		// 		  infected_age_group_3+=1;
+// 	  	// 		}
+// 		// 	if(age_index==3){
+// 		// 		  infected_age_group_4+=1;
+// 	  	// 		}
+// 	 	// 	 if(age_index==4){
+// 		// 		  infected_age_group_5+=1;
+// 	  	// 		}
+// 		// 	if(age_index==5){
+// 		// 		  infected_age_group_6+=1;
+// 	  	// 		}
+// 	 	// 	 if(age_index==6){
+// 		// 		  infected_age_group_7+=1;
+// 	  	// 		}
+// 		// 	if(age_index==7){
+// 		// 		  infected_age_group_8+=1;
+// 	  	// 		}
+// 	 	// 	 if(age_index==8){
+// 		// 		  infected_age_group_9+=1;
+// 	  	// 		}
+// 		// 	if(age_index==9){
+// 		// 		  infected_age_group_10+=1;
+// 	  	// 		}
+// 		// //----------------race group----
+
+// 		// 	if(race==1){
+// 		// 		  infected_race_group_1+=1;
+// 	  	// 		}
+// 	 	// 	 if(race==2){
+// 		// 		  infected_race_group_2+=1;
+// 	  	// 		}
+// 		// 	if(race==3){
+// 		// 		  infected_race_group_3+=1;
+// 	  	// 		}
+// 	 	// 	 if(race==4){
+// 		// 		  infected_race_group_4+=1;
+// 	  	// 		}
+// 		// 	if(race==5){
+// 		// 		  infected_race_group_5+=1;
+// 	  	// 		}
+// 	 	// 	 if(race==6){
+// 		// 		  infected_race_group_6+=1;
+// 	  	// 		}
+// 		// 	if(race==7){
+// 		// 		  infected_race_group_7+=1;
+// 	  	// 		}
+
+// 		//----------------income group----
+
+// 		// 	if(income==1){
+// 		// 		  infected_income_group_1+=1;
+// 	  	// 		}
+// 	 	// 	 if(income==2){
+// 		// 		  infected_income_group_2+=1;
+// 	  	// 		}
+// 		// 	if(income==3){
+// 		// 		  infected_income_group_3+=1;
+// 	  	// 		}
+// 	 	// 	 if(income==4){
+// 		// 		  infected_income_group_4+=1;
+// 	  	// 		}
+// 		// 	if(income==5){
+// 		// 		  infected_income_group_5+=1;
+// 	  	// 		}
+// 	 	// 	 if(income==6){
+// 		// 		  infected_income_group_6+=1;
+// 	  	// 		}
+// 		// 	if(income==7){
+// 		// 		  infected_income_group_7+=1;
+// 	  	// 		}
+// 	 	// 	 if(income==8){
+// 		// 		  infected_income_group_8+=1;
+// 	  	// 		}
+
+
+// 		// //----------------ethnicity group----
+
+// 		// 	if(ethnicity==1){
+// 		// 		  infected_ethnicity_group_1+=1;
+// 	  	// 		}
+// 	 	// 	 if(ethnicity==2){
+// 		// 		  infected_ethnicity_group_2+=1;
+// 	  	// 		}
+
+// 		// //----------------gender group----
+
+// 		// 	if(gender==1){
+// 		// 		  infected_gender_group_1+=1;
+// 	  	// 		}
+// 	 	// 	 if(gender==2){
+// 		// 		  infected_gender_group_2+=1;
+//         //      }
+// 	}
+// //----Counting vaccinated individuals in a community----------//
+// 	auto state_before_recovery
+// 		= nodes[community.individuals[i]].state_before_recovery;
+
+// 	if((state_before_recovery == Progression::vaccinated1)){
+// 		vaccinated1 += 1;
+// 	  }
+
+// 	if((state_before_recovery == Progression::vaccinated2)){
+// 		vaccinated2 += 1;
+// 	  }
+// 	if((state_before_recovery == Progression::waning)){
+// 		waning += 1;
+// 	  }
+// 	if((state_before_recovery == Progression::boosted)){
+// 		boosted += 1;
+// 	  }	  	  	  
+
+// 	if((state_before_recovery == Progression::boosted2)){
+// 		boosted2 += 1;
+// 	  }	    	  	  
+	
+//   }
+//   if(errors){
+// 	cerr << "erroneous state_before_recovery found\n";
+// 	assert(false);
+//   }
+  
+//     affected = exposed + infective + symptomatic
+// 	+ hospitalised + critical
+// 	+ recovered + dead;
+
+//   hd_area_affected = hd_area_exposed + hd_area_infective + hd_area_symptomatic
+// 	+ hd_area_hospitalised + hd_area_critical
+// 	+ hd_area_recovered + hd_area_dead;
+
+  
+//   casualty_stats stat;
+//   stat.affected = affected;
+//   stat.hd_area_affected = hd_area_affected;
+//   stat.susceptible = susceptible;
+//   stat.unvaccinated=unvaccinated;
+//   stat.vaccinated1=vaccinated1;
+//   stat.vaccinated2=vaccinated2;
+//   stat.waning=waning;
+//   stat.boosted=boosted;  
+//   stat.waning2=waning2;
+//   stat.boosted2=boosted2;
+//   stat.hd_area_susceptible = hd_area_susceptible;
+//   stat.exposed = exposed;
+//   stat.hd_area_exposed = hd_area_exposed;
+//   stat.infective = infective;
+//   stat.hd_area_infective = hd_area_infective;
+//   stat.symptomatic = symptomatic;
+//   stat.hd_area_symptomatic = hd_area_symptomatic;
+//   stat.hospitalised = hospitalised;
+//   stat.hd_area_hospitalised = hd_area_hospitalised;
+//   stat.critical = critical;
+//   stat.hd_area_critical = hd_area_critical;
+//   stat.dead = dead;
+//   stat.hd_area_dead = hd_area_dead;
+//   stat.recovered = recovered;
+
+//   stat.infected_age_group_1= infected_age_group_1;
+//   stat.infected_age_group_2=infected_age_group_2;  
+//   stat.infected_age_group_3= infected_age_group_3;
+//   stat.infected_age_group_4=infected_age_group_4;  
+//   stat.infected_age_group_5= infected_age_group_5;
+//   stat.infected_age_group_6=infected_age_group_6;//Age group shakir addition,exposed + infective + symptomatic+ hospitalised + critical
+//   stat.infected_age_group_7= infected_age_group_7;
+//   stat.infected_age_group_8=infected_age_group_8;
+//   stat.infected_age_group_9= infected_age_group_9;
+//   stat.infected_age_group_10=infected_age_group_10;
+
+//   stat.hospitalised_age_group_1= hospitalised_age_group_1;
+//   stat.hospitalised_age_group_2=hospitalised_age_group_2;  
+//   stat.hospitalised_age_group_3= hospitalised_age_group_3;
+//   stat.hospitalised_age_group_4=hospitalised_age_group_4;  
+//   stat.hospitalised_age_group_5= hospitalised_age_group_5;
+//   stat.hospitalised_age_group_6=hospitalised_age_group_6;//Age group shakir addition
+//   stat.hospitalised_age_group_7= hospitalised_age_group_7;
+//   stat.hospitalised_age_group_8=hospitalised_age_group_8;
+//   stat.hospitalised_age_group_9= hospitalised_age_group_9;
+//   stat.hospitalised_age_group_10=hospitalised_age_group_10;
+
+//   stat.dead_age_group_1= dead_age_group_1;
+//   stat.dead_age_group_2=dead_age_group_2;  
+//   stat.dead_age_group_3= dead_age_group_3;
+//   stat.dead_age_group_4=dead_age_group_4;  
+//   stat.dead_age_group_5= dead_age_group_5;
+//   stat.dead_age_group_6=dead_age_group_6;//Age group shakir addition
+//   stat.dead_age_group_7= dead_age_group_7;
+//   stat.dead_age_group_8=dead_age_group_8;  
+//   stat.dead_age_group_9= dead_age_group_9;
+//   stat.dead_age_group_10=dead_age_group_10;  
+
+//   stat.infected_race_group_1= infected_race_group_1;
+//   stat.infected_race_group_2=infected_race_group_2;  
+//   stat.infected_race_group_3= infected_race_group_3;
+//   stat.infected_race_group_4=infected_race_group_4;  
+//   stat.infected_race_group_5= infected_race_group_5;
+//   stat.infected_race_group_6=infected_race_group_6;//race group shakir addition,exposed + infective + symptomatic+ hospitalised + critical
+//   stat.infected_race_group_7= infected_race_group_7;
+
+//   stat.hospitalised_race_group_1= hospitalised_race_group_1;
+//   stat.hospitalised_race_group_2=hospitalised_race_group_2;  
+//   stat.hospitalised_race_group_3= hospitalised_race_group_3;
+//   stat.hospitalised_race_group_4=hospitalised_race_group_4;  
+//   stat.hospitalised_race_group_5= hospitalised_race_group_5;
+//   stat.hospitalised_race_group_6=hospitalised_race_group_6;//race group shakir addition
+//   stat.hospitalised_race_group_7= hospitalised_race_group_7;
+
+//   stat.dead_race_group_1= dead_race_group_1;
+//   stat.dead_race_group_2=dead_race_group_2;  
+//   stat.dead_race_group_3= dead_race_group_3;
+//   stat.dead_race_group_4=dead_race_group_4;  
+//   stat.dead_race_group_5= dead_race_group_5;
+//   stat.dead_race_group_6=dead_race_group_6;//race group shakir addition
+//   stat.dead_race_group_7= dead_race_group_7;
+ 
+ 
+//   stat.infected_income_group_1= infected_income_group_1;
+//   stat.infected_income_group_2=infected_income_group_2;  
+//   stat.infected_income_group_3= infected_income_group_3;
+//   stat.infected_income_group_4=infected_income_group_4;  
+//   stat.infected_income_group_5= infected_income_group_5;
+//   stat.infected_income_group_6=infected_income_group_6;//income group shakir addition,exposed + infective + symptomatic+ hospitalised + critical
+//   stat.infected_income_group_7= infected_income_group_7;
+//   stat.infected_income_group_8=infected_income_group_8;
+
+//   stat.hospitalised_income_group_1= hospitalised_income_group_1;
+//   stat.hospitalised_income_group_2=hospitalised_income_group_2;  
+//   stat.hospitalised_income_group_3= hospitalised_income_group_3;
+//   stat.hospitalised_income_group_4=hospitalised_income_group_4;  
+//   stat.hospitalised_income_group_5= hospitalised_income_group_5;
+//   stat.hospitalised_income_group_6=hospitalised_income_group_6;//income group shakir addition
+//   stat.hospitalised_income_group_7= hospitalised_income_group_7;
+//   stat.hospitalised_income_group_8=hospitalised_income_group_8;
+
+//   stat.dead_income_group_1= dead_income_group_1;
+//   stat.dead_income_group_2=dead_income_group_2;  
+//   stat.dead_income_group_3= dead_income_group_3;
+//   stat.dead_income_group_4=dead_income_group_4;  
+//   stat.dead_income_group_5= dead_income_group_5;
+//   stat.dead_income_group_6=dead_income_group_6;//income group shakir addition
+//   stat.dead_income_group_7= dead_income_group_7;
+//   stat.dead_income_group_8=dead_income_group_8;  
+ 
+//   stat.infected_ethnicity_group_1= infected_ethnicity_group_1;
+//   stat.infected_ethnicity_group_2=infected_ethnicity_group_2;  
+
+//   stat.hospitalised_ethnicity_group_1= hospitalised_ethnicity_group_1;
+//   stat.hospitalised_ethnicity_group_2=hospitalised_ethnicity_group_2;  
+
+//   stat.dead_ethnicity_group_1= dead_ethnicity_group_1;
+//   stat.dead_ethnicity_group_2=dead_ethnicity_group_2;  
+
+//   stat.infected_gender_group_1= infected_gender_group_1;
+//   stat.infected_gender_group_2=infected_gender_group_2;  
+
+//   stat.hospitalised_gender_group_1= hospitalised_gender_group_1;
+//   stat.hospitalised_gender_group_2=hospitalised_gender_group_2;  
+
+//   stat.dead_gender_group_1= dead_gender_group_1;
+//   stat.dead_gender_group_2=dead_gender_group_2;  
+
+//   stat.hd_area_recovered = hd_area_recovered;
+//   stat.recovered_from_infective = recovered_from_infective;
+//   stat.recovered_from_symptomatic = recovered_from_symptomatic;
+//   stat.recovered_from_hospitalised = recovered_from_hospitalised;
+//   stat.recovered_from_critical = recovered_from_critical;
+//   stat.hd_area_recovered_from_infective = hd_area_recovered_from_infective;
+//   stat.hd_area_recovered_from_symptomatic = hd_area_recovered_from_symptomatic;
+//   stat.hd_area_recovered_from_hospitalised = hd_area_recovered_from_hospitalised;
+//   stat.hd_area_recovered_from_critical = hd_area_recovered_from_critical;
+
+//   return stat;
+//   // Populate it afterwards...
+// }
 casualty_stats get_infected_community(const vector<agent>& nodes, const community& community){
   count_type affected = 0;
   count_type hd_area_affected = 0;
@@ -2522,6 +3857,9 @@ casualty_stats get_infected_community(const vector<agent>& nodes, const communit
 	int income =nodes[community.individuals[i]].income;
 	int ethnicity =nodes[community.individuals[i]].ethnicity;
 	int gender=	nodes[community.individuals[i]].gender;
+	bool new_symptomatic=nodes[community.individuals[i]].new_symptomatic;
+	bool new_hospitalized=nodes[community.individuals[i]].new_hospitalized;
+	bool new_dead=nodes[community.individuals[i]].new_dead;
 
 
 	if (infection_status == Progression::susceptible){
@@ -2535,105 +3873,105 @@ casualty_stats get_infected_community(const vector<agent>& nodes, const communit
 	  if(hd_area_resident){
         hd_area_exposed += 1;
       }
-	  	 	if(age_index==0){//----------------age group----
-				  infected_age_group_1+=1;
-	  			}
-			if(age_index==1){
-				  infected_age_group_2+=1;
-	  			}
-	 		 if(age_index==2){
-				  infected_age_group_3+=1;
-	  			}
-			if(age_index==3){
-				  infected_age_group_4+=1;
-	  			}
-	 		 if(age_index==4){
-				  infected_age_group_5+=1;
-	  			}
-			if(age_index==5){
-				  infected_age_group_6+=1;
-	  			}
-	 		 if(age_index==6){
-				  infected_age_group_7+=1;
-	  			}
-			if(age_index==7){
-				  infected_age_group_8+=1;
-	  			}
-	 		 if(age_index==8){
-				  infected_age_group_9+=1;
-	  			}
-			if(age_index==9){
-				  infected_age_group_10+=1;
-	  			}
-		//----------------race group----
+	  	//  	if(age_index==0){//----------------age group----
+		// 		  infected_age_group_1+=1;
+	  	// 		}
+		// 	if(age_index==1){
+		// 		  infected_age_group_2+=1;
+	  	// 		}
+	 	// 	 if(age_index==2){
+		// 		  infected_age_group_3+=1;
+	  	// 		}
+		// 	if(age_index==3){
+		// 		  infected_age_group_4+=1;
+	  	// 		}
+	 	// 	 if(age_index==4){
+		// 		  infected_age_group_5+=1;
+	  	// 		}
+		// 	if(age_index==5){
+		// 		  infected_age_group_6+=1;
+	  	// 		}
+	 	// 	 if(age_index==6){
+		// 		  infected_age_group_7+=1;
+	  	// 		}
+		// 	if(age_index==7){
+		// 		  infected_age_group_8+=1;
+	  	// 		}
+	 	// 	 if(age_index==8){
+		// 		  infected_age_group_9+=1;
+	  	// 		}
+		// 	if(age_index==9){
+		// 		  infected_age_group_10+=1;
+	  	// 		}
+		// //----------------race group----
 
-			if(race==1){
-				  infected_race_group_1+=1;
-	  			}
-	 		 if(race==2){
-				  infected_race_group_2+=1;
-	  			}
-			if(race==3){
-				  infected_race_group_3+=1;
-	  			}
-	 		 if(race==4){
-				  infected_race_group_4+=1;
-	  			}
-			if(race==5){
-				  infected_race_group_5+=1;
-	  			}
-	 		 if(race==6){
-				  infected_race_group_6+=1;
-	  			}
-			if(race==7){
-				  infected_race_group_7+=1;
-	  			}
+		// 	if(race==1){
+		// 		  infected_race_group_1+=1;
+	  	// 		}
+	 	// 	 if(race==2){
+		// 		  infected_race_group_2+=1;
+	  	// 		}
+		// 	if(race==3){
+		// 		  infected_race_group_3+=1;
+	  	// 		}
+	 	// 	 if(race==4){
+		// 		  infected_race_group_4+=1;
+	  	// 		}
+		// 	if(race==5){
+		// 		  infected_race_group_5+=1;
+	  	// 		}
+	 	// 	 if(race==6){
+		// 		  infected_race_group_6+=1;
+	  	// 		}
+		// 	if(race==7){
+		// 		  infected_race_group_7+=1;
+	  	// 		}
 
-		//----------------income group----
+		// //----------------income group----
 
-			if(income==1){
-				  infected_income_group_1+=1;
-	  			}
-	 		 if(income==2){
-				  infected_income_group_2+=1;
-	  			}
-			if(income==3){
-				  infected_income_group_3+=1;
-	  			}
-	 		 if(income==4){
-				  infected_income_group_4+=1;
-	  			}
-			if(income==5){
-				  infected_income_group_5+=1;
-	  			}
-	 		 if(income==6){
-				  infected_income_group_6+=1;
-	  			}
-			if(income==7){
-				  infected_income_group_7+=1;
-	  			}
-	 		 if(income==8){
-				  infected_income_group_8+=1;
-	  			}
+		// 	if(income==1){
+		// 		  infected_income_group_1+=1;
+	  	// 		}
+	 	// 	 if(income==2){
+		// 		  infected_income_group_2+=1;
+	  	// 		}
+		// 	if(income==3){
+		// 		  infected_income_group_3+=1;
+	  	// 		}
+	 	// 	 if(income==4){
+		// 		  infected_income_group_4+=1;
+	  	// 		}
+		// 	if(income==5){
+		// 		  infected_income_group_5+=1;
+	  	// 		}
+	 	// 	 if(income==6){
+		// 		  infected_income_group_6+=1;
+	  	// 		}
+		// 	if(income==7){
+		// 		  infected_income_group_7+=1;
+	  	// 		}
+	 	// 	 if(income==8){
+		// 		  infected_income_group_8+=1;
+	  	// 		}
 
 
-		//----------------ethnicity group----
+		// //----------------ethnicity group----
 
-			if(ethnicity==1){
-				  infected_ethnicity_group_1+=1;
-	  			}
-	 		 if(ethnicity==2){
-				  infected_ethnicity_group_2+=1;
-	  			}
+		// 	if(ethnicity==1){
+		// 		  infected_ethnicity_group_1+=1;
+	  	// 		}
+	 	// 	 if(ethnicity==2){
+		// 		  infected_ethnicity_group_2+=1;
+	  	// 		}
 
-		//----------------gender group----
+		// //----------------gender group----
 
-			if(gender==1){
-				  infected_gender_group_1+=1;
-	  			}
-	 		 if(gender==2){
-				  infected_gender_group_2+=1;
-             }
+		// 	if(gender==1){
+		// 		  infected_gender_group_1+=1;
+	  	// 		}
+	 	// 	 if(gender==2){
+		// 		  infected_gender_group_2+=1;
+        //      }
 	}
 	if (infection_status == Progression::infective) {
 	  infective +=1;
@@ -2641,107 +3979,107 @@ casualty_stats get_infected_community(const vector<agent>& nodes, const communit
         hd_area_infective += 1;
       }
 
-	  	 	if(age_index==0){
-				  infected_age_group_1+=1;
-	  			}
-			if(age_index==1){
-				  infected_age_group_2+=1;
-	  			}
-	 		 if(age_index==2){
-				  infected_age_group_3+=1;
-	  			}
-			if(age_index==3){
-				  infected_age_group_4+=1;
-	  			}
-	 		 if(age_index==4){
-				  infected_age_group_5+=1;
-	  			}
-			if(age_index==5){
-				  infected_age_group_6+=1;
-	  			}
-	 		 if(age_index==6){
-				  infected_age_group_7+=1;
-	  			}
-			if(age_index==7){
-				  infected_age_group_8+=1;
-	  			}
-	 		 if(age_index==8){
-				  infected_age_group_9+=1;
-	  			}
-			if(age_index==9){
-				  infected_age_group_10+=1;
-	  			}
-		//----------------race group----
+	  	//  	if(age_index==0){
+		// 		  infected_age_group_1+=1;
+	  	// 		}
+		// 	if(age_index==1){
+		// 		  infected_age_group_2+=1;
+	  	// 		}
+	 	// 	 if(age_index==2){
+		// 		  infected_age_group_3+=1;
+	  	// 		}
+		// 	if(age_index==3){
+		// 		  infected_age_group_4+=1;
+	  	// 		}
+	 	// 	 if(age_index==4){
+		// 		  infected_age_group_5+=1;
+	  	// 		}
+		// 	if(age_index==5){
+		// 		  infected_age_group_6+=1;
+	  	// 		}
+	 	// 	 if(age_index==6){
+		// 		  infected_age_group_7+=1;
+	  	// 		}
+		// 	if(age_index==7){
+		// 		  infected_age_group_8+=1;
+	  	// 		}
+	 	// 	 if(age_index==8){
+		// 		  infected_age_group_9+=1;
+	  	// 		}
+		// 	if(age_index==9){
+		// 		  infected_age_group_10+=1;
+	  	// 		}
+		// //----------------race group----
 
-			if(race==1){
-				  infected_race_group_1+=1;
-	  			}
-	 		 if(race==2){
-				  infected_race_group_2+=1;
-	  			}
-			if(race==3){
-				  infected_race_group_3+=1;
-	  			}
-	 		 if(race==4){
-				  infected_race_group_4+=1;
-	  			}
-			if(race==5){
-				  infected_race_group_5+=1;
-	  			}
-	 		 if(race==6){
-				  infected_race_group_6+=1;
-	  			}
-			if(race==7){
-				  infected_race_group_7+=1;
-	  			}
+		// 	if(race==1){
+		// 		  infected_race_group_1+=1;
+	  	// 		}
+	 	// 	 if(race==2){
+		// 		  infected_race_group_2+=1;
+	  	// 		}
+		// 	if(race==3){
+		// 		  infected_race_group_3+=1;
+	  	// 		}
+	 	// 	 if(race==4){
+		// 		  infected_race_group_4+=1;
+	  	// 		}
+		// 	if(race==5){
+		// 		  infected_race_group_5+=1;
+	  	// 		}
+	 	// 	 if(race==6){
+		// 		  infected_race_group_6+=1;
+	  	// 		}
+		// 	if(race==7){
+		// 		  infected_race_group_7+=1;
+	  	// 		}
 
-		//----------------income group----
+		// //----------------income group----
 
-			if(income==1){
-				  infected_income_group_1+=1;
-	  			}
-	 		 if(income==2){
-				  infected_income_group_2+=1;
-	  			}
-			if(income==3){
-				  infected_income_group_3+=1;
-	  			}
-	 		 if(income==4){
-				  infected_income_group_4+=1;
-	  			}
-			if(income==5){
-				  infected_income_group_5+=1;
-	  			}
-	 		 if(income==6){
-				  infected_income_group_6+=1;
-	  			}
-			if(income==7){
-				  infected_income_group_7+=1;
-	  			}
-	 		 if(income==8){
-				  infected_income_group_8+=1;
-	  			}
+		// 	if(income==1){
+		// 		  infected_income_group_1+=1;
+	  	// 		}
+	 	// 	 if(income==2){
+		// 		  infected_income_group_2+=1;
+	  	// 		}
+		// 	if(income==3){
+		// 		  infected_income_group_3+=1;
+	  	// 		}
+	 	// 	 if(income==4){
+		// 		  infected_income_group_4+=1;
+	  	// 		}
+		// 	if(income==5){
+		// 		  infected_income_group_5+=1;
+	  	// 		}
+	 	// 	 if(income==6){
+		// 		  infected_income_group_6+=1;
+	  	// 		}
+		// 	if(income==7){
+		// 		  infected_income_group_7+=1;
+	  	// 		}
+	 	// 	 if(income==8){
+		// 		  infected_income_group_8+=1;
+	  	// 		}
 
 
-		//----------------ethnicity group----
+		// //----------------ethnicity group----
 
-			if(ethnicity==1){
-				  infected_ethnicity_group_1+=1;
-	  			}
-	 		 if(ethnicity==2){
-				  infected_ethnicity_group_2+=1;
-	  			}
+		// 	if(ethnicity==1){
+		// 		  infected_ethnicity_group_1+=1;
+	  	// 		}
+	 	// 	 if(ethnicity==2){
+		// 		  infected_ethnicity_group_2+=1;
+	  	// 		}
 
-		//----------------gender group----
+		// //----------------gender group----
 
-			if(gender==1){
-				  infected_gender_group_1+=1;
-	  			}
-	 		 if(gender==2){
-				  infected_gender_group_2+=1;
-             }
+		// 	if(gender==1){
+		// 		  infected_gender_group_1+=1;
+	  	// 		}
+	 	// 	 if(gender==2){
+		// 		  infected_gender_group_2+=1;
+        //      }
 	}
-	if (infection_status == Progression::symptomatic) {
+	if (infection_status == Progression::symptomatic && new_symptomatic) {
 	  symptomatic += 1;
       if(hd_area_resident){
         hd_area_symptomatic += 1;
@@ -2916,7 +4254,7 @@ casualty_stats get_infected_community(const vector<agent>& nodes, const communit
 		break;
 	  }
 	}
-	if (infection_status == Progression::hospitalised) {
+	if (infection_status == Progression::hospitalised && new_hospitalized) {
 	  hospitalised += 1;
       if(hd_area_resident){
         hd_area_hospitalised += 1;
@@ -3021,212 +4359,212 @@ casualty_stats get_infected_community(const vector<agent>& nodes, const communit
 				  hospitalised_gender_group_2+=1;
              }
 //-----------infected because hospitalized------
-	  	 	if(age_index==0){
-				  infected_age_group_1+=1;
-	  			}
-			if(age_index==1){
-				  infected_age_group_2+=1;
-	  			}
-	 		 if(age_index==2){
-				  infected_age_group_3+=1;
-	  			}
-			if(age_index==3){
-				  infected_age_group_4+=1;
-	  			}
-	 		 if(age_index==4){
-				  infected_age_group_5+=1;
-	  			}
-			if(age_index==5){
-				  infected_age_group_6+=1;
-	  			}
-	 		 if(age_index==6){
-				  infected_age_group_7+=1;
-	  			}
-			if(age_index==7){
-				  infected_age_group_8+=1;
-	  			}
-	 		 if(age_index==8){
-				  infected_age_group_9+=1;
-	  			}
-			if(age_index==9){
-				  infected_age_group_10+=1;
-	  			}
-		//----------------race group----
+	  	//  	if(age_index==0){
+		// 		  infected_age_group_1+=1;
+	  	// 		}
+		// 	if(age_index==1){
+		// 		  infected_age_group_2+=1;
+	  	// 		}
+	 	// 	 if(age_index==2){
+		// 		  infected_age_group_3+=1;
+	  	// 		}
+		// 	if(age_index==3){
+		// 		  infected_age_group_4+=1;
+	  	// 		}
+	 	// 	 if(age_index==4){
+		// 		  infected_age_group_5+=1;
+	  	// 		}
+		// 	if(age_index==5){
+		// 		  infected_age_group_6+=1;
+	  	// 		}
+	 	// 	 if(age_index==6){
+		// 		  infected_age_group_7+=1;
+	  	// 		}
+		// 	if(age_index==7){
+		// 		  infected_age_group_8+=1;
+	  	// 		}
+	 	// 	 if(age_index==8){
+		// 		  infected_age_group_9+=1;
+	  	// 		}
+		// 	if(age_index==9){
+		// 		  infected_age_group_10+=1;
+	  	// 		}
+		// //----------------race group----
 
-			if(race==1){
-				  infected_race_group_1+=1;
-	  			}
-	 		 if(race==2){
-				  infected_race_group_2+=1;
-	  			}
-			if(race==3){
-				  infected_race_group_3+=1;
-	  			}
-	 		 if(race==4){
-				  infected_race_group_4+=1;
-	  			}
-			if(race==5){
-				  infected_race_group_5+=1;
-	  			}
-	 		 if(race==6){
-				  infected_race_group_6+=1;
-	  			}
-			if(race==7){
-				  infected_race_group_7+=1;
-	  			}
+		// 	if(race==1){
+		// 		  infected_race_group_1+=1;
+	  	// 		}
+	 	// 	 if(race==2){
+		// 		  infected_race_group_2+=1;
+	  	// 		}
+		// 	if(race==3){
+		// 		  infected_race_group_3+=1;
+	  	// 		}
+	 	// 	 if(race==4){
+		// 		  infected_race_group_4+=1;
+	  	// 		}
+		// 	if(race==5){
+		// 		  infected_race_group_5+=1;
+	  	// 		}
+	 	// 	 if(race==6){
+		// 		  infected_race_group_6+=1;
+	  	// 		}
+		// 	if(race==7){
+		// 		  infected_race_group_7+=1;
+	  	// 		}
 
-		//----------------income group----
+		// //----------------income group----
 
-			if(income==1){
-				  infected_income_group_1+=1;
-	  			}
-	 		 if(income==2){
-				  infected_income_group_2+=1;
-	  			}
-			if(income==3){
-				  infected_income_group_3+=1;
-	  			}
-	 		 if(income==4){
-				  infected_income_group_4+=1;
-	  			}
-			if(income==5){
-				  infected_income_group_5+=1;
-	  			}
-	 		 if(income==6){
-				  infected_income_group_6+=1;
-	  			}
-			if(income==7){
-				  infected_income_group_7+=1;
-	  			}
-	 		 if(income==8){
-				  infected_income_group_8+=1;
-	  			}
+		// 	if(income==1){
+		// 		  infected_income_group_1+=1;
+	  	// 		}
+	 	// 	 if(income==2){
+		// 		  infected_income_group_2+=1;
+	  	// 		}
+		// 	if(income==3){
+		// 		  infected_income_group_3+=1;
+	  	// 		}
+	 	// 	 if(income==4){
+		// 		  infected_income_group_4+=1;
+	  	// 		}
+		// 	if(income==5){
+		// 		  infected_income_group_5+=1;
+	  	// 		}
+	 	// 	 if(income==6){
+		// 		  infected_income_group_6+=1;
+	  	// 		}
+		// 	if(income==7){
+		// 		  infected_income_group_7+=1;
+	  	// 		}
+	 	// 	 if(income==8){
+		// 		  infected_income_group_8+=1;
+	  	// 		}
 
 
-		//----------------ethnicity group----
+		// //----------------ethnicity group----
 
-			if(ethnicity==1){
-				  infected_ethnicity_group_1+=1;
-	  			}
-	 		 if(ethnicity==2){
-				  infected_ethnicity_group_2+=1;
-	  			}
+		// 	if(ethnicity==1){
+		// 		  infected_ethnicity_group_1+=1;
+	  	// 		}
+	 	// 	 if(ethnicity==2){
+		// 		  infected_ethnicity_group_2+=1;
+	  	// 		}
 
-		//----------------gender group----
+		// //----------------gender group----
 
-			if(gender==1){
-				  infected_gender_group_1+=1;
-	  			}
-	 		 if(gender==2){
-				  infected_gender_group_2+=1;
-             }
+		// 	if(gender==1){
+		// 		  infected_gender_group_1+=1;
+	  	// 		}
+	 	// 	 if(gender==2){
+		// 		  infected_gender_group_2+=1;
+        //      }
 	}
 	if (infection_status == Progression::critical) {
 	  critical += 1;
       if(hd_area_resident){
         hd_area_critical += 1;
       }
-	  	 	if(age_index==0){
-				  infected_age_group_1+=1;
-	  			}
-			if(age_index==1){
-				  infected_age_group_2+=1;
-	  			}
-	 		 if(age_index==2){
-				  infected_age_group_3+=1;
-	  			}
-			if(age_index==3){
-				  infected_age_group_4+=1;
-	  			}
-	 		 if(age_index==4){
-				  infected_age_group_5+=1;
-	  			}
-			if(age_index==5){
-				  infected_age_group_6+=1;
-	  			}
-	 		 if(age_index==6){
-				  infected_age_group_7+=1;
-	  			}
-			if(age_index==7){
-				  infected_age_group_8+=1;
-	  			}
-	 		 if(age_index==8){
-				  infected_age_group_9+=1;
-	  			}
-			if(age_index==9){
-				  infected_age_group_10+=1;
-	  			}
-		//----------------race group----
+	  	//  	if(age_index==0){
+		// 		  infected_age_group_1+=1;
+	  	// 		}
+		// 	if(age_index==1){
+		// 		  infected_age_group_2+=1;
+	  	// 		}
+	 	// 	 if(age_index==2){
+		// 		  infected_age_group_3+=1;
+	  	// 		}
+		// 	if(age_index==3){
+		// 		  infected_age_group_4+=1;
+	  	// 		}
+	 	// 	 if(age_index==4){
+		// 		  infected_age_group_5+=1;
+	  	// 		}
+		// 	if(age_index==5){
+		// 		  infected_age_group_6+=1;
+	  	// 		}
+	 	// 	 if(age_index==6){
+		// 		  infected_age_group_7+=1;
+	  	// 		}
+		// 	if(age_index==7){
+		// 		  infected_age_group_8+=1;
+	  	// 		}
+	 	// 	 if(age_index==8){
+		// 		  infected_age_group_9+=1;
+	  	// 		}
+		// 	if(age_index==9){
+		// 		  infected_age_group_10+=1;
+	  	// 		}
+		// //----------------race group----
 
-			if(race==1){
-				  infected_race_group_1+=1;
-	  			}
-	 		 if(race==2){
-				  infected_race_group_2+=1;
-	  			}
-			if(race==3){
-				  infected_race_group_3+=1;
-	  			}
-	 		 if(race==4){
-				  infected_race_group_4+=1;
-	  			}
-			if(race==5){
-				  infected_race_group_5+=1;
-	  			}
-	 		 if(race==6){
-				  infected_race_group_6+=1;
-	  			}
-			if(race==7){
-				  infected_race_group_7+=1;
-	  			}
+		// 	if(race==1){
+		// 		  infected_race_group_1+=1;
+	  	// 		}
+	 	// 	 if(race==2){
+		// 		  infected_race_group_2+=1;
+	  	// 		}
+		// 	if(race==3){
+		// 		  infected_race_group_3+=1;
+	  	// 		}
+	 	// 	 if(race==4){
+		// 		  infected_race_group_4+=1;
+	  	// 		}
+		// 	if(race==5){
+		// 		  infected_race_group_5+=1;
+	  	// 		}
+	 	// 	 if(race==6){
+		// 		  infected_race_group_6+=1;
+	  	// 		}
+		// 	if(race==7){
+		// 		  infected_race_group_7+=1;
+	  	// 		}
 
-		//----------------income group----
+		// //----------------income group----
 
-			if(income==1){
-				  infected_income_group_1+=1;
-	  			}
-	 		 if(income==2){
-				  infected_income_group_2+=1;
-	  			}
-			if(income==3){
-				  infected_income_group_3+=1;
-	  			}
-	 		 if(income==4){
-				  infected_income_group_4+=1;
-	  			}
-			if(income==5){
-				  infected_income_group_5+=1;
-	  			}
-	 		 if(income==6){
-				  infected_income_group_6+=1;
-	  			}
-			if(income==7){
-				  infected_income_group_7+=1;
-	  			}
-	 		 if(income==8){
-				  infected_income_group_8+=1;
-	  			}
+		// 	if(income==1){
+		// 		  infected_income_group_1+=1;
+	  	// 		}
+	 	// 	 if(income==2){
+		// 		  infected_income_group_2+=1;
+	  	// 		}
+		// 	if(income==3){
+		// 		  infected_income_group_3+=1;
+	  	// 		}
+	 	// 	 if(income==4){
+		// 		  infected_income_group_4+=1;
+	  	// 		}
+		// 	if(income==5){
+		// 		  infected_income_group_5+=1;
+	  	// 		}
+	 	// 	 if(income==6){
+		// 		  infected_income_group_6+=1;
+	  	// 		}
+		// 	if(income==7){
+		// 		  infected_income_group_7+=1;
+	  	// 		}
+	 	// 	 if(income==8){
+		// 		  infected_income_group_8+=1;
+	  	// 		}
 
 
-		//----------------ethnicity group----
+		// //----------------ethnicity group----
 
-			if(ethnicity==1){
-				  infected_ethnicity_group_1+=1;
-	  			}
-	 		 if(ethnicity==2){
-				  infected_ethnicity_group_2+=1;
-	  			}
+		// 	if(ethnicity==1){
+		// 		  infected_ethnicity_group_1+=1;
+	  	// 		}
+	 	// 	 if(ethnicity==2){
+		// 		  infected_ethnicity_group_2+=1;
+	  	// 		}
 
-		//----------------gender group----
+		// //----------------gender group----
 
-			if(gender==1){
-				  infected_gender_group_1+=1;
-	  			}
-	 		 if(gender==2){
-				  infected_gender_group_2+=1;
-             }					  	  	  
+		// 	if(gender==1){
+		// 		  infected_gender_group_1+=1;
+	  	// 		}
+	 	// 	 if(gender==2){
+		// 		  infected_gender_group_2+=1;
+        //      }					  	  	  
 	}
-	if (infection_status == Progression::dead) {
+	if (infection_status == Progression::dead && new_dead) {
 	  dead += 1;
 	  if(hd_area_resident){
         hd_area_dead += 1;
@@ -3454,7 +4792,6 @@ casualty_stats get_infected_community(const vector<agent>& nodes, const communit
 	if((state_before_recovery == Progression::boosted2)){
 		boosted2 += 1;
 	  }	    	  	  
-	
   }
   if(errors){
 	cerr << "erroneous state_before_recovery found\n";
@@ -3612,7 +4949,6 @@ casualty_stats get_infected_community(const vector<agent>& nodes, const communit
   return stat;
   // Populate it afterwards...
 }
-
 void update_grid_cell_statistics(matrix<nbr_cell>& nbr_cells,
 								 vector<house>& homes,
 								 vector<agent>& nodes,

@@ -269,6 +269,26 @@ int main(int argc, char** argv){
      cxxopts::value<double>()->default_value(DEFAULTS.VIRULENT_NEW_OMICRON_BA7)) 
     ("VIRULENT_NEW_OMICRON_BA8", "omicron_BA8 strain is more deadly by this factor",
      cxxopts::value<double>()->default_value(DEFAULTS.VIRULENT_NEW_OMICRON_BA8)) 
+
+
+    ("RELATIVE_HOSPITALIZATION_ALPHA", "alpha strain hospitalization factor",
+     cxxopts::value<double>()->default_value(DEFAULTS.RELATIVE_HOSPITALIZATION_ALPHA))
+    ("RELATIVE_HOSPITALIZATION_DELTA", "delta strain hospitalization factor",
+     cxxopts::value<double>()->default_value(DEFAULTS.RELATIVE_HOSPITALIZATION_DELTA))
+    ("RELATIVE_HOSPITALIZATION_OMICRON", "omicron strain hospitalization factor",
+     cxxopts::value<double>()->default_value(DEFAULTS.RELATIVE_HOSPITALIZATION_OMICRON))               
+    ("RELATIVE_HOSPITALIZATION_OMICRON_NEW", "omicron_new strain hospitalization factor",
+     cxxopts::value<double>()->default_value(DEFAULTS.RELATIVE_HOSPITALIZATION_OMICRON_NEW))                    
+    ("RELATIVE_HOSPITALIZATION_OMICRON_BA4", "omicron_BA4 strain hospitalization factor",
+     cxxopts::value<double>()->default_value(DEFAULTS.RELATIVE_HOSPITALIZATION_OMICRON_BA4))  
+    ("RELATIVE_HOSPITALIZATION_OMICRON_BA5", "omicron_BA5 strain hospitalization factor",
+     cxxopts::value<double>()->default_value(DEFAULTS.RELATIVE_HOSPITALIZATION_OMICRON_BA5)) 
+    ("RELATIVE_HOSPITALIZATION_OMICRON_BA6", "omicron_BA6 strain hospitalization factor",
+     cxxopts::value<double>()->default_value(DEFAULTS.RELATIVE_HOSPITALIZATION_OMICRON_BA6)) 
+    ("RELATIVE_HOSPITALIZATION_OMICRON_BA7", "omicron_BA7 strain hospitalization factor",
+     cxxopts::value<double>()->default_value(DEFAULTS.RELATIVE_HOSPITALIZATION_OMICRON_BA7)) 
+    ("RELATIVE_HOSPITALIZATION_OMICRON_BA8", "omicron_BA8 strain hospitalization factor",
+     cxxopts::value<double>()->default_value(DEFAULTS.RELATIVE_HOSPITALIZATION_OMICRON_BA8)) 
     // ("REINFECTION_ALPHA", "fraction of recovered people eligible for reinfection by alpha on time_alpha",
     //  cxxopts::value<double>()->default_value(DEFAULTS.REINFECTION_ALPHA))
     // ("REINFECTION_DELTA", "fraction of recovered people eligible for reinfection by delta on time_delta",
@@ -560,6 +580,17 @@ int main(int argc, char** argv){
   GLOBAL.VIRULENT_NEW_OMICRON_BA8 = optvals["VIRULENT_NEW_OMICRON_BA8"].as<double>();
 
   
+
+  GLOBAL.RELATIVE_HOSPITALIZATION_ALPHA=optvals["RELATIVE_HOSPITALIZATION_ALPHA"].as<double>();
+  GLOBAL.RELATIVE_HOSPITALIZATION_DELTA=optvals["RELATIVE_HOSPITALIZATION_DELTA"].as<double>();
+  GLOBAL.RELATIVE_HOSPITALIZATION_OMICRON=optvals["RELATIVE_HOSPITALIZATION_OMICRON"].as<double>();
+  GLOBAL.RELATIVE_HOSPITALIZATION_OMICRON_NEW=optvals["RELATIVE_HOSPITALIZATION_OMICRON_NEW"].as<double>();
+  GLOBAL.RELATIVE_HOSPITALIZATION_OMICRON_BA4=optvals["RELATIVE_HOSPITALIZATION_OMICRON_BA4"].as<double>();
+  GLOBAL.RELATIVE_HOSPITALIZATION_OMICRON_BA5=optvals["RELATIVE_HOSPITALIZATION_OMICRON_BA5"].as<double>();
+  GLOBAL.RELATIVE_HOSPITALIZATION_OMICRON_BA6=optvals["RELATIVE_HOSPITALIZATION_OMICRON_BA6"].as<double>();
+  GLOBAL.RELATIVE_HOSPITALIZATION_OMICRON_BA7=optvals["RELATIVE_HOSPITALIZATION_OMICRON_BA7"].as<double>();
+  GLOBAL.RELATIVE_HOSPITALIZATION_OMICRON_BA8=optvals["RELATIVE_HOSPITALIZATION_OMICRON_BA8"].as<double>();
+
   // GLOBAL.REINFECTION_ALPHA = optvals["REINFECTION_ALPHA"].as<double>();
   // GLOBAL.REINFECTION_DELTA = optvals["REINFECTION_DELTA"].as<double>();
   // GLOBAL.REINFECTION_OMICRON = optvals["REINFECTION_OMICRON"].as<double>();

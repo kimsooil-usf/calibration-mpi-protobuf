@@ -20,6 +20,7 @@ struct node_update_status{
   bool new_infection = false;
   bool new_symptomatic = false;
   bool new_hospitalization = false;
+  bool new_dead=false;
   bool new_infective = false;
 };
 

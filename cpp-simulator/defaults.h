@@ -42,7 +42,7 @@ struct defaults{
   std::string SEED_FIXED_NUMBER = "false";
   std::string IGNORE_ATTENDANCE_FILE = "true";
   std::string CALIBRATION_DELAY = "13";
-  std::string DAYS_BEFORE_LOCKDOWN = "13";
+  std::string DAYS_BEFORE_LOCKDOWN = "11";
   std::string FIRST_PERIOD = "30";
   std::string SECOND_PERIOD = "30";
   std::string THIRD_PERIOD = "90";
@@ -122,16 +122,16 @@ struct defaults{
 
 
   std::string INFECTIOUSNESS_ALPHA = "1.2";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_DELTA = "1.5";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON = "4";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_NEW = "3.2";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_BA4 = "3.2";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_BA5 = "3.3";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_BA6 = "3.3";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_BA7 = "3.4";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_BA8 = "3.3";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_BA9 = "3.3";//---original 3 comment by Shakir
-  std::string INFECTIOUSNESS_OMICRON_BA10 = "3.3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_DELTA = "1.35";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON = "5";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_NEW = "5.2";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA4 = "5.2";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA5 = "5.3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA6 = "5.3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA7 = "5.4";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA8 = "5.3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA9 = "5.3";//---original 3 comment by Shakir
+  std::string INFECTIOUSNESS_OMICRON_BA10 = "5.3";//---original 3 comment by Shakir
 
   // std::string INFECTIOUSNESS_ALPHA = "1.3";//---original 3 comment by Shakir
   // std::string INFECTIOUSNESS_DELTA = "2.6";//---original 3 comment by Shakir
@@ -147,16 +147,26 @@ struct defaults{
 
   std::string VIRULENT_NEW_STRAIN = "1.3";//Governs the probability of hospitalizations and subsequent criticality and death stages
   std::string VIRULENT_NEW_ALPHA="1.35";
-  std::string VIRULENT_NEW_DELTA="2";
-  std::string VIRULENT_NEW_OMICRON=".3";
-  std::string VIRULENT_NEW_OMICRON_NEW=".2";
-  std::string VIRULENT_NEW_OMICRON_BA4=".2";
-  std::string VIRULENT_NEW_OMICRON_BA5=".2";
-  std::string VIRULENT_NEW_OMICRON_BA6=".2";
-  std::string VIRULENT_NEW_OMICRON_BA7=".2";
-  std::string VIRULENT_NEW_OMICRON_BA8=".2";
-  std::string VIRULENT_NEW_OMICRON_BA9=".2";
-  std::string VIRULENT_NEW_OMICRON_BA10=".2";
+  std::string VIRULENT_NEW_DELTA="3";
+  std::string VIRULENT_NEW_OMICRON=".1";
+  std::string VIRULENT_NEW_OMICRON_NEW=".1";
+  std::string VIRULENT_NEW_OMICRON_BA4=".1";
+  std::string VIRULENT_NEW_OMICRON_BA5=".1";
+  std::string VIRULENT_NEW_OMICRON_BA6=".1";
+  std::string VIRULENT_NEW_OMICRON_BA7=".1";
+  std::string VIRULENT_NEW_OMICRON_BA8=".1";
+  std::string VIRULENT_NEW_OMICRON_BA9=".1";
+  std::string VIRULENT_NEW_OMICRON_BA10=".1";
+
+  std::string RELATIVE_HOSPITALIZATION_ALPHA="1.3";
+  std::string RELATIVE_HOSPITALIZATION_DELTA="3";
+  std::string RELATIVE_HOSPITALIZATION_OMICRON=".1";
+  std::string RELATIVE_HOSPITALIZATION_OMICRON_NEW=".1";
+  std::string RELATIVE_HOSPITALIZATION_OMICRON_BA4=".1";
+  std::string RELATIVE_HOSPITALIZATION_OMICRON_BA5=".1";
+  std::string RELATIVE_HOSPITALIZATION_OMICRON_BA6=".1";
+  std::string RELATIVE_HOSPITALIZATION_OMICRON_BA7=".1";
+  std::string RELATIVE_HOSPITALIZATION_OMICRON_BA8=".1";
 
   // std::string REINFECTION_ALPHA="0.01";
   // std::string REINFECTION_DELTA="0.05";

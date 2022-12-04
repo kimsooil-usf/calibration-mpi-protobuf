@@ -362,14 +362,18 @@ plot_data_struct run_simulation(){
   
   std::vector<count_type> new_strain_candidates;
   new_strain_candidates.reserve(GLOBAL.num_people);
-  std::string logging1 = "Time_step,total_new_infections,new_strain0_infections,new_strain1_infections,\
+//   std::string logging1 = "Time_step,total_new_infections,new_strain0_infections,new_strain1_infections,\
+//   new_strain2_infections,new_strain3_infections,new_strain4_infections,new_strain5_infections,\
+//   new_strain6_infections,new_strain7_infections,new_strain8_infections,new_strain9_infections,\
+//   active_patients,active_patients_new_strain2,active_patients_new_strain1,active_patients_new_strain2,active_patients_new_strain3,active_patients_new_strain4,active_patients_new_strain5,active_patients_new_strain6" ;
+//   std::vector<std::string> logger1;
+//   logger1.push_back(logging1);
+
+std::string logging1 = "Time_step,total_new_infections,new_strain0_infections,new_strain1_infections,\
   new_strain2_infections,new_strain3_infections,new_strain4_infections,new_strain5_infections,\
-  new_strain6_infections,new_strain7_infections,new_strain8_infections,new_strain9_infections,\
-  active_patients,active_patients_new_strain2,active_patients_new_strain1,active_patients_new_strain2,active_patients_new_strain3,active_patients_new_strain4,active_patients_new_strain5,active_patients_new_strain6" ;
+  new_strain6_infections,new_strain7_infections,new_strain8_infections,new_strain9_infections,new_hospitalized,new_dead" ;
   std::vector<std::string> logger1;
   logger1.push_back(logging1);
-
-
 
 //----age group less than 20
   std::vector<count_type> new_vaccinated1_candidates_GT10_LE30;
@@ -578,7 +582,7 @@ double mask_scaling=mask[int(time_step/GLOBAL.SIM_STEPS_PER_DAY)].maskcompliance
 	total_lambda_fraction_data.set_zero();
 	mean_lambda_fraction_data.set_zero();
 
-	count_type num_new_infections = 0,num_new_symptomatic=0;
+	count_type num_new_infections = 0, num_new_symptomatic=0, num_new_hospitalization=0, num_new_dead=0;
 	count_type num_new_strain0_infections = 0,num_new_strain1_infections = 0,
 	num_new_strain2_infections = 0,num_new_strain3_infections = 0,
 	num_new_strain4_infections = 0,num_new_strain5_infections = 0,
@@ -1161,9 +1165,13 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 // 	  }
 
 
+		nodes[j].new_symptomatic=false;//-counting new infections, hospitalizations and deaths--shakir
+		nodes[j].new_hospitalized=false;
+		nodes[j].new_dead=false;
 
 	  if(node_update_status.new_symptomatic){
 		++num_new_symptomatic;
+		nodes[j].new_symptomatic=true;
 		if (nodes[j].new_strain==0){
 		++num_new_strain0_infections;//this needs to be taken care of to count number of original and alpha deta omicron cases
 		}
@@ -1195,6 +1203,17 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 		++num_new_strain9_infections;//this needs to be taken care of to count number of original and alpha deta omicron cases
 		}		  
 		// update the mean fractions with the new data point normalized_lambda
+	  }
+	  if(node_update_status.new_hospitalization){
+		++num_new_hospitalization;
+		nodes[j].new_hospitalized=true;
+
+	  }
+
+	  if(node_update_status.new_dead){
+		++num_new_dead;
+		nodes[j].new_dead=true;
+
 	  }
 	  if(node_update_status.new_infection){
 		++num_new_infections;
@@ -1819,6 +1838,9 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 	  int race = nodes[j].race;
 	  int income =nodes[j].income;
 	  int ethnicity=nodes[j].ethnicity;
+	  bool new_symptomatic=nodes[j].new_symptomatic;
+	  bool new_hospitalization=nodes[j].new_hospitalized;
+	  bool new_dead=nodes[j].new_dead;
 	  
 	  if(infection_status == Progression::susceptible){
 		susceptible_lambda += nodes[j].lambda;
@@ -1831,10 +1853,107 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 		susceptible_lambda_RANDOM_COMMUNITY += nodes[j].lambda_incoming.random_community;
 		n_susceptible +=1;
 	  }
-	  if(infection_status == Progression::infective
-		 || infection_status == Progression::symptomatic
-		 || infection_status == Progression::hospitalised
-		 || infection_status == Progression::critical){
+// 	  if(infection_status == Progression::infective
+// 		 || infection_status == Progression::symptomatic
+// 		 || infection_status == Progression::hospitalised
+// 		 || infection_status == Progression::critical){
+// 		n_infected += 1;
+// 		home_ward_infected[nodes[j].home_ward] += 1; // sk
+// 				if(age_index==0){                   //age group infected Shakir
+// 					n_infected_age_group_1+=1;
+// 				}
+// 				if(age_index==1){
+// 					n_infected_age_group_2+=1;
+// 				}
+// 				if(age_index==2){
+// 					n_infected_age_group_3+=1;
+// 				}
+// 				if(age_index==3){
+// 					n_infected_age_group_4+=1;
+// 				}
+// 				if(age_index==4){
+// 					n_infected_age_group_5+=1;
+// 				}
+// 				if(age_index==5){
+// 					n_infected_age_group_6+=1;
+// 				}
+// 				if(age_index==6){
+// 					n_infected_age_group_7+=1;
+// 				}
+// 				if(age_index==7){
+// 					n_infected_age_group_8+=1;
+// 				}
+// 				if(age_index==8){
+// 					n_infected_age_group_9+=1;
+// 				}
+// 				if(age_index==9){
+// 					n_infected_age_group_10+=1;
+// 				}
+
+// //------------------Race groups--------------------//
+// 				if(race==1){                   //race group infected Shakir
+// 					n_infected_race_group_1+=1;
+// 				}
+// 				if(race==2){
+// 					n_infected_race_group_2+=1;
+// 				}
+// 				if(race==3){
+// 					n_infected_race_group_3+=1;
+// 				}
+// 				if(race==4){
+// 					n_infected_race_group_4+=1;
+// 				}
+// 				if(race==5){
+// 					n_infected_race_group_5+=1;
+// 				}
+// 				if(race==6){
+// 					n_infected_race_group_6+=1;
+// 				}
+// 				if(race==7){
+// 					n_infected_race_group_7+=1;
+// 				}
+
+// //----------------Income groups------------------//
+// 				if(income==1){                   //income group infected Shakir
+// 					n_infected_income_group_1+=1;
+// 				}
+// 				if(income==2){
+// 					n_infected_income_group_2+=1;
+// 				}
+// 				if(income==3){
+// 					n_infected_income_group_3+=1;
+// 				}
+// 				if(income==4){
+// 					n_infected_income_group_4+=1;
+// 				}
+// 				if(income==5){
+// 					n_infected_income_group_5+=1;
+// 				}
+// 				if(income==6){
+// 					n_infected_income_group_6+=1;
+// 				}
+// 				if(income==7){
+// 					n_infected_income_group_7+=1;
+//                 }
+// 				if(income==8){
+// 					n_infected_income_group_8+=1;
+// 				}
+// //------------------Ethnicity groups-------------------------//
+// 				if(ethnicity==1){                   //ethnicity group infected Shakir
+// 					n_infected_ethnicity_group_1+=1;
+// 				}
+// 				if(ethnicity==2){
+// 					n_infected_ethnicity_group_2+=1;
+// 				}
+// //---------------Gender groups------------------------------
+// 				if(gender==1){                   //gender group infected Shakir
+// 					n_infected_gender_group_1+=1;
+// 				}
+// 				if(gender==2){
+// 					n_infected_gender_group_2+=1;
+// 				}
+
+	  if(infection_status == Progression::symptomatic && new_symptomatic){
 		n_infected += 1;
 		home_ward_infected[nodes[j].home_ward] += 1; // sk
 				if(age_index==0){                   //age group infected Shakir
@@ -1932,7 +2051,6 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 				}
 
 
-
 	  }else if(infection_status != Progression::dead){
 		  curtailed_interaction+=(nodes[j].kappa_H_incoming * GLOBAL.BETA_H
 		  		+ nodes[j].kappa_C_incoming * GLOBAL.BETA_C
@@ -1979,7 +2097,7 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 		}
 
 	  }
-	  if(infection_status == Progression::hospitalised){
+	  if(infection_status == Progression::hospitalised && new_hospitalization){
 		n_hospitalised += 1;
 		num_active_infections += 1;
 		if (nodes[j].new_strain==0){///checking for original strain for now
@@ -2175,7 +2293,7 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 		num_active_infections_new_strain6 += 1;
 		}
 	  }
-	  if(infection_status == Progression::dead){
+	  if(infection_status == Progression::dead && new_dead){
 		n_fatalities += 1;
 
 				if(age_index==0){            //age group dead Shakir
@@ -2544,19 +2662,27 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 	// +","+std::to_string(num_active_infections_new_strain6);
     // logger1.push_back(logging1);
 
+	// logging1 = std::to_string(time_step)+","+std::to_string(num_new_symptomatic)
+	// +","+std::to_string(num_new_strain0_infections)+","+std::to_string(num_new_strain1_infections)
+	// +","+std::to_string(num_new_strain2_infections)+","+std::to_string(num_new_strain3_infections)
+	// +","+std::to_string(num_new_strain4_infections)+","+std::to_string(num_new_strain5_infections)
+	// +","+std::to_string(num_new_strain6_infections)+","+std::to_string(num_new_strain7_infections)
+	// +","+std::to_string(num_new_strain8_infections)+","+std::to_string(num_new_strain9_infections)
+	// +","+std::to_string(num_active_infections)
+	// +","+std::to_string(num_active_infections_new_strain0)+","+std::to_string(num_active_infections_new_strain1)
+	// +","+","+std::to_string(num_active_infections_new_strain2)+","+std::to_string(num_active_infections_new_strain3)
+	// +","+std::to_string(num_active_infections_new_strain4)+","+std::to_string(num_active_infections_new_strain5)
+	// +","+std::to_string(num_active_infections_new_strain6);
+    // logger1.push_back(logging1);
 	logging1 = std::to_string(time_step)+","+std::to_string(num_new_symptomatic)
 	+","+std::to_string(num_new_strain0_infections)+","+std::to_string(num_new_strain1_infections)
 	+","+std::to_string(num_new_strain2_infections)+","+std::to_string(num_new_strain3_infections)
 	+","+std::to_string(num_new_strain4_infections)+","+std::to_string(num_new_strain5_infections)
 	+","+std::to_string(num_new_strain6_infections)+","+std::to_string(num_new_strain7_infections)
 	+","+std::to_string(num_new_strain8_infections)+","+std::to_string(num_new_strain9_infections)
-	+","+std::to_string(num_active_infections)
-	+","+std::to_string(num_active_infections_new_strain0)+","+std::to_string(num_active_infections_new_strain1)
-	+","+","+std::to_string(num_active_infections_new_strain2)+","+std::to_string(num_active_infections_new_strain3)
-	+","+std::to_string(num_active_infections_new_strain4)+","+std::to_string(num_active_infections_new_strain5)
-	+","+std::to_string(num_active_infections_new_strain6);
+	+","+std::to_string(num_new_hospitalization)
+	+","+std::to_string(num_new_dead);
     logger1.push_back(logging1);
-
 #ifdef DEBUG
 	cerr<<std::endl<<"time_step: "<<time_step;
 	auto end_time_timestep = std::chrono::high_resolution_clock::now();
