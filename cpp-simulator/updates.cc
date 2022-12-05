@@ -184,7 +184,7 @@ node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,
 	  node.infective = true;
 	  update_status.new_symptomatic = true;
 	  node.entered_symptomatic_state = true;
-	  node.new_symptomatic=true;
+	  //node.new_symptomatic=true;
 	}
 	else {
 	  node.state_before_recovery = node.infection_status;
@@ -301,7 +301,7 @@ node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,
 	  node.infective = false;
 	  update_status.new_hospitalization = true;
 	  node.entered_hospitalised_state = true;
-	  node.new_hospitalized=true;
+	  //node.new_hospitalized=true;
 	}
 	else {
 	  node.state_before_recovery = node.infection_status;
@@ -458,7 +458,7 @@ node_update_status update_infection(agent& node, int cur_time,bool mask_wearing,
 	if(transition){
 	  node.infection_status = Progression::dead;//move to dead
 	  node.infective = false;
-	  node.new_dead = true;
+	  //node.new_dead = true;
 	  update_status.new_dead = true;
 
 	}

@@ -2071,32 +2071,32 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 				+ GLOBAL.BETA_RANDOM_COMMUNITY
 				+ ((nodes[j].has_to_travel)?GLOBAL.BETA_TRAVEL:0));
 	  }
-	  if(infection_status == Progression::exposed){
-		n_exposed += 1;
-		num_active_infections += 1;
-		if (nodes[j].new_strain==0){///checking for original strain for now
-		num_active_infections_new_strain0 += 1;
-		}
-		if (nodes[j].new_strain==1){///checking for alpha strain for now
-		num_active_infections_new_strain1 += 1;
-		}
-		if (nodes[j].new_strain==2){///checking for delta strain for now
-		num_active_infections_new_strain2 += 1;
-		}
-		if (nodes[j].new_strain==3){///checking for Omicron strain for now
-		num_active_infections_new_strain3 += 1;
-		}
-		if (nodes[j].new_strain==4){///checking for OmicronNew strain for now
-		num_active_infections_new_strain4 += 1;
-		}
-		if (nodes[j].new_strain==5){///checking for Omicron BA4 strain for now
-		num_active_infections_new_strain5 += 1;
-		}
-		if (nodes[j].new_strain==6){///checking for omicron BA5 strain for now
-		num_active_infections_new_strain6 += 1;
-		}
+	//   if(infection_status == Progression::exposed){
+	// 	n_exposed += 1;
+	// 	num_active_infections += 1;
+	// 	if (nodes[j].new_strain==0){///checking for original strain for now
+	// 	num_active_infections_new_strain0 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==1){///checking for alpha strain for now
+	// 	num_active_infections_new_strain1 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==2){///checking for delta strain for now
+	// 	num_active_infections_new_strain2 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==3){///checking for Omicron strain for now
+	// 	num_active_infections_new_strain3 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==4){///checking for OmicronNew strain for now
+	// 	num_active_infections_new_strain4 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==5){///checking for Omicron BA4 strain for now
+	// 	num_active_infections_new_strain5 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==6){///checking for omicron BA5 strain for now
+	// 	num_active_infections_new_strain6 += 1;
+	// 	}
 
-	  }
+	//   }
 	  if(infection_status == Progression::hospitalised && new_hospitalization){
 		n_hospitalised += 1;
 		num_active_infections += 1;
@@ -2218,81 +2218,81 @@ count_type SIX_MONTH=6*30*GLOBAL.SIM_STEPS_PER_DAY;
 
 
 	  }
-	  if(infection_status == Progression::symptomatic){
-		n_symptomatic += 1;
-		num_active_infections += 1;
-		if (nodes[j].new_strain==0){///checking for original strain for now
-		num_active_infections_new_strain0 += 1;
-		}
-		if (nodes[j].new_strain==1){///checking for alpha strain for now
-		num_active_infections_new_strain1 += 1;
-		}
-		if (nodes[j].new_strain==2){///checking for delta strain for now
-		num_active_infections_new_strain2 += 1;
-		}
-		if (nodes[j].new_strain==3){///checking for Omicron strain for now
-		num_active_infections_new_strain3 += 1;
-		}
-		if (nodes[j].new_strain==4){///checking for OmicronNew strain for now
-		num_active_infections_new_strain4 += 1;
-		}
-		if (nodes[j].new_strain==5){///checking for Omicron BA4 strain for now
-		num_active_infections_new_strain5 += 1;
-		}
-		if (nodes[j].new_strain==6){///checking for omicron BA5 strain for now
-		num_active_infections_new_strain6 += 1;
-		}
-	  }
-	  if(infection_status == Progression::critical){
-		n_critical += 1;
-		num_active_infections += 1;
+	//   if(infection_status == Progression::symptomatic){
+	// 	n_symptomatic += 1;
+	// 	num_active_infections += 1;
+	// 	if (nodes[j].new_strain==0){///checking for original strain for now
+	// 	num_active_infections_new_strain0 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==1){///checking for alpha strain for now
+	// 	num_active_infections_new_strain1 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==2){///checking for delta strain for now
+	// 	num_active_infections_new_strain2 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==3){///checking for Omicron strain for now
+	// 	num_active_infections_new_strain3 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==4){///checking for OmicronNew strain for now
+	// 	num_active_infections_new_strain4 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==5){///checking for Omicron BA4 strain for now
+	// 	num_active_infections_new_strain5 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==6){///checking for omicron BA5 strain for now
+	// 	num_active_infections_new_strain6 += 1;
+	// 	}
+	//   }
+	//   if(infection_status == Progression::critical){
+	// 	n_critical += 1;
+	// 	num_active_infections += 1;
 
-		if (nodes[j].new_strain==0){///checking for original strain for now
-		num_active_infections_new_strain0 += 1;
-		}
-		if (nodes[j].new_strain==1){///checking for alpha strain for now
-		num_active_infections_new_strain1 += 1;
-		}
-		if (nodes[j].new_strain==2){///checking for delta strain for now
-		num_active_infections_new_strain2 += 1;
-		}
-		if (nodes[j].new_strain==3){///checking for Omicron strain for now
-		num_active_infections_new_strain3 += 1;
-		}
-		if (nodes[j].new_strain==4){///checking for OmicronNew strain for now
-		num_active_infections_new_strain4 += 1;
-		}
-		if (nodes[j].new_strain==5){///checking for Omicron BA4 strain for now
-		num_active_infections_new_strain5 += 1;
-		}
-		if (nodes[j].new_strain==6){///checking for omicron BA5 strain for now
-		num_active_infections_new_strain6 += 1;
-		}
-	  }
-	  if(infection_status == Progression::infective){
-		num_active_infections += 1;
-		if (nodes[j].new_strain==0){///checking for original strain for now
-		num_active_infections_new_strain0 += 1;
-		}		
-		if (nodes[j].new_strain==1){///checking for alpha strain for now
-		num_active_infections_new_strain1 += 1;
-		}
-		if (nodes[j].new_strain==2){///checking for delta strain for now
-		num_active_infections_new_strain2 += 1;
-		}
-		if (nodes[j].new_strain==3){///checking for Omicron strain for now
-		num_active_infections_new_strain3 += 1;
-		}
-		if (nodes[j].new_strain==4){///checking for OmicronNew strain for now
-		num_active_infections_new_strain4 += 1;
-		}
-		if (nodes[j].new_strain==5){///checking for Omicron BA4 strain for now
-		num_active_infections_new_strain5 += 1;
-		}
-		if (nodes[j].new_strain==6){///checking for omicron BA5 strain for now
-		num_active_infections_new_strain6 += 1;
-		}
-	  }
+	// 	if (nodes[j].new_strain==0){///checking for original strain for now
+	// 	num_active_infections_new_strain0 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==1){///checking for alpha strain for now
+	// 	num_active_infections_new_strain1 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==2){///checking for delta strain for now
+	// 	num_active_infections_new_strain2 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==3){///checking for Omicron strain for now
+	// 	num_active_infections_new_strain3 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==4){///checking for OmicronNew strain for now
+	// 	num_active_infections_new_strain4 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==5){///checking for Omicron BA4 strain for now
+	// 	num_active_infections_new_strain5 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==6){///checking for omicron BA5 strain for now
+	// 	num_active_infections_new_strain6 += 1;
+	// 	}
+	//   }
+	//   if(infection_status == Progression::infective){
+	// 	num_active_infections += 1;
+	// 	if (nodes[j].new_strain==0){///checking for original strain for now
+	// 	num_active_infections_new_strain0 += 1;
+	// 	}		
+	// 	if (nodes[j].new_strain==1){///checking for alpha strain for now
+	// 	num_active_infections_new_strain1 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==2){///checking for delta strain for now
+	// 	num_active_infections_new_strain2 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==3){///checking for Omicron strain for now
+	// 	num_active_infections_new_strain3 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==4){///checking for OmicronNew strain for now
+	// 	num_active_infections_new_strain4 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==5){///checking for Omicron BA4 strain for now
+	// 	num_active_infections_new_strain5 += 1;
+	// 	}
+	// 	if (nodes[j].new_strain==6){///checking for omicron BA5 strain for now
+	// 	num_active_infections_new_strain6 += 1;
+	// 	}
+	//   }
 	  if(infection_status == Progression::dead && new_dead){
 		n_fatalities += 1;
 
